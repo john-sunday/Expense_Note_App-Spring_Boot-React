@@ -16,12 +16,11 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-//@AllArgsConstructor
+@AllArgsConstructor
 public class BaseEntity implements Serializable{
 
 	private static final long serialVersionUID = 1L;
-	
-//	@Id
-//	@GeneratedValue(strategy=GenerationType.IDENTITY)
-//	private Integer entityId;
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	private Integer id;
 }

@@ -2,9 +2,6 @@ package com.johnsunday.app.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
@@ -22,10 +19,7 @@ import lombok.Setter;
 public class EmployeeType extends BaseEntity {
 
 	private static final long serialVersionUID = 1L;
-	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="employee_type_id")
-	private Integer employeeTypeId;
+	private Integer id;
 	@Column(name="type_name")
 	private String typeName;	
 }
