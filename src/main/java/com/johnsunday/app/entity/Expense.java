@@ -2,11 +2,12 @@ package com.johnsunday.app.entity;
 
 import java.time.LocalDateTime;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,8 +20,14 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+//@Audited
 public class Expense extends BaseEntity {
 
+	private static final long serialVersionUID = 1L;
+//	@Id
+//	@GeneratedValue(strategy=GenerationType.IDENTITY)
+//	@Column(name="id")
+//	private Integer id;
 	@Column(name="concept")
 	private String concept;
 	@Column(name="note")
@@ -30,7 +37,8 @@ public class Expense extends BaseEntity {
 	private LocalDateTime expenseDate;
 	@Column(name="amount")
 	private Double amount;
-	@Column(name="id_employee")
+	@ManyToOne(cascade=CascadeType.ALL)
+	@JoinColumn(name="id_employee")
 	private Employee employee;
 	
 }

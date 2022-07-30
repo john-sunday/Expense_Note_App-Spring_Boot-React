@@ -52,11 +52,11 @@
 			<scope>test</scope>
 		</dependency>
 			<!-- https://mvnrepository.com/artifact/org.hibernate.orm/hibernate-envers -->
-		<dependency>
-		    <groupId>org.hibernate.orm</groupId>
-		    <artifactId>hibernate-envers</artifactId>
-		    <version>6.1.1.Final</version>
-		</dependency>
+<!-- 		<dependency> -->
+<!-- 		    <groupId>org.hibernate.orm</groupId> -->
+<!-- 		    <artifactId>hibernate-envers</artifactId> -->
+<!-- 		    <version>6.1.1.Final</version> -->
+<!-- 		</dependency> -->
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

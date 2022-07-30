@@ -1,9 +1,10 @@
 package com.johnsunday.app.dao;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-import com.johnsunday.app.entity.Employee;
+import com.johnsunday.app.entity.EmployeeType;
 
-public interface IEmployeeTypeDao extends JpaRepository<Integer, Employee> {
+@Repository
+public interface IEmployeeTypeDao extends IBaseDao<EmployeeType, Integer> {
 
 }
