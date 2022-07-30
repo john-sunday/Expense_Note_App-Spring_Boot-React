@@ -19,7 +19,7 @@ public class ExpenseServiceImpl extends BaseServiceImpl<Expense,Integer>
 	@Override
 	public List<Expense> findExpenseByEmployeeId(Integer employeeId) throws Exception {
 		try {
-			return expenseDao.findAllExpenseByIdEmployee(employeeId);
+			return expenseDao.findAllExpenseByEmployeeId(employeeId);
 		}catch(Exception e) {
 			e.printStackTrace();
 			throw new Exception(e.getMessage());

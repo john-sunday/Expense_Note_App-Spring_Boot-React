@@ -2,7 +2,6 @@ package com.johnsunday.app.entity;
 
 import java.time.LocalDateTime;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -24,10 +23,7 @@ import lombok.Setter;
 public class Expense extends BaseEntity {
 
 	private static final long serialVersionUID = 1L;
-//	@Id
-//	@GeneratedValue(strategy=GenerationType.IDENTITY)
-//	@Column(name="id")
-//	private Integer id;
+
 	@Column(name="concept")
 	private String concept;
 	@Column(name="note")
@@ -37,8 +33,8 @@ public class Expense extends BaseEntity {
 	private LocalDateTime expenseDate;
 	@Column(name="amount")
 	private Double amount;
-	@ManyToOne(cascade=CascadeType.ALL)
-	@JoinColumn(name="id_employee")
+	@ManyToOne(optional=true)
+	@JoinColumn(name="employee_id_fk")
 	private Employee employee;
 	
 }

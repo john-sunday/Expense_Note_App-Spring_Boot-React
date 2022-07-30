@@ -7,10 +7,8 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -30,10 +28,7 @@ import lombok.Setter;
 public class Employee extends BaseEntity {
 	
 	private static final long serialVersionUID = 1L;
-//	@Id
-//	@GeneratedValue(strategy=GenerationType.IDENTITY)
-//	@Column(name="id")
-//	private Integer id;
+
 	@Column(name="name")
 	private String name;
 	@Column(name="surname")
@@ -41,13 +36,21 @@ public class Employee extends BaseEntity {
 	@Column(name="birth_date")
 	//@Temporal(TemporalType.TIMESTAMP)
 	private LocalDateTime birthDate;
-	@OneToOne
-	@JoinColumn(name="id_employee_type")
+	@OneToOne(cascade= {CascadeType.PERSIST,CascadeType.REFRESH,CascadeType.MERGE})
+	@JoinColumn(name="employee_type_id_fk")
 	private EmployeeType employeeType;
 	
-	@OneToMany(fetch=FetchType.LAZY,cascade=CascadeType.ALL)
+	@OneToMany(fetch=FetchType.LAZY,cascade=CascadeType.ALL,orphanRemoval=true)
+	@JoinTable(
+			name="employee_expense",
+			joinColumns=@JoinColumn(name="employee_id"),
+			inverseJoinColumns=@JoinColumn(name="expense_id"))
 	private List<Expense>expenses;
 	
-	@OneToMany(fetch=FetchType.LAZY,cascade=CascadeType.ALL)
+	@OneToMany(fetch=FetchType.LAZY,cascade=CascadeType.ALL,orphanRemoval=true)
+	@JoinTable(
+			name="employee_payroll",
+			joinColumns=@JoinColumn(name="employee_id"),
+			inverseJoinColumns=@JoinColumn(name="expense_id"))	
 	private List<Payroll>payrolls;
 }
