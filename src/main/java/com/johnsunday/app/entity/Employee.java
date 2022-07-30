@@ -1,5 +1,6 @@
 package com.johnsunday.app.entity;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -7,6 +8,9 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
@@ -28,7 +32,10 @@ import lombok.Setter;
 public class Employee extends BaseEntity {
 	
 	private static final long serialVersionUID = 1L;
-
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name="employee_id")
+	private Integer employeeId;
 	@Column(name="name")
 	private String name;
 	@Column(name="surname")
@@ -36,7 +43,7 @@ public class Employee extends BaseEntity {
 	@Column(name="birth_date")
 	//@Temporal(TemporalType.TIMESTAMP)
 	private LocalDateTime birthDate;
-	@OneToOne(cascade= {CascadeType.PERSIST,CascadeType.REFRESH,CascadeType.MERGE})
+	@OneToOne
 	@JoinColumn(name="employee_type_id_fk")
 	private EmployeeType employeeType;
 	
@@ -51,6 +58,6 @@ public class Employee extends BaseEntity {
 	@JoinTable(
 			name="employee_payroll",
 			joinColumns=@JoinColumn(name="employee_id"),
-			inverseJoinColumns=@JoinColumn(name="expense_id"))	
+			inverseJoinColumns=@JoinColumn(name="payroll_id"))	
 	private List<Payroll>payrolls;
 }
