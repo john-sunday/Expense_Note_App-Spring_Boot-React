@@ -4,12 +4,12 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.johnsunday.app.entity.Employee;
-import com.johnsunday.app.service.EmployeeServiceImpl;
+import com.johnsunday.app.entity.Expense;
+import com.johnsunday.app.service.ExpenseServiceImpl;
 
 @CrossOrigin(origins="*")
-@RequestMapping("api/v1/employee")
+@RequestMapping("api/v1/expense")
 @RestController
-public class EmployeeController extends BaseControllerImpl<Employee, EmployeeServiceImpl>{
+public class ExpenseController extends BaseControllerImpl<Expense, ExpenseServiceImpl>{
 
 }
