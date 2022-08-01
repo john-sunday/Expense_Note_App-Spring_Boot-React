@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import com.johnsunday.app.entity.BaseEntity;
+import com.johnsunday.app.entity.Employee;
+import com.johnsunday.app.entity.Expense;
 import com.johnsunday.app.service.BaseServiceImpl;
 
 public abstract class BaseControllerImpl<E extends BaseEntity,

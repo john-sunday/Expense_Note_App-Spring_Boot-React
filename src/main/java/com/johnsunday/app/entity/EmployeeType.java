@@ -19,7 +19,6 @@ import lombok.Setter;
 public class EmployeeType extends BaseEntity {
 
 	private static final long serialVersionUID = 1L;
-	private Integer id;
 	@Column(name="type_name")
 	private String typeName;	
 }

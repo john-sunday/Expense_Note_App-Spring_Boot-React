@@ -1,6 +1,7 @@
 package com.johnsunday.app.entity;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -12,6 +13,8 @@ import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -39,17 +42,29 @@ public class Employee extends BaseEntity {
 	@JoinColumn(name="employee_type_id_fk")
 	private EmployeeType employeeType;
 	
-	@OneToMany(fetch=FetchType.LAZY,cascade=CascadeType.ALL,orphanRemoval=true)
+	@OneToMany(targetEntity=Expense.class,cascade= {CascadeType.MERGE, CascadeType.REMOVE,
+            CascadeType.REFRESH, CascadeType.DETACH} ,orphanRemoval=true)
+	@JsonIgnore
 	@JoinTable(
 			name="employee_expense",
-			joinColumns=@JoinColumn(name="employee_id"),
-			inverseJoinColumns=@JoinColumn(name="expense_id"))
-	private List<Expense>expenses;
+			joinColumns=@JoinColumn(name="employee_id",referencedColumnName="id"),
+			inverseJoinColumns=@JoinColumn(name="expense_id",referencedColumnName="id"))
+//    @OneToMany(mappedBy = "employee",cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
+//    @JsonIgnore
+	private List<Expense>expenses = new ArrayList<Expense>();
 	
-	@OneToMany(fetch=FetchType.LAZY,cascade=CascadeType.ALL,orphanRemoval=true)
+	@OneToMany(targetEntity=Payroll.class,cascade=CascadeType.ALL,orphanRemoval=true)
+	@JsonIgnore
 	@JoinTable(
 			name="employee_payroll",
-			joinColumns=@JoinColumn(name="employee_id"),
-			inverseJoinColumns=@JoinColumn(name="payroll_id"))	
-	private List<Payroll>payrolls;
+			joinColumns=@JoinColumn(name="employee_id",referencedColumnName="id"),
+			inverseJoinColumns=@JoinColumn(name="payroll_id",referencedColumnName="id"))	
+	private List<Payroll>payrolls = new ArrayList<Payroll>();
+	
+	public void addExpense(Expense expense) {
+		expenses.add(expense);
+	}
+	public void addPayroll(Payroll payroll) {
+		payrolls.add(payroll);
+	}
 }
