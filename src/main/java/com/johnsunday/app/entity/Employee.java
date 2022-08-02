@@ -44,7 +44,7 @@ public class Employee extends BaseEntity {
 	
 	@OneToMany(targetEntity=Expense.class,cascade= {CascadeType.MERGE, CascadeType.REMOVE,
             CascadeType.REFRESH, CascadeType.DETACH} ,orphanRemoval=true)
-	@JsonIgnore
+//	@JsonIgnore
 	@JoinTable(
 			name="employee_expense",
 			joinColumns=@JoinColumn(name="employee_id",referencedColumnName="id"),
