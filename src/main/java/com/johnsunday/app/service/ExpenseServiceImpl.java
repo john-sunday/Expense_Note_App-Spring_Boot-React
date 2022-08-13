@@ -8,8 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.johnsunday.app.dao.IExpenseDao;
+import com.johnsunday.app.dao.IExpenseEmployeeDao;
 import com.johnsunday.app.entity.Employee;
 import com.johnsunday.app.entity.Expense;
+import com.johnsunday.app.entity.ExpenseEmployee;
 
 @Service
 public class ExpenseServiceImpl extends BaseServiceImpl<Expense,Integer> 
@@ -17,8 +19,10 @@ public class ExpenseServiceImpl extends BaseServiceImpl<Expense,Integer>
 
 	@Autowired
 	private IExpenseDao expenseDao;
-
-	@Override
+	@Autowired
+	private IExpenseEmployeeDao expenseEmployeeDao;
+	
+	@Override	
 	public List<Expense> findExpenseByEmployeeId(Integer employeeId) throws Exception {
 		try {
 			return expenseDao.findAllExpenseByEmployeeId(employeeId);
@@ -29,11 +33,12 @@ public class ExpenseServiceImpl extends BaseServiceImpl<Expense,Integer>
 	}
 	@Override
 	@Transactional
-	public Expense saveExpenseEmployee(Expense expense) throws Exception {
+	public Expense saveEmployeeExpense(Expense expense) throws Exception {
 		Employee employee = expense.getEmployee();
 		employee.addExpense(expense);
 		System.out.println(employee.getName());
 		try {
+			expenseEmployeeDao.save(new ExpenseEmployee(expense.getId(),employee.getId()));
 			return expenseDao.save(expense);
 		}catch(Exception e) {
 			e.printStackTrace();

@@ -47,10 +47,10 @@ public class Employee extends BaseEntity {
 //	@JsonIgnore
 	@JoinTable(
 			name="employee_expense",
-			joinColumns=@JoinColumn(name="employee_id",referencedColumnName="id"),
-			inverseJoinColumns=@JoinColumn(name="expense_id",referencedColumnName="id"))
-//    @OneToMany(mappedBy = "employee",cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
-//    @JsonIgnore
+			joinColumns= {@JoinColumn(name="employee_id",referencedColumnName="id",insertable=true)},
+			inverseJoinColumns= {@JoinColumn(name="expense_id",referencedColumnName="id",insertable=true)})
+//  @OneToMany(mappedBy = "employee",cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
+//  @JsonIgnore
 	private List<Expense>expenses = new ArrayList<Expense>();
 	
 	@OneToMany(targetEntity=Payroll.class,cascade=CascadeType.ALL,orphanRemoval=true)

@@ -12,5 +12,5 @@ import com.johnsunday.app.entity.Expense;
 public interface IExpenseController<E extends BaseEntity,ID extends Serializable> {
 
 	public ResponseEntity<?> getAllExpenseByEmployeeId(@PathVariable ID id);
-	public ResponseEntity<?> saveExpenseEmployee(@RequestBody Expense expense);
+	//public ResponseEntity<?> saveExpenseEmployee(@RequestBody Expense expense);
 }
