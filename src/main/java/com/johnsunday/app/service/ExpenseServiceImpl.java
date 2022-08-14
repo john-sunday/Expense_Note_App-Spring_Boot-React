@@ -19,30 +19,14 @@ public class ExpenseServiceImpl extends BaseServiceImpl<Expense,Integer>
 
 	@Autowired
 	private IExpenseDao expenseDao;
-	@Autowired
-	private IExpenseEmployeeDao expenseEmployeeDao;
 	
 	@Override	
-	public List<Expense> findExpenseByEmployeeId(Integer employeeId) throws Exception {
+	public List<Expense> findAllExpenseByEmployeeId(Integer employeeId) throws Exception {
 		try {
 			return expenseDao.findAllExpenseByEmployeeId(employeeId);
 		}catch(Exception e) {
 			e.printStackTrace();
 			throw new Exception(e.getMessage());
 		}
-	}
-	@Override
-	@Transactional
-	public Expense saveEmployeeExpense(Expense expense) throws Exception {
-		Employee employee = expense.getEmployee();
-		employee.addExpense(expense);
-		System.out.println(employee.getName());
-		try {
-			expenseEmployeeDao.save(new ExpenseEmployee(expense.getId(),employee.getId()));
-			return expenseDao.save(expense);
-		}catch(Exception e) {
-			e.printStackTrace();
-			throw new Exception(e.getMessage());
-		}		
 	}
 }

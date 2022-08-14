@@ -7,5 +7,5 @@ import com.johnsunday.app.entity.Payroll;
 
 public interface IPayrollService extends IBaseService<Payroll,Integer> {
 
-	public List<Payroll> findPayrollByEmployeeId(Integer id) throws Exception;
+	public List<Payroll> findAllPayrollByEmployeeId(Integer employeeId) throws Exception;
 }

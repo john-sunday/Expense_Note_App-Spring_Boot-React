@@ -25,22 +25,21 @@ public class ExpenseControllerImpl extends BaseControllerImpl<Expense, ExpenseSe
 									implements IExpenseController<Expense,Integer>{
 
 	@Autowired
-	ExpenseServiceImpl expenseService;
+	private ExpenseServiceImpl expenseService;
 	@Autowired
-	ExpenseEmployeeServiceImpl expenseEmployeeService; 
+	private ExpenseEmployeeServiceImpl expenseEmployeeService; 
 	
 	@Override
-	@GetMapping("/employee/{id}")
+	@GetMapping("/employee/{employeeId}")
 	@ResponseBody
-	public ResponseEntity<?> getAllExpenseByEmployeeId(@PathVariable("id")Integer id) {
+	public ResponseEntity<?> getAllExpenseByEmployeeId(@PathVariable("employeeId")Integer employeeId) {
 		try {
-			return ResponseEntity.status(HttpStatus.OK).body(expenseService.findExpenseByEmployeeId(id));			
+			return ResponseEntity.status(HttpStatus.OK).body(expenseService.findAllExpenseByEmployeeId(employeeId));			
 		} catch (Exception e) {
 			e.printStackTrace();
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"error\":\"Error. Please, Try it later. NOT possible to SHOW the employee's EXPENSES.\"}");
 		}
 	}
-
 	@Override
 	@PostMapping("/")
 	@ResponseBody
@@ -59,18 +58,4 @@ public class ExpenseControllerImpl extends BaseControllerImpl<Expense, ExpenseSe
 		}
 		return responseEntity;
 	}
-
-//	@Override
-//	@PostMapping("/addlist/")
-//	@ResponseBody
-//	public ResponseEntity<?> saveExpenseEmployee(@RequestBody Expense expense) {
-//		try {
-//			System.out.println("@Override method to save Expense in Employee List<Expense>");
-//			return ResponseEntity.status(HttpStatus.OK).body(expenseService.saveEmployeeExpense(expense));			
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"error\":\"**** Error. Please, Try it later. NOT possible to SHOW the employee's EXPENSES.\"}");
-//		}
-//	}
-	
 }
