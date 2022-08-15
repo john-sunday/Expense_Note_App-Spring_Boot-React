@@ -34,20 +34,11 @@ public class PayrollControllerImpl extends BaseControllerImpl<Payroll, PayrollSe
 	public ResponseEntity<?> saveEntity(@RequestBody Payroll payroll) {
 		ResponseEntity<Payroll> responseEntity;
 		try {
-			System.out.println("@Override method PayrollServiceImpl");
 			Employee employee = payroll.getEmployee();
 //			employee.addExpense(payroll);
 			
-			System.out.println("************************************");
-			System.out.println(payroll.getId());
-			System.out.println(employee.getName());
-			System.out.println(employee.getId());
-			System.out.println("************************************");
-
 			responseEntity = ResponseEntity.status(HttpStatus.OK).body(payrollService.save(payroll));			
 			payrollEmployeeService.save(new PayrollEmployee(responseEntity.getBody().getId(),employee.getId()));
-			System.out.println("+++++++++++++++++++++++++++++++++++++++++");
-			System.out.println(responseEntity.getBody().getId());
 		}catch(Exception e) {
 			e.printStackTrace();
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. Please, Try it later. NOT possible to SAVE the entity.\"}");

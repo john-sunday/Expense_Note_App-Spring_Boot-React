@@ -7,13 +7,13 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
@@ -44,17 +44,18 @@ public class Employee extends BaseEntity {
 	
 	@OneToMany(targetEntity=Expense.class,cascade= {CascadeType.MERGE, CascadeType.REMOVE,
             CascadeType.REFRESH, CascadeType.DETACH} ,orphanRemoval=true)
-//	@JsonIgnore
+	@JsonIgnore
+	//@JsonBackReference
 	@JoinTable(
 			name="employee_expense",
-			joinColumns= {@JoinColumn(name="employee_id",referencedColumnName="id",insertable=true)},
-			inverseJoinColumns= {@JoinColumn(name="expense_id",referencedColumnName="id",insertable=true)})
-//  @OneToMany(mappedBy = "employee",cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
-//  @JsonIgnore
+			joinColumns= {@JoinColumn(name="employee_id",referencedColumnName="id")},
+			inverseJoinColumns= {@JoinColumn(name="expense_id",referencedColumnName="id")})
 	private List<Expense>expenses = new ArrayList<Expense>();
 	
-	@OneToMany(targetEntity=Payroll.class,cascade=CascadeType.ALL,orphanRemoval=true)
+	@OneToMany(targetEntity=Payroll.class,cascade={CascadeType.MERGE, CascadeType.REMOVE,
+            CascadeType.REFRESH, CascadeType.DETACH},orphanRemoval=true)
 	@JsonIgnore
+	//@JsonBackReference
 	@JoinTable(
 			name="employee_payroll",
 			joinColumns=@JoinColumn(name="employee_id",referencedColumnName="id"),

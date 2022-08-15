@@ -46,7 +46,6 @@ public class ExpenseControllerImpl extends BaseControllerImpl<Expense, ExpenseSe
 	public ResponseEntity<?> saveEntity(@RequestBody Expense expense) {
 		ResponseEntity<Expense> responseEntity;
 		try {
-			System.out.println("@Override method ExpenseServiceImpl");
 			Employee employee = expense.getEmployee();
 //			employee.addExpense(expense);
 

@@ -36,8 +36,7 @@ public class Expense extends BaseEntity {
 	private LocalDateTime expenseDate;
 	@Column(name="amount")
 	private Double amount;
-	@ManyToOne(optional=false,cascade= {CascadeType.MERGE, CascadeType.REMOVE,
-            CascadeType.REFRESH, CascadeType.DETACH} ,fetch=FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name="employee_id_fk")
 	//@JsonIgnore
 	private Employee employee;	
