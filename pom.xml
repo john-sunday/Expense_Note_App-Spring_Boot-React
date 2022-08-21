@@ -14,6 +14,8 @@
 	<name>Expense_Note_App</name>
 	<description>Project Spring Boot for company expense note of employees</description>
 	<properties>
+		<springframework-version>5.7.3</springframework-version>
+		<springsecurity.version>5.7.3</springsecurity.version>
 		<java.version>11</java.version>
 	</properties>
 	<dependencies>
@@ -51,18 +53,55 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-			<!-- https://mvnrepository.com/artifact/org.hibernate.orm/hibernate-envers -->
+		
+		<dependency>
+		  <groupId>org.modelmapper</groupId>
+		  <artifactId>modelmapper</artifactId>
+		  <version>3.0.0</version>
+		</dependency>
+		
+		<dependency>
+		  <groupId>org.springframework</groupId>
+		  <artifactId>spring-web</artifactId>
+		  <version>5.3.22</version>
+		</dependency>
+		<!--  
+		https://mvnrepository.com/artifact/org.hibernate.orm/hibernate-envers -->
 <!-- 		<dependency> -->
 <!-- 		    <groupId>org.hibernate.orm</groupId> -->
 <!-- 		    <artifactId>hibernate-envers</artifactId> -->
 <!-- 		    <version>6.1.1.Final</version> -->
 <!-- 		</dependency> -->
-
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-jdbc</artifactId>
 		</dependency>
-			
+		<!-- Security dependencies -->
+		<dependency>
+		  <groupId>org.springframework.security</groupId>
+		  <artifactId>spring-security-web</artifactId>
+<!-- 		  <version>${springsecurity.version}</version> -->
+<!-- 		  <version>5.7.3</version>		   -->
+		</dependency>
+		<dependency>
+  			<groupId>org.springframework.security</groupId>
+  			<artifactId>spring-security-config</artifactId>
+<!--   			<version>5.7.3</version> -->
+		</dependency>
+		<dependency>
+		  <groupId>org.springframework.security</groupId>
+		  <artifactId>spring-security-crypto</artifactId>
+		  <version>5.7.3</version>
+		</dependency>
+		
+		<!-- For Test Login Security 
+		https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-thymeleaf -->
+		<dependency>
+		    <groupId>org.springframework.boot</groupId>
+		    <artifactId>spring-boot-starter-thymeleaf</artifactId>
+<!-- 		    <version>2.7.2</version> -->
+		</dependency>
+		
 	</dependencies>
 	
 	<build>

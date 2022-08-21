@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.johnsunday.app.entity.Employee;
 import com.johnsunday.app.entity.Expense;
 import com.johnsunday.app.service.ExpenseServiceImpl;
 

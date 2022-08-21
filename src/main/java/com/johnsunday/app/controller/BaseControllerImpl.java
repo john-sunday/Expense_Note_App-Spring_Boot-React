@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import com.johnsunday.app.dto.security.UserRegistrationDto;
 import com.johnsunday.app.entity.BaseEntity;
 import com.johnsunday.app.service.BaseServiceImpl;
 
