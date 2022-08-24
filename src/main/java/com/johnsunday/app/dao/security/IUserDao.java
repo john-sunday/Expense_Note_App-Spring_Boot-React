@@ -1,12 +1,14 @@
 package com.johnsunday.app.dao.security;
 
+import java.util.Optional;
+
 import org.springframework.stereotype.Repository;
 
 import com.johnsunday.app.dao.IBaseDao;
-import com.johnsunday.app.entity.security.User;
+import com.johnsunday.app.entity.security.UserEmployee;
 
 @Repository
-public interface IUserDao extends IBaseDao<User, Integer> {
+public interface IUserDao extends IBaseDao<UserEmployee, Integer> {
 
-	public User findByEmail(String email);
+	public Optional<UserEmployee> findByUserEmail(String userEmail);
 }

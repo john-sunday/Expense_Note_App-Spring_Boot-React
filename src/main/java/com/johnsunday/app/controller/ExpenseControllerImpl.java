@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.johnsunday.app.entity.Employee;
 import com.johnsunday.app.entity.Expense;
 import com.johnsunday.app.service.ExpenseServiceImpl;
 
@@ -42,9 +43,9 @@ public class ExpenseControllerImpl extends BaseControllerImpl<Expense, ExpenseSe
 	public ResponseEntity<?> saveEntity(@RequestBody Expense expense) {
 		ResponseEntity<Expense> responseEntity;
 		try {
-//			Employee employee = expense.getEmployee();
+			Employee employee = expense.getEmployee();
 			responseEntity = ResponseEntity.status(HttpStatus.OK).body(expenseService.save(expense));
-//			employee.addExpense(expense);
+			employee.addExpense(expense);
 		}catch(Exception e) {
 			e.printStackTrace();
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. Please, Try it later. NOT possible to SAVE the entity.\"}");
@@ -57,9 +58,9 @@ public class ExpenseControllerImpl extends BaseControllerImpl<Expense, ExpenseSe
 	public ResponseEntity<?> deleteEntity(@PathVariable("expenseId") Integer expenseId) {
 		ResponseEntity<Boolean> responseEntity;
 		try {
-//			Expense expense = expenseService.findById(expenseId);
-//			Employee employee = expense.getEmployee();	
-//			employee.removeExpense(expense);//******** Check if it's allow.......***********
+			Expense expense = expenseService.findById(expenseId);
+			Employee employee = expense.getEmployee();	
+			employee.removeExpense(expense);//******** Check if it's allow.......***********
 			responseEntity = ResponseEntity.status(HttpStatus.OK).body(expenseService.delete(expenseId));			
 		}catch(Exception e) {
 			e.printStackTrace();

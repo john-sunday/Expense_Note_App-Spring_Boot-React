@@ -1,5 +1,7 @@
 package com.johnsunday.app.controller;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,7 +12,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import com.johnsunday.app.dto.security.UserRegistrationDto;
 import com.johnsunday.app.entity.BaseEntity;
 import com.johnsunday.app.service.BaseServiceImpl;
 
@@ -40,7 +41,7 @@ public abstract class BaseControllerImpl<E extends BaseEntity,
 		}
 	}
 	@PostMapping("/")
-	public ResponseEntity<?> saveEntity(@RequestBody E entity){
+	public ResponseEntity<?> saveEntity(@RequestBody @Valid E entity){
 		try {
 			return ResponseEntity.status(HttpStatus.OK).body(service.save(entity));
 		}catch(Exception e) {

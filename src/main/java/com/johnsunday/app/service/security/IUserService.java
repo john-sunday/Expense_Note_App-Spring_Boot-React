@@ -1,12 +1,9 @@
 package com.johnsunday.app.service.security;
 
-import org.springframework.security.core.userdetails.UserDetailsService;
-
-import com.johnsunday.app.dto.security.UserRegistrationDto;
-import com.johnsunday.app.entity.security.User;
+import com.johnsunday.app.entity.security.UserEmployee;
 import com.johnsunday.app.service.IBaseService;
 
-public interface IUserService extends IBaseService<User,Integer>, UserDetailsService{
+public interface IUserService extends IBaseService<UserEmployee,Integer> {
 
-	public User save(UserRegistrationDto userRegistrationDto) throws Exception;
+	public UserEmployee save(UserEmployee user) throws Exception;
 }

@@ -24,9 +24,9 @@ import lombok.Setter;
 public class Payroll extends BaseEntity {
 
 	private static final long serialVersionUID = 1L;
-	@Column(name="amount")
+	@Column(name="amount",nullable=false)
 	private Double amount;
-	@Column(name="payroll_date")
+	@Column(name="payroll_date",nullable=false)
 	//@Temporal(TemporalType.TIMESTAMP)
 	private LocalDateTime payrollDate;
 	@ManyToOne(fetch=FetchType.LAZY)

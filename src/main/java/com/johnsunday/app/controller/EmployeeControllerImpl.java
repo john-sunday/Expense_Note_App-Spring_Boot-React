@@ -10,6 +10,6 @@ import com.johnsunday.app.service.EmployeeServiceImpl;
 @CrossOrigin(origins="*")
 @RequestMapping("api/v1/employee")
 @RestController
-public class EmployeeControllerImpl extends BaseControllerImpl<Employee, EmployeeServiceImpl>{
-
+public class EmployeeControllerImpl extends BaseControllerImpl<Employee, EmployeeServiceImpl>{	
+	
 }

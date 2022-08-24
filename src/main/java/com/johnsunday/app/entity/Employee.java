@@ -12,6 +12,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.hibernate.validator.constraints.Length;
+
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -32,9 +34,11 @@ import lombok.Setter;
 public class Employee extends BaseEntity {
 	
 	private static final long serialVersionUID = 1L;
-	@Column(name="name")
+	@Column(name="name",nullable=false,length=128)
+	@Length(min=3,max=128)
 	private String name;
-	@Column(name="surname")
+	@Column(name="surname",nullable=false,length=255)
+	@Length(min=5,max=255)
 	private String surname;
 	@Column(name="birth_date")
 	//@Temporal(TemporalType.TIMESTAMP)
