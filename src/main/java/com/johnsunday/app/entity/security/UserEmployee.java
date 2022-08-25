@@ -63,8 +63,7 @@ public class UserEmployee extends BaseEntity
 
 	@Override
 	public String getPassword() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.userPassword;
 	}
 
 	@Override

@@ -20,7 +20,7 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter{
 	@Autowired private IUserDao userDao;
 	
     @Bean 
-    PasswordEncoder passwordEncoder() { 
+    public PasswordEncoder passwordEncoder() { 
     	return new BCryptPasswordEncoder();
     }	
 	@Override
