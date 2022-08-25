@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.johnsunday.app.entity.security.UserEmployee;
+import com.johnsunday.app.jwt.JwtTokenUtil;
 
 @RestController
 @CrossOrigin(origins="*")
@@ -23,6 +24,7 @@ import com.johnsunday.app.entity.security.UserEmployee;
 public class AuthorisationApi {
 	
 	@Autowired AuthenticationManager authManager;
+	@Autowired JwtTokenUtil jwtUtil;
 	
 	@PostMapping("/login")
 	public ResponseEntity<?> login(@RequestBody @Valid AuthorisationRequest request){
@@ -30,10 +32,11 @@ public class AuthorisationApi {
 			Authentication authentication = authManager.authenticate(
 					new UsernamePasswordAuthenticationToken(request.getEmail(),request.getPassword()));			
 			UserEmployee user = (UserEmployee) authentication.getPrincipal();
-			String accessToken = "JWT access token here";
+			String accessToken = jwtUtil.generateAccessToken(user);
 			AuthorisationResponse response = new AuthorisationResponse(user.getUserEmail(),accessToken);
 			return ResponseEntity.ok(response);
 		}catch(BadCredentialsException ex) {
+			ex.printStackTrace();
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 		}
 	}

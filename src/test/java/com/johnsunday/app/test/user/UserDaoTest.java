@@ -13,9 +13,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.annotation.Rollback;
 
+import com.johnsunday.app.dao.security.IRoleDao;
 import com.johnsunday.app.dao.security.IUserDao;
 import com.johnsunday.app.entity.security.UserEmployee;
-import com.johnsunday.app.entity.security.UserRole;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace=Replace.NONE)
@@ -23,14 +23,21 @@ import com.johnsunday.app.entity.security.UserRole;
 public class UserDaoTest {
 
 	@Autowired IUserDao userDao;
+	@Autowired IRoleDao roleDao;
 	
 	@Test
 	public void testSaveUser() {
 		PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-		String rawPassword = "neil1234";
+		String rawPassword = "eddie1234";
 		String encodedPassword = passwordEncoder.encode(rawPassword);
-		
-		UserEmployee newUser = new UserEmployee("Neil","Percival Young","neilyoung@gmail.com",encodedPassword,Arrays.asList(new UserRole("USER_ROLE")));
+		;
+		UserEmployee newUser = new UserEmployee(
+				"Eddie",
+				"Cochran Valley",
+				"eddiecochran@gmail.com",
+				encodedPassword,
+				Arrays.asList(roleDao.findById(13).get())
+				);
 		UserEmployee savedUser = userDao.save(newUser);
 		
 		assertThat(savedUser).isNotNull();
