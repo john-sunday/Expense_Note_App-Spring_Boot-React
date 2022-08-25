@@ -21,8 +21,9 @@ import com.johnsunday.app.service.BaseServiceImpl;
 
 @Service
 public class UserServiceImpl extends BaseServiceImpl<UserEmployee, Integer> 
-							 implements IUserService,
-							 			UserDetailsService{
+		implements IUserService/*
+								 * , UserDetailsService
+								 */{
 	@Autowired
 	private IUserDao userDao;
 	@Autowired
@@ -44,18 +45,21 @@ public class UserServiceImpl extends BaseServiceImpl<UserEmployee, Integer>
 			throw new Exception(e.getMessage());
 		}
 	}
-	@Override
-	public UserDetails loadUserByUsername(String userEmail) throws UsernameNotFoundException {
-		Optional<UserEmployee> optionalUser = userDao.findByUserEmail(userEmail);
-		if(optionalUser  == null) throw new UsernameNotFoundException("User or Password INVALIDS");
-		/* Warning !!! 
-		 * We have to implement User constructor:
-		 * 'Construct the User with the details required by org.springframework.security.authentication.dao.DaoAuthentication' */
-		return new org.springframework.security.core.userdetails.User(optionalUser.get().getUserEmail(),optionalUser.get().getUserPassword(),mappAuthorityRole(optionalUser.get().getUserRoles()));		
-	}
-	private Collection<? extends GrantedAuthority> mappAuthorityRole(Collection<UserRole>roles){
-		return roles
-				.stream()
-				.map(role->new SimpleGrantedAuthority(role.getRoleType())).collect(Collectors.toList());
-	}
+//	@Override
+//	public UserDetails loadUserByUsername(String userEmail) throws UsernameNotFoundException {
+//		Optional<UserEmployee> optionalUser = userDao.findByUserEmail(userEmail);
+//		if(optionalUser  == null) throw new UsernameNotFoundException("User or Password INVALIDS");
+//		/* Warning !!! 
+//		 * We have to implement User constructor:
+//		 * 'Construct the User with the details required by org.springframework.security.authentication.dao.DaoAuthentication' */
+//		return new org.springframework.security.core.userdetails.User(
+//				optionalUser.get().getUserEmail(),
+//				optionalUser.get().getUserPassword(),
+//				mappAuthorityRole(optionalUser.get().getUserRoles()));		
+//	}
+//	private Collection<? extends GrantedAuthority> mappAuthorityRole(Collection<UserRole>roles){
+//		return roles
+//				.stream()
+//				.map(role->new SimpleGrantedAuthority(role.getRoleType())).collect(Collectors.toList());
+//	}
 }
