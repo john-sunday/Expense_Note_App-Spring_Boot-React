@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.johnsunday.app.controller.BaseControllerImpl;
-import com.johnsunday.app.entity.security.UserRole;
+import com.johnsunday.app.entity.user.security.UserRole;
 import com.johnsunday.app.service.security.UserRoleServiceImpl;
 
 @CrossOrigin(origins="*")

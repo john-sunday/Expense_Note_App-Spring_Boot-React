@@ -1,4 +1,4 @@
-package com.johnsunday.app.entity.security.api;
+package com.johnsunday.app.entity.user.security.api;
 
 import javax.validation.Valid;
 
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.johnsunday.app.entity.security.UserEmployee;
+import com.johnsunday.app.entity.user.security.UserEmployee;
 import com.johnsunday.app.jwt.JwtTokenUtil;
 
 @RestController

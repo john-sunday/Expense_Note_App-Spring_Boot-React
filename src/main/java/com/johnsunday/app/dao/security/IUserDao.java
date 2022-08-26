@@ -5,7 +5,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Repository;
 
 import com.johnsunday.app.dao.IBaseDao;
-import com.johnsunday.app.entity.security.UserEmployee;
+import com.johnsunday.app.entity.user.security.UserEmployee;
 
 @Repository
 public interface IUserDao extends IBaseDao<UserEmployee, Integer> {

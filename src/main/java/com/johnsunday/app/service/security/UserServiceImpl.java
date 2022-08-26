@@ -15,8 +15,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.johnsunday.app.dao.security.IUserDao;
-import com.johnsunday.app.entity.security.UserEmployee;
-import com.johnsunday.app.entity.security.UserRole;
+import com.johnsunday.app.entity.user.security.UserEmployee;
+import com.johnsunday.app.entity.user.security.UserRole;
 import com.johnsunday.app.service.BaseServiceImpl;
 
 @Service

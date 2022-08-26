@@ -6,7 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import com.johnsunday.app.entity.BaseEntity;
-import com.johnsunday.app.entity.security.UserEmployee;
+import com.johnsunday.app.entity.user.security.UserEmployee;
 
 public interface IUserController<E extends BaseEntity,ID extends Serializable> {
 

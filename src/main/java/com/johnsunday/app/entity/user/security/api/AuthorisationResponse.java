@@ -1,4 +1,4 @@
-package com.johnsunday.app.entity.security.api;
+package com.johnsunday.app.entity.user.security.api;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

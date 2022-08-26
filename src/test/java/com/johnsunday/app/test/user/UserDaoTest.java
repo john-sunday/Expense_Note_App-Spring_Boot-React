@@ -15,7 +15,7 @@ import org.springframework.test.annotation.Rollback;
 
 import com.johnsunday.app.dao.security.IRoleDao;
 import com.johnsunday.app.dao.security.IUserDao;
-import com.johnsunday.app.entity.security.UserEmployee;
+import com.johnsunday.app.entity.user.security.UserEmployee;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace=Replace.NONE)

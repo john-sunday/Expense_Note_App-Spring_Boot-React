@@ -1,4 +1,4 @@
-package com.johnsunday.app.entity.security;
+package com.johnsunday.app.entity.user.security;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;

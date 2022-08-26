@@ -1,5 +1,7 @@
 package com.johnsunday.app.configuration.security;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -37,7 +39,15 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter{
 	protected void configure(HttpSecurity http) throws Exception {
 		http.csrf().disable();
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-		http.authorizeRequests().anyRequest().permitAll();
+		http.exceptionHandling().authenticationEntryPoint(
+				(request,response,ex) -> {
+					response.sendError(HttpServletResponse.SC_UNAUTHORIZED,ex.getMessage());
+				});
+		
+		http.authorizeRequests()
+		.antMatchers("/auth/login").permitAll()
+		.anyRequest().authenticated();
+		
 	}
 
 	

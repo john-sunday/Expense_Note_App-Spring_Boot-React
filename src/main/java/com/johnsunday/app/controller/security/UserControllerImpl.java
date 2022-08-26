@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.johnsunday.app.controller.BaseControllerImpl;
-import com.johnsunday.app.entity.security.UserEmployee;
+import com.johnsunday.app.entity.user.security.UserEmployee;
 import com.johnsunday.app.service.security.UserServiceImpl;
 
 @RestController
