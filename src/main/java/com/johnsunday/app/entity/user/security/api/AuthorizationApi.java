@@ -21,19 +21,19 @@ import com.johnsunday.app.jwt.JwtTokenUtil;
 @RestController
 @CrossOrigin(origins="*")
 @RequestMapping("api/v1/auth")
-public class AuthorisationApi {
+public class AuthorizationApi {
 	
 	@Autowired AuthenticationManager authManager;
 	@Autowired JwtTokenUtil jwtUtil;
 	
 	@PostMapping("/login")
-	public ResponseEntity<?> login(@RequestBody @Valid AuthorisationRequest request){
+	public ResponseEntity<?> login(@RequestBody @Valid AuthorizationRequest request){
 		try {
 			Authentication authentication = authManager.authenticate(
 					new UsernamePasswordAuthenticationToken(request.getEmail(),request.getPassword()));			
 			UserEmployee user = (UserEmployee) authentication.getPrincipal();
 			String accessToken = jwtUtil.generateAccessToken(user);
-			AuthorisationResponse response = new AuthorisationResponse(user.getUserEmail(),accessToken);
+			AuthorizationResponse response = new AuthorizationResponse(user.getUserEmail(),accessToken);
 			return ResponseEntity.ok(response);
 		}catch(BadCredentialsException ex) {
 			ex.printStackTrace();

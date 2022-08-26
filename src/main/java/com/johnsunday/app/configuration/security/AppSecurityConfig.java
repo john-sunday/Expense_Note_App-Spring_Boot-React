@@ -13,13 +13,16 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.johnsunday.app.dao.security.IUserDao;
+import com.johnsunday.app.jwt.JwtTokenFilter;
 
 @EnableWebSecurity
 public class AppSecurityConfig extends WebSecurityConfigurerAdapter{
 
 	@Autowired private IUserDao userDao;
+	@Autowired private JwtTokenFilter jwtTokenFilter;
 	
     @Bean 
     public PasswordEncoder passwordEncoder() { 
@@ -45,9 +48,10 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter{
 				});
 		
 		http.authorizeRequests()
-		.antMatchers("/auth/login").permitAll()
-		.anyRequest().authenticated();
+			.antMatchers("/auth/login").permitAll()
+			.anyRequest().authenticated();
 		
+		http.addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
 	}
 
 	
