@@ -16,6 +16,7 @@ import org.springframework.test.annotation.Rollback;
 import com.johnsunday.app.dao.security.IRoleDao;
 import com.johnsunday.app.dao.security.IUserDao;
 import com.johnsunday.app.entity.user.security.UserEmployee;
+import com.johnsunday.app.entity.user.security.UserRole;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace=Replace.NONE)
@@ -28,14 +29,15 @@ public class UserDaoTest {
 	@Test
 	public void testSaveUser() {
 		PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-		String rawPassword = "eddie1234";
+		String rawPassword = "otis1234";
 		String encodedPassword = passwordEncoder.encode(rawPassword);
-		;
+		
 		UserEmployee newUser = new UserEmployee(
-				"Eddie",
-				"Cochran Valley",
-				"eddiecochran@gmail.com",
+				"Otis",
+				"Ray Redding",
+				"otisredding@gmail.com",
 				encodedPassword,
+				//Arrays.asList(new UserRole("USER_ROLE"))
 				Arrays.asList(roleDao.findById(13).get())
 				);
 		UserEmployee savedUser = userDao.save(newUser);

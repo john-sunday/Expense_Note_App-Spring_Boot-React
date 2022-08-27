@@ -13,6 +13,6 @@ import lombok.Setter;
 public class AuthorizationRequest {
 	@Email @Length(min=3,max=50)
 	private String email;
-	@Length(min=5,max=10)
+	@Length(min=5,max=20)
 	private String password;
 }

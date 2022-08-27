@@ -13,19 +13,32 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.johnsunday.app.entity.user.security.UserEmployee;
 import com.johnsunday.app.jwt.JwtTokenUtil;
 
-@RestController
+/***
+ * @version 0.0.1
+ * @author tecnicomanotas
+ *
+ */
 @CrossOrigin(origins="*")
-@RequestMapping("api/v1/auth")
+@RestController
+/*	
+ * 	WARNING !!!! 
+ * 	El valor de la ruta("api/v1/auth" es lo mismo con slash al principio -> "/api/v1/auth"), 
+ * 	me daba '401 Unauthorized'. Parece que las rutas largas, que no están pegadas al número de puerto
+ * 	dan problemas.
+ * */
+@RequestMapping("/auth")
 public class AuthorizationApi {
 	
 	@Autowired AuthenticationManager authManager;
 	@Autowired JwtTokenUtil jwtUtil;
 	
+	//@RequestMapping(path="/login",method=RequestMethod.POST,consumes="application/json",produces="application/json")
 	@PostMapping("/login")
 	public ResponseEntity<?> login(@RequestBody @Valid AuthorizationRequest request){
 		try {
