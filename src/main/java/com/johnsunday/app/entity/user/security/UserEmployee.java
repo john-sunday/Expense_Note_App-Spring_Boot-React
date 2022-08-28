@@ -1,7 +1,9 @@
 package com.johnsunday.app.entity.user.security;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -15,6 +17,7 @@ import javax.persistence.UniqueConstraint;
 
 import org.hibernate.validator.constraints.Length;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.johnsunday.app.entity.BaseEntity;
@@ -65,7 +68,11 @@ public class UserEmployee extends BaseEntity
 	
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return null;
+		List<SimpleGrantedAuthority>authorities = new ArrayList<>();
+		for(UserRole role:this.userRoles) {
+			authorities.add(new SimpleGrantedAuthority(role.getRoleType()));
+		}
+		return authorities;
 	}
 	@Override
 	public String getPassword() {

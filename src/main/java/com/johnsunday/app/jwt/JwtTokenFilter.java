@@ -17,6 +17,9 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.johnsunday.app.entity.user.security.UserEmployee;
+import com.johnsunday.app.entity.user.security.UserRole;
+
+import io.jsonwebtoken.Claims;
 
 @Component
 public class JwtTokenFilter extends OncePerRequestFilter{
@@ -59,13 +62,26 @@ public class JwtTokenFilter extends OncePerRequestFilter{
 		UserDetails userDetails = getUserDetails(accessToken);
 		
 		UsernamePasswordAuthenticationToken authentication =
-				new UsernamePasswordAuthenticationToken(userDetails,null,null);
+				new UsernamePasswordAuthenticationToken(userDetails,null,userDetails.getAuthorities());
 		authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 	}
 	private UserDetails getUserDetails(String accessToken) {
 		UserEmployee userDetails = new UserEmployee();
-		String[] subjectArray = jwtTokenUtil.getSubject(accessToken).split(",");
+		Claims claims = jwtTokenUtil.parseClaims(accessToken);
+		
+		String claimRoles = (String) claims.get("roles");
+		// Testing
+		System.out.println("Claim Roles: " + claimRoles);
+		claimRoles = claimRoles.replace("[", "").replace("]", "");
+		String[]roleNames =  claimRoles.split(",");
+		for(String roleName:roleNames) {
+			userDetails.addRole(new UserRole(roleName));
+		}
+		
+		String subject = (String)claims.get(Claims.SUBJECT);
+		
+		String[] subjectArray = subject.split(",");
 		userDetails.setId(Integer.parseInt(subjectArray[0]));
 		userDetails.setUserEmail(subjectArray[1]);
 		

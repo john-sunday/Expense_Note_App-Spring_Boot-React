@@ -20,11 +20,16 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name="user_role")
-@ToString(includeFieldNames = false)
+//@ToString(includeFieldNames = false)
 public class UserRole extends BaseEntity{
 
 	private static final long serialVersionUID = 1L;
 	@Column(nullable=false,unique=true)
 	@Length(min=6,max=25)
 	private String roleType;
+	@Override
+	public String toString() {
+		return roleType;
+	}
+	
 }

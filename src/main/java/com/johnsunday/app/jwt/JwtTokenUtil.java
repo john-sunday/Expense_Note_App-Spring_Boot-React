@@ -37,10 +37,10 @@ public class JwtTokenUtil {
 				.compact();
 	}
 	public boolean validateAccessToken(String token) {
-		//boolean isValidated = false;
+		boolean isValidated = false;
 		try {
 			Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
-			return true;
+			isValidated = true;
 		}catch(ExpiredJwtException ex) {
 			ex.printStackTrace();
 			LOGGER.error("jwt expired",ex);
@@ -56,13 +56,13 @@ public class JwtTokenUtil {
 			ex.printStackTrace();
 			LOGGER.error("Signature validation failed",ex);
 		}
-		return false;
+		return isValidated;
 	}
 	public String getSubject(String token) {
 		return parseClaims(token)
 				.getSubject();
 	}
-	private Claims parseClaims(String token) {
+	public Claims parseClaims(String token) {
 		return Jwts.parser()
 				.setSigningKey(secretKey)
 				.parseClaimsJws(token)
