@@ -29,6 +29,7 @@ public class JwtTokenUtil {
 	public String generateAccessToken(UserEmployee user) {		
 		return Jwts.builder()
 				.setSubject(user.getId() + "," + user.getUserEmail())
+				.claim("roles", user.getUserRoles().toString())
 				.setIssuer("JohnSunday")
 				.setIssuedAt(new Date())
 				.setExpiration(new Date(System.currentTimeMillis() + EXPIRE_DURATION))

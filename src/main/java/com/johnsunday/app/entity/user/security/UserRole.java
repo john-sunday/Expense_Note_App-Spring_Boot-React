@@ -20,7 +20,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name="user_role")
-@ToString
+@ToString(includeFieldNames = false)
 public class UserRole extends BaseEntity{
 
 	private static final long serialVersionUID = 1L;
