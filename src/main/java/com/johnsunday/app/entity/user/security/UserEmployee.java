@@ -1,6 +1,7 @@
 package com.johnsunday.app.entity.user.security;
 
 import java.util.Collection;
+import java.util.HashSet;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -47,15 +48,21 @@ public class UserEmployee extends BaseEntity
 	@Column(name="user_password",nullable=false)
 	@Length(min=4,max=64)
 	private String userPassword;
-	
+
 	@ManyToMany(fetch=FetchType.LAZY,cascade=CascadeType.ALL)
 	@JoinTable(
 			name="useremployee_userrole",
 			joinColumns=@JoinColumn(name="user_id",referencedColumnName="id"),
 			inverseJoinColumns=@JoinColumn(name="role_id",referencedColumnName="id")
 			)	
-	private Collection<UserRole>userRoles;
-
+	private Collection<UserRole>userRoles = new HashSet<>();
+	public void addRole(UserRole role) {
+		this.userRoles.add(role);
+	}
+	public void removeRole(UserRole role) {
+		this.userRoles.remove(role);
+	}
+	
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return null;

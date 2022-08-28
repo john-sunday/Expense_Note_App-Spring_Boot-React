@@ -29,10 +29,12 @@ import com.johnsunday.app.jwt.JwtTokenUtil;
 /*	
  * 	WARNING !!!! 
  * 	El valor de la ruta("api/v1/auth" es lo mismo con slash al principio -> "/api/v1/auth"), 
- * 	me daba '401 Unauthorized'. Parece que las rutas largas, que no están pegadas al número de puerto
- * 	dan problemas.
+ * 	me daba '401 Unauthorized'. El valor de la ruta del Controlador 'AuthorizationApi' 
+ * 	@RequestMapping("/api/v1/auth"), no coincidía con el valor de la ruta de acceso 
+ * 	establecida en el método 'configure(Http request){ .antMatch("/auth/login")' de la clase
+ * 	AppSecurityConfig.
  * */
-@RequestMapping("/auth")
+@RequestMapping("/api/v1/auth")
 public class AuthorizationApi {
 	
 	@Autowired AuthenticationManager authManager;

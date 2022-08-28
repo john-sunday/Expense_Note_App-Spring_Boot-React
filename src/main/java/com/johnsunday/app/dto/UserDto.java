@@ -1,3 +1,4 @@
+package com.johnsunday.app.dto;
 //package com.johnsunday.app.dto.security;
 //
 //import lombok.AllArgsConstructor;

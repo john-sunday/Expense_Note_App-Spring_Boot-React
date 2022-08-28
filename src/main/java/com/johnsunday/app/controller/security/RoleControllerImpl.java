@@ -6,11 +6,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.johnsunday.app.controller.BaseControllerImpl;
 import com.johnsunday.app.entity.user.security.UserRole;
-import com.johnsunday.app.service.security.UserRoleServiceImpl;
+import com.johnsunday.app.service.security.RoleServiceImpl;
 
 @CrossOrigin(origins="*")
-@RequestMapping("api/v1/user_role")
+@RequestMapping("api/v1/role")
 @RestController
-public class UserRoleControllerImpl extends BaseControllerImpl<UserRole, UserRoleServiceImpl>{	
+public class RoleControllerImpl extends BaseControllerImpl<UserRole, RoleServiceImpl>{	
 	
 }

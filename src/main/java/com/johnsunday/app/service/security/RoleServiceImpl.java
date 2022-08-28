@@ -6,6 +6,6 @@ import com.johnsunday.app.entity.user.security.UserRole;
 import com.johnsunday.app.service.BaseServiceImpl;
 
 @Service
-public class UserRoleServiceImpl extends BaseServiceImpl<UserRole,Integer> {
+public class RoleServiceImpl extends BaseServiceImpl<UserRole,Integer> {
 
 }

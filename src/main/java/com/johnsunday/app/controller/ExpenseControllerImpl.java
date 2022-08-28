@@ -18,7 +18,7 @@ import com.johnsunday.app.entity.Expense;
 import com.johnsunday.app.service.ExpenseServiceImpl;
 
 @CrossOrigin(origins="*")
-@RequestMapping("api/v1/expense")
+@RequestMapping("/api/v1/expense")
 @RestController
 public class ExpenseControllerImpl extends BaseControllerImpl<Expense, ExpenseServiceImpl>
 									implements IExpenseController<Expense,Integer>{

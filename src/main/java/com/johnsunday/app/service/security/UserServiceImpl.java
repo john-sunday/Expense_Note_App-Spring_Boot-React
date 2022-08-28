@@ -21,9 +21,8 @@ import com.johnsunday.app.service.BaseServiceImpl;
 
 @Service
 public class UserServiceImpl extends BaseServiceImpl<UserEmployee, Integer> 
-		implements IUserService/*
-								 * , UserDetailsService
-								 */{
+							 implements IUserService/**, UserDetailsService*/								 
+							 {
 	@Autowired
 	private IUserDao userDao;
 	@Autowired
