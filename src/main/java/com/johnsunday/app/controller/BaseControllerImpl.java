@@ -1,5 +1,6 @@
 package com.johnsunday.app.controller;
 
+import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,7 @@ public abstract class BaseControllerImpl<E extends BaseEntity,
 	protected S service;
 	
 	@GetMapping("/")
+	@RolesAllowed({"ADMIN_USER","USER_ROLE"})
 	public ResponseEntity<?> getAllEntities(){
 		try {
 			return ResponseEntity.status(HttpStatus.OK).body(service.findAll());
@@ -32,6 +34,7 @@ public abstract class BaseControllerImpl<E extends BaseEntity,
 		}
 	}
 	@GetMapping("/{id}")
+	@RolesAllowed({"ADMIN_USER","USER_ROLE"})
 	public ResponseEntity<?> getOneEntity(@PathVariable("id")Integer id){
 		try {
 			return ResponseEntity.status(HttpStatus.OK).body(service.findById(id));
@@ -41,6 +44,7 @@ public abstract class BaseControllerImpl<E extends BaseEntity,
 		}
 	}
 	@PostMapping("/")
+	@RolesAllowed({"ADMIN_USER","USER_ROLE"})
 	public ResponseEntity<?> saveEntity(@RequestBody @Valid E entity){
 		try {
 			return ResponseEntity.status(HttpStatus.OK).body(service.save(entity));
@@ -50,6 +54,7 @@ public abstract class BaseControllerImpl<E extends BaseEntity,
 		}
 	}
 	@PutMapping("/{id}")
+	@RolesAllowed({"ADMIN_USER","USER_ROLE"})
 	public ResponseEntity<?> updateEntity(@PathVariable("id")Integer id, @RequestBody E entity){
 		try {
 			return ResponseEntity.status(HttpStatus.OK).body(service.update(id, entity));
@@ -59,6 +64,7 @@ public abstract class BaseControllerImpl<E extends BaseEntity,
 		}
 	}
 	@DeleteMapping("/{id}")
+	@RolesAllowed({"ADMIN_USER"})
 	public ResponseEntity<?> deleteEntity(@PathVariable("id")Integer id){
 		try {
 			return ResponseEntity.status(HttpStatus.NO_CONTENT).body(service.delete(id));

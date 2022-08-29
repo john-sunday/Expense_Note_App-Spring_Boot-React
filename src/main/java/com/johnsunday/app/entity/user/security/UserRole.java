@@ -29,7 +29,7 @@ public class UserRole extends BaseEntity{
 	private String roleType;
 	@Override
 	public String toString() {
-		return roleType;
+		return this.roleType;
 	}
 	
 }
