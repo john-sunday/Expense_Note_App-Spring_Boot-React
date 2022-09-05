@@ -14,10 +14,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.annotation.Rollback;
 
-import com.johnsunday.app.dao.security.IRoleDao;
-import com.johnsunday.app.dao.security.IUserDao;
-import com.johnsunday.app.entity.user.security.UserEmployee;
-import com.johnsunday.app.entity.user.security.UserRole;
+import com.johnsunday.app.security.dao.IRoleDao;
+import com.johnsunday.app.security.dao.IUserDao;
+import com.johnsunday.app.security.entity.User;
+import com.johnsunday.app.security.entity.Role;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace=Replace.NONE)
@@ -33,26 +33,26 @@ public class UserDaoTest {
 		String rawPassword = "otis1234";
 		String encodedPassword = passwordEncoder.encode(rawPassword);
 		
-		UserEmployee newUser = new UserEmployee(
+		User newUser = new User(
 				"Otis",
 				"Ray Redding",
 				"otisredding@gmail.com",
 				encodedPassword,
-				//Arrays.asList(new UserRole("USER_ROLE"))
-				Arrays.asList(roleDao.findById(13).get())
+				//Arrays.asList(new UserRole("ROLE_ADMIN"))
+				Arrays.asList(roleDao.findByRoleType("ROLE_ADMIN").get())
 				);
-		UserEmployee savedUser = userDao.save(newUser);
+		User savedUser = userDao.save(newUser);
 		
 		assertThat(savedUser).isNotNull();
 		assertThat(savedUser.getId()).isGreaterThan(0);
 	}
 	@Test
 	public void assignRoleToUser() {
-		Optional<UserEmployee>optUser = userDao.findByUserEmail("neilyoung@gmail.com");
-		Optional<UserRole>optRole = roleDao.findByRoleType("ADMIN_ROLE");
-		UserEmployee user = optUser.get();
+		Optional<User>optUser = userDao.findByUserEmail("neilyoung@gmail.com");
+		Optional<Role>optRole = roleDao.findByRoleType("ADMIN_ROLE");
+		User user = optUser.get();
 		user.addRole(optRole.get());
-		UserEmployee updatedUser = userDao.save(user);
+		User updatedUser = userDao.save(user);
 		
 		assertThat(updatedUser.getUserRoles().size()==2);		
 	}

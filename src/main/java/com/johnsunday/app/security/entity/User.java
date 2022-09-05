@@ -1,4 +1,4 @@
-package com.johnsunday.app.entity.user.security;
+package com.johnsunday.app.security.entity;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -22,6 +22,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import com.johnsunday.app.entity.BaseEntity;
 
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -34,13 +35,14 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 
-public class UserEmployee extends BaseEntity 
- 						  implements UserDetails  {
+public class User extends BaseEntity 
+ 				  implements UserDetails   {
 
 	private static final long serialVersionUID = 1L;
 
 	@Column(name="user_name",nullable=false)
 	@Length(min=2,max=50)
+	@Getter(AccessLevel.NONE)
 	private String userName;
 	@Column(name="user_surname",nullable=false)
 	@Length(min=2,max=128)
@@ -54,22 +56,22 @@ public class UserEmployee extends BaseEntity
 
 	@ManyToMany(fetch=FetchType.LAZY,cascade=CascadeType.ALL)
 	@JoinTable(
-			name="useremployee_userrole",
+			name="useremployee_role",
 			joinColumns=@JoinColumn(name="user_id",referencedColumnName="id"),
 			inverseJoinColumns=@JoinColumn(name="role_id",referencedColumnName="id")
 			)	
-	private Collection<UserRole>userRoles = new HashSet<>();
-	public void addRole(UserRole role) {
+	private Collection<Role>userRoles = new HashSet<>();
+	public void addRole(Role role) {
 		this.userRoles.add(role);
 	}
-	public void removeRole(UserRole role) {
+	public void removeRole(Role role) {
 		this.userRoles.remove(role);
 	}
 	
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		List<SimpleGrantedAuthority>authorities = new ArrayList<>();
-		for(UserRole role:this.userRoles) {
+		for(Role role:this.userRoles) {
 			authorities.add(new SimpleGrantedAuthority(role.getRoleType()));
 		}
 		return authorities;
@@ -97,7 +99,10 @@ public class UserEmployee extends BaseEntity
 	@Override
 	public boolean isEnabled() {
 		return true;
-	}	
+	}
+	public String getUserName() {
+		return this.userName;
+	}
 }
 
 

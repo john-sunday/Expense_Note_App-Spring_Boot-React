@@ -10,10 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.test.annotation.Rollback;
 
-import com.johnsunday.app.dao.security.IRoleDao;
-import com.johnsunday.app.entity.user.security.UserRole;
+import com.johnsunday.app.security.dao.IRoleDao;
+import com.johnsunday.app.security.entity.Role;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace=Replace.NONE)
@@ -24,17 +25,21 @@ public class RoleDaoTest {
 	
 	@Test
 	public void createRoleTest() {
-		UserRole adminRole = new UserRole("USER_ROLE");
-		UserRole userRole = new UserRole("ADMIN_ROLE");
+		//Role adminRole = new Role("USER_ROLE");
+		//Role userRole = new Role("ADMIN_ROLE");
+		/*	En Spring Boot la denominación correcta para los Roles es "ROLE_..."
+		 * 	porque si no, no funciona la anotación '@PreAuthorize("hasRole('ADMIN')")'*/
+		Role roleAdmin = new Role("ROLE_ADMIN");
+		Role roleUser = new Role("ROLE_USER");
 		
-		roleDao.saveAll(List.of(adminRole,userRole));
+		roleDao.saveAll(List.of(roleAdmin,roleUser));
 		
 		long roleNumbers = roleDao.count();
 		assertEquals(2,roleNumbers);
 	}
 	@Test
 	public void testListRoles() {
-		List<UserRole>roles = roleDao.findAll();
+		List<Role>roles = roleDao.findAll();
 		
 		assertThat(roles.size()).isGreaterThan(0);
 		roles.forEach(System.out::println);

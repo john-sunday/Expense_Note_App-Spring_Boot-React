@@ -9,5 +9,6 @@ import com.johnsunday.app.entity.BaseEntity;
 
 public interface IExpenseController<E extends BaseEntity,ID extends Serializable> {
 
-	public ResponseEntity<?> getAllExpenseByEmployeeId(@PathVariable ID employeeId);
+	public ResponseEntity<?> getAllExpenseByEmployeeId(@PathVariable ID employeeId, @PathVariable ID requestUserId);
+	
 }

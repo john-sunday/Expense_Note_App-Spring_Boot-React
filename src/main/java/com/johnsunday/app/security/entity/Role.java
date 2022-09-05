@@ -1,4 +1,4 @@
-package com.johnsunday.app.entity.user.security;
+package com.johnsunday.app.security.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -19,9 +19,9 @@ import lombok.ToString;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name="user_role")
+@Table(name="role")
 //@ToString(includeFieldNames = false)
-public class UserRole extends BaseEntity{
+public class Role extends BaseEntity{
 
 	private static final long serialVersionUID = 1L;
 	@Column(nullable=false,unique=true)

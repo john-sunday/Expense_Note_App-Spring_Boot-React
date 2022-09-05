@@ -12,8 +12,8 @@ import com.johnsunday.app.entity.Expense;
 public class ExpenseServiceImpl extends BaseServiceImpl<Expense,Integer> 
 								implements IExpenseService {
 
-	@Autowired
-	private IExpenseDao expenseDao;
+	@Autowired private IExpenseDao expenseDao;
+	
 	
 	@Override	
 	public List<Expense> findAllExpenseByEmployeeId(Integer employeeId) throws Exception {

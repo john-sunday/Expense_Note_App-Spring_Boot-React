@@ -1,4 +1,4 @@
-package com.johnsunday.app.entity.user.security.api;
+package com.johnsunday.app.security.login;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class AuthorizationResponse {
+public class AuthenticationResponse {
 
 	private String email;
 	private String accessToken;

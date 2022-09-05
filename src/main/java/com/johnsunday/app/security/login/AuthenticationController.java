@@ -1,4 +1,4 @@
-package com.johnsunday.app.entity.user.security.api;
+package com.johnsunday.app.security.login;
 
 import javax.validation.Valid;
 
@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.johnsunday.app.entity.user.security.UserEmployee;
-import com.johnsunday.app.jwt.JwtTokenUtil;
+import com.johnsunday.app.security.entity.User;
+import com.johnsunday.app.security.jwt.*;
 
 /***
  * @version 0.0.1
@@ -35,21 +35,23 @@ import com.johnsunday.app.jwt.JwtTokenUtil;
  * 	AppSecurityConfig.
  * */
 @RequestMapping("/api/v1/auth")
-public class AuthorizationApi {
+public class AuthenticationController {
 	
 	@Autowired AuthenticationManager authManager;
-	@Autowired JwtTokenUtil jwtUtil;
+	@Autowired JwtAuthenticationUtil jwtAuthUtil;
 	
 	//@RequestMapping(path="/login",method=RequestMethod.POST,consumes="application/json",produces="application/json")
 	@PostMapping("/login")
-	public ResponseEntity<?> login(@RequestBody @Valid AuthorizationRequest request){
+	public ResponseEntity<?> login(@RequestBody @Valid AuthenticationRequest authRequest){
 		try {
-			Authentication authentication = authManager.authenticate(
-					new UsernamePasswordAuthenticationToken(request.getEmail(),request.getPassword()));			
-			UserEmployee user = (UserEmployee) authentication.getPrincipal();
-			String accessToken = jwtUtil.generateAccessToken(user);
-			AuthorizationResponse response = new AuthorizationResponse(user.getUserEmail(),accessToken);
-			return ResponseEntity.ok(response);
+			Authentication authentication = 
+					authManager.authenticate(
+							new UsernamePasswordAuthenticationToken(
+									authRequest.getEmail(),authRequest.getPassword()));			
+			User user = (User) authentication.getPrincipal();
+			String accessToken = jwtAuthUtil.generateAccessToken(user);
+			AuthenticationResponse authzResponse = new AuthenticationResponse(user.getUserEmail(),accessToken);
+			return ResponseEntity.ok(authzResponse);
 		}catch(BadCredentialsException ex) {
 			ex.printStackTrace();
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
