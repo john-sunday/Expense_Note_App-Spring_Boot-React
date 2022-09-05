@@ -55,7 +55,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
 		User user = optionalUser.get();
 		int tokenUserId = user.getId();
 				
-		String reqUserId = request.getParameter("userId");
+		String reqUserId = request.getParameter("requestUserId");
 		System.out.println("Requesting User Id: " + reqUserId);
 		
 		//if (tokenUserId != Integer.parseInt(reqUserId)) return;

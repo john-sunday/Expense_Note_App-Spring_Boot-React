@@ -4,10 +4,12 @@ import java.io.Serializable;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.johnsunday.app.entity.BaseEntity;
 
 public interface IPayrollController<E extends BaseEntity,ID extends Serializable> {
 
-	public ResponseEntity<?> getAllPayrollByEmployeeId(@PathVariable ID employeeId);
+	public ResponseEntity<?> getAllPayrollByEmployeeId(@PathVariable ID employeeId,													   
+													   @RequestParam ID requestUserId);
 }

@@ -14,25 +14,29 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.johnsunday.app.security.dao.IRoleDao;
 import com.johnsunday.app.security.dao.IUserDao;
-import com.johnsunday.app.security.dto.Mapper;
 import com.johnsunday.app.security.dto.DtoUser;
+import com.johnsunday.app.security.dto.Mapper;
 import com.johnsunday.app.security.entity.Role;
 import com.johnsunday.app.security.entity.User;
 import com.johnsunday.app.service.BaseServiceImpl;
 
 @Service
 public class UserServiceImpl extends BaseServiceImpl<User, Integer> 
-							 implements IUserService, UserDetailsService							 
-							 {
+							 implements IUserService, UserDetailsService {
+	
+	private final String ROLE_USER = "ROLE_USER";
 	@Autowired private IUserDao userDao;
-	@Autowired @Lazy private BCryptPasswordEncoder passwordEncoder;
+	@Autowired private IRoleDao roleDao;
+	@Autowired @Lazy private BCryptPasswordEncoder passwordEncoder;	
 	
 	@Override
-	public User save(DtoUser userDto) throws Exception{
+	public User save(DtoUser dtoUser) throws Exception{
 		try {			
-			User newUser = Mapper.dtoToUser(userDto);			
+			User newUser = Mapper.dtoToUser(dtoUser);			
 			newUser.setUserPassword(passwordEncoder.encode(newUser.getUserPassword()));
+			newUser.getUserRoles().add(roleDao.findByRoleType(ROLE_USER).get());
 			return userDao.save(newUser);			
 		}catch(Exception e) {
 			e.printStackTrace();
