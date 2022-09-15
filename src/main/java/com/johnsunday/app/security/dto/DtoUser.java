@@ -3,6 +3,7 @@ package com.johnsunday.app.security.dto;
 import java.util.Collection;
 import java.util.HashSet;
 
+import com.johnsunday.app.entity.BaseEntity;
 import com.johnsunday.app.security.entity.Role;
 import com.johnsunday.app.security.entity.User;
 
@@ -15,9 +16,8 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class DtoUser extends User{
+public class DtoUser extends BaseEntity{
 	
-	//private Integer id;
 	private static final long serialVersionUID = 1L;
 	private String dtoUserName;
 	private String dtoUserSurname;

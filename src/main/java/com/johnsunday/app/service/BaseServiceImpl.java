@@ -12,7 +12,7 @@ import com.johnsunday.app.dao.IBaseDao;
 import com.johnsunday.app.entity.BaseEntity;
 
 public abstract class BaseServiceImpl<E extends BaseEntity, ID extends Serializable> 
-						implements IBaseService<E, ID> {
+									 implements IBaseService<E, ID> {
 	
 	@Autowired
 	protected IBaseDao<E,ID> baseDao;
@@ -40,7 +40,7 @@ public abstract class BaseServiceImpl<E extends BaseEntity, ID extends Serializa
 	}
 	@Override
 	@Transactional
-	public E save(E entity) throws Exception {
+	public E save(E entity) throws Exception {		
 		try {
 			E newEntity = baseDao.save(entity);
 			return newEntity;
@@ -68,10 +68,11 @@ public abstract class BaseServiceImpl<E extends BaseEntity, ID extends Serializa
 	@Override
 	@Transactional
 	public Boolean delete(ID id) throws Exception {
+		boolean isDeleted = false;
 		try {
 			if(baseDao.existsById(id)) {
 				baseDao.deleteById(id);
-				return true;
+				isDeleted = true;
 			} else {
 				throw new Exception();
 			}
@@ -79,5 +80,6 @@ public abstract class BaseServiceImpl<E extends BaseEntity, ID extends Serializa
 			e.printStackTrace();
 			throw new Exception(e.getMessage());
 		}
+		return isDeleted;
 	}
 }

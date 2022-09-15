@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
 import com.johnsunday.app.security.dao.IRoleDao;
 import com.johnsunday.app.security.dao.IUserDao;
 import com.johnsunday.app.security.dto.DtoUser;
-import com.johnsunday.app.security.dto.Mapper;
+import com.johnsunday.app.security.dto.UserMapper;
 import com.johnsunday.app.security.entity.Role;
 import com.johnsunday.app.security.entity.User;
 import com.johnsunday.app.service.BaseServiceImpl;
@@ -34,7 +34,7 @@ public class UserServiceImpl extends BaseServiceImpl<User, Integer>
 	@Override
 	public User save(DtoUser dtoUser) throws Exception{
 		try {			
-			User newUser = Mapper.dtoToUser(dtoUser);			
+			User newUser = UserMapper.dtoToUser(dtoUser);			
 			newUser.setUserPassword(passwordEncoder.encode(newUser.getUserPassword()));
 			newUser.getUserRoles().add(roleDao.findByRoleType(ROLE_USER).get());
 			return userDao.save(newUser);			
@@ -42,6 +42,21 @@ public class UserServiceImpl extends BaseServiceImpl<User, Integer>
 			e.printStackTrace();
 			throw new Exception(e.getMessage());
 		}
+	}
+	@Override
+	public User update(Integer userId, DtoUser dtoUser) throws Exception {
+		User updatedUser = null;
+		try {
+			User userToUpdate = UserMapper.dtoToUser(dtoUser);
+			Optional<User>optionalUser = userDao.findById(userId);
+			if (!optionalUser.isEmpty()) {
+				updatedUser = userDao.save(userToUpdate);			
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+			throw new Exception(e.getMessage());
+		}		
+		return updatedUser;
 	}
 	@Override
 	public UserDetails loadUserByUsername(String userEmail) throws UsernameNotFoundException {
@@ -60,10 +75,13 @@ public class UserServiceImpl extends BaseServiceImpl<User, Integer>
 				.stream()
 				.map(role->new SimpleGrantedAuthority(role.getRoleType())).collect(Collectors.toList());
 	}
-
 	@Override
 	public Optional<User> findByUserEmail(String userEmail) throws Exception {
-		// TODO Auto-generated method stub
-		return Optional.empty();
+		User searchedUser = null;
+		Optional<User> optionalUser = userDao.findByUserEmail(userEmail);
+		if (!optionalUser.isEmpty()) {
+			searchedUser = optionalUser.get();
+		}
+		return Optional.of(searchedUser);
 	}
 }

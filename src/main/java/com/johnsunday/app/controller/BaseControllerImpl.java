@@ -5,8 +5,6 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,12 +17,11 @@ import com.johnsunday.app.service.BaseServiceImpl;
 
 public abstract class BaseControllerImpl<E extends BaseEntity,
 										 S extends BaseServiceImpl<E, Integer>> 
-										 	implements IBaseController<E, Integer> {
+										implements IBaseController<E, Integer> {
 
 	@Autowired
 	protected S service;
 	
-	//@PreAuthorize("hasAnyRole('ADMIN_ROLE','USER_ROLE')")
 	@GetMapping("/")	
 	public ResponseEntity<?> getAllEntities(){
 		try {
@@ -34,7 +31,6 @@ public abstract class BaseControllerImpl<E extends BaseEntity,
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"error\":\"Error. Please, Try it later. NOT possible to SHOW all the employees\"}");
 		}
 	}
-	//@RolesAllowed({"ADMIN_ROLE","USER_ROLE"})
 	@GetMapping("/{id}")
 	public ResponseEntity<?> getOneEntity(@PathVariable("id")Integer id){
 		try {
@@ -44,7 +40,6 @@ public abstract class BaseControllerImpl<E extends BaseEntity,
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"error\":\"Error. Please, Try it later. NOT possible to SHOW the entity who you find.\"}");
 		}
 	}
-	//@RolesAllowed({"ADMIN_ROLE","USER_ROLE"})
 	@PostMapping("/")	
 	public ResponseEntity<?> saveEntity(@RequestBody @Valid E entity){
 		try {
@@ -54,7 +49,6 @@ public abstract class BaseControllerImpl<E extends BaseEntity,
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. Please, Try it later. NOT possible to SAVE the entity.\"}");
 		}
 	}
-	//@RolesAllowed({"ADMIN_ROLE","USER_ROLE"})
 	@PutMapping("/{id}")	
 	public ResponseEntity<?> updateEntity(@PathVariable("id")Integer id, @RequestBody E entity){
 		try {
@@ -64,7 +58,6 @@ public abstract class BaseControllerImpl<E extends BaseEntity,
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. Please, Try it later. NOT possible UPDATE the entity who you looking for.\"}");
 		}
 	}
-	//@RolesAllowed({"ADMIN_ROLE"})
 	@DeleteMapping("/{id}")	
 	public ResponseEntity<?> deleteEntity(@PathVariable("id")Integer id){
 		try {

@@ -1,5 +1,7 @@
 package com.johnsunday.app.controller;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,16 +18,19 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.johnsunday.app.dto.DtoEmployee;
+import com.johnsunday.app.dto.EmployeeMapper;
 import com.johnsunday.app.entity.Employee;
 import com.johnsunday.app.service.EmployeeServiceImpl;
 
 @CrossOrigin(origins="*")
 @RequestMapping("api/v1/employee")
 @RestController
-public class EmployeeControllerImpl /* extends BaseControllerImpl<Employee, EmployeeServiceImpl> */{
+public class EmployeeControllerImpl implements IEmployeeController<Employee,Integer>{
 	
 	@Autowired EmployeeServiceImpl employeeService;
 	
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@GetMapping("/all")	
 	public ResponseEntity<?> getAllEmployee(@RequestParam("requestUserId")Integer requestUserId) {
 		try {
@@ -34,9 +39,8 @@ public class EmployeeControllerImpl /* extends BaseControllerImpl<Employee, Empl
 			e.printStackTrace();
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"error\":\"Error. Please, Try it later. It is NOT possible to SHOW all employees\"}");
 		}
-	}
-	//@PreAuthorize("hasRole('ADMIN')")
-	//@PreAuthorize("hasRole('ROLE_ADMIN')")
+	}	
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
 	@GetMapping("/one/{employeeId}")
 	@ResponseBody
 	public ResponseEntity<?> getOneEmployee(@PathVariable("employeeId")Integer employeeId,
@@ -50,19 +54,20 @@ public class EmployeeControllerImpl /* extends BaseControllerImpl<Employee, Empl
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"error\":\"Error. Please, Try it later. NOT possible to SHOW the payroll which you find.\"}");
 		}
 	}
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
 	@PostMapping("/save")
 	@ResponseBody
-	public ResponseEntity<?> saveEmployee(@RequestBody Employee employee,
+	public ResponseEntity<?> saveEmployee(@RequestBody @Valid DtoEmployee dtoEmployee,
 										  @RequestParam("requestUserId") Integer requestUserId) {
 		try {
-			return ResponseEntity.status(HttpStatus.OK).body(employeeService.save(employee));
+			
+			return ResponseEntity.status(HttpStatus.OK).body(employeeService.save(EmployeeMapper.dtoToEmployee(dtoEmployee)));
 		}catch(Exception e) {
 			e.printStackTrace();
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. Please, Try it later. It is NOT possible to SAVE the employee.\"}");
 		}
 	}
-	@PreAuthorize("hasRole('ROLE_ADMIN')") 
-	// Si no funciona, probar con --> *** @PreAuthorize("hasRole('ADMIN')") ***
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@DeleteMapping("/delete/{employeeId}")
 	@ResponseBody
 	public ResponseEntity<?> deleteEmployee(@PathVariable("employeeId")Integer employeeId,
@@ -74,12 +79,13 @@ public class EmployeeControllerImpl /* extends BaseControllerImpl<Employee, Empl
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. Please, Try it later. It is NOT possible to DELETE the employee.\"}");
 		}
 	}
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PutMapping("/update/{employeeId}")	
 	public ResponseEntity<?> updateEmployee(@PathVariable("employeeId")Integer employeeId, 
-										    @RequestBody Employee employee,
+										    @RequestBody @Valid DtoEmployee dtoEmployee,
 										    @RequestParam("requestUserId")Integer requestUserId){
 		try {
-			return ResponseEntity.status(HttpStatus.OK).body(employeeService.update(employeeId, employee));
+			return ResponseEntity.status(HttpStatus.OK).body(employeeService.update(employeeId, EmployeeMapper.dtoToEmployee(dtoEmployee)));
 		}catch(Exception e) {
 			e.printStackTrace();
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. Please, Try it later. It is NOT possible UPDATE the employee who you are looking for.\"}");

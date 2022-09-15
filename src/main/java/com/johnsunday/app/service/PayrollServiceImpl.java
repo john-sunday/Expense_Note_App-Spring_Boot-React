@@ -18,7 +18,8 @@ public class PayrollServiceImpl extends BaseServiceImpl<Payroll,Integer>
 	@Override
 	public List<Payroll> findAllPayrollByEmployeeId(Integer employeeId) throws Exception {
 		try {
-			return payrollDao.findAllPayrollByEmployeeId(employeeId);
+			//return payrollDao.findAllPayrollByEmployeeId(employeeId);
+			return payrollDao.findAllByEmployeeId(employeeId);
 		}catch(Exception e) {
 			e.printStackTrace();
 			throw new Exception(e.getMessage());
