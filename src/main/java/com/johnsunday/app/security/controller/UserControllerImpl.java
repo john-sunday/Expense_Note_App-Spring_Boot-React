@@ -18,16 +18,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.johnsunday.app.controller.BaseControllerImpl;
-import com.johnsunday.app.controller.IBaseController;
 import com.johnsunday.app.security.dto.DtoUser;
-import com.johnsunday.app.security.entity.User;
 import com.johnsunday.app.security.service.UserServiceImpl;
 
 @RestController
 @CrossOrigin(origins="*")
 @RequestMapping("api/v1/user")
-public class UserControllerImpl implements IUserController<User,Integer>{
+public class UserControllerImpl implements IUserController {
 	@Lazy
 	@Autowired private UserServiceImpl userService;
 	

@@ -1,7 +1,5 @@
 package com.johnsunday.app.security.controller;
 
-import java.io.Serializable;
-
 import javax.validation.Valid;
 
 import org.springframework.http.ResponseEntity;
@@ -9,19 +7,18 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.johnsunday.app.entity.BaseEntity;
 import com.johnsunday.app.security.dto.DtoUser;
 
-public interface IUserController<E extends BaseEntity,ID extends Serializable> {
+public interface IUserController {
 
-	public ResponseEntity<?> getAllUser(@RequestParam ID requestUserId);
-	public ResponseEntity<?> getOneUser(@PathVariable ID userId,
-										@RequestParam ID requestUserId);
+	public ResponseEntity<?> getAllUser(@RequestParam Integer requestUserId);
+	public ResponseEntity<?> getOneUser(@PathVariable Integer userId,
+										@RequestParam Integer requestUserId);
 	public ResponseEntity<?> saveUser(@RequestBody @Valid DtoUser dtoUser,
 			  						  @RequestParam Integer requestUserId);
-	public ResponseEntity<?> updateUser(@PathVariable ID userId,
+	public ResponseEntity<?> updateUser(@PathVariable Integer userId,
 										@RequestBody DtoUser user,
-										@RequestParam ID requestUserId);
-	public ResponseEntity<?> deleteUser(@PathVariable ID userId,
-										@RequestParam ID requestUserId);
+										@RequestParam Integer requestUserId);
+	public ResponseEntity<?> deleteUser(@PathVariable Integer userId,
+										@RequestParam Integer requestUserId);
 }

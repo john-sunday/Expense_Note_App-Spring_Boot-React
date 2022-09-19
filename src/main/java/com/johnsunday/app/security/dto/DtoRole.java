@@ -14,6 +14,10 @@ import lombok.Setter;
 public class DtoRole extends Role{
 
 	private static final long serialVersionUID = 1L;
-	private String dtoRoleType;
-
+	private Integer id;
+	private String name;
+	// Constructor without id.
+	public DtoRole(String name) {
+		this.name = name;
+	}
 }

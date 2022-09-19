@@ -1,7 +1,5 @@
 package com.johnsunday.app.controller;
 
-import java.io.Serializable;
-
 import javax.validation.Valid;
 
 import org.springframework.http.ResponseEntity;
@@ -10,19 +8,18 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.johnsunday.app.dto.DtoEmployee;
-import com.johnsunday.app.entity.BaseEntity;
 
-public interface IEmployeeController<E extends BaseEntity,ID extends Serializable> {
+public interface IEmployeeController<Employee> {
 
 	public ResponseEntity<?> getAllEmployee(@RequestParam Integer requestUserId);	
-	public ResponseEntity<?> getOneEmployee(@PathVariable ID employeeId,
-										    @RequestParam ID requestUserId);
+	public ResponseEntity<?> getOneEmployee(@PathVariable Integer employeeId,
+										    @RequestParam Integer requestUserId);
 	public ResponseEntity<?> saveEmployee(@RequestBody @Valid DtoEmployee dtoEmployee,
 			  						      @RequestParam Integer requestUserId);
-	public ResponseEntity<?> updateEmployee(@PathVariable ID userId,
+	public ResponseEntity<?> updateEmployee(@PathVariable Integer userId,
 										   @RequestBody @Valid DtoEmployee dtoEmployee,
-										   @RequestParam ID requestUserId);
-	public ResponseEntity<?> deleteEmployee(@PathVariable ID employeeId,
-										    @RequestParam ID requestUserId);
+										   @RequestParam Integer requestUserId);
+	public ResponseEntity<?> deleteEmployee(@PathVariable Integer employeeId,
+										    @RequestParam Integer requestUserId);
 	
 }

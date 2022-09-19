@@ -29,7 +29,7 @@ import com.johnsunday.app.service.PayrollServiceImpl;
 @CrossOrigin(origins="*")
 @RequestMapping("api/v1/payroll")
 @RestController
-public class PayrollControllerImpl implements IPayrollController<Payroll,Integer>{
+public class PayrollControllerImpl implements IPayrollController {
 	@Autowired
 	private PayrollServiceImpl payrollService;
 	
@@ -78,7 +78,7 @@ public class PayrollControllerImpl implements IPayrollController<Payroll,Integer
 		ResponseEntity<Payroll> responseEntity;
 		try {
 			DtoEmployee newDtoEmployee = dtoPayroll.getDtoEmployee();
-			Employee newEmployee = EmployeeMapper.dtoToEmployee(newDtoEmployee);
+			Employee newEmployee = EmployeeMapper.dtoToEmployeeWithId(newDtoEmployee);
 			responseEntity = ResponseEntity.status(HttpStatus.OK).body(payrollService.save(PayrollMapper.dtoToPayroll(dtoPayroll)));
 			newEmployee.addPayroll(PayrollMapper.dtoToPayroll(dtoPayroll));
 		}catch(Exception e) {

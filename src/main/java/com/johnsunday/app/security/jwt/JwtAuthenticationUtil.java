@@ -28,8 +28,8 @@ public class JwtAuthenticationUtil {
 	
 	public String generateAccessToken(User user) {		
 		return Jwts.builder()
-				.setSubject(user.getId() + "," + user.getUserEmail())
-				.claim("roles", user.getUserRoles().toString())
+				.setSubject(user.getId() + "," + user.getEmail())
+				.claim("roles", user.getRoles().toString())
 				.setIssuer("JohnSunday")
 				.setIssuedAt(new Date())
 				.setExpiration(new Date(System.currentTimeMillis() + EXPIRE_DURATION))

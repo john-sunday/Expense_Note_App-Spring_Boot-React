@@ -1,5 +1,6 @@
 package com.johnsunday.app.entity;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -7,6 +8,9 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -34,9 +38,12 @@ import lombok.Setter;
 @RequiredArgsConstructor
 //@Audited
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class Employee extends BaseEntity {
+public class Employee implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	private Integer id;
 	@Column(name="name",nullable=false,length=128)
 	@Length(min=3,max=128)
 	@NonNull
@@ -54,25 +61,31 @@ public class Employee extends BaseEntity {
 	@NonNull
 	private EmployeeType employeeType;
 	
-	@OneToMany(mappedBy="employee",targetEntity=Expense.class,cascade= {CascadeType.MERGE, CascadeType.REMOVE,
-            CascadeType.REFRESH, CascadeType.DETACH} ,orphanRemoval=false)
+	@OneToMany(mappedBy="employee",targetEntity=Expense.class,
+			   cascade= {CascadeType.MERGE, CascadeType.REMOVE,            
+					   CascadeType.REFRESH, CascadeType.DETACH},
+			   orphanRemoval=false)
 	//@JsonIgnore
 	@JsonBackReference
-//	@JoinTable(
-//			name="employee_expense",
-//			joinColumns= {@JoinColumn(name="employee_id",referencedColumnName="id")},
-//			inverseJoinColumns= {@JoinColumn(name="expense_id",referencedColumnName="id")})
 	private List<Expense>expenses = new ArrayList<>();
 	
-	@OneToMany(mappedBy="employee",targetEntity=Payroll.class,cascade={CascadeType.MERGE,
-            CascadeType.REFRESH, CascadeType.DETACH},orphanRemoval=false)
+	@OneToMany(mappedBy="employee",targetEntity=Payroll.class,
+			   cascade={CascadeType.MERGE,CascadeType.REFRESH,
+					    CascadeType.DETACH},
+			   orphanRemoval=false)
 	@JsonIgnore
-	//@JsonBackReference
-//	@JoinTable(
-//			name="employee_payroll",
-//			joinColumns=@JoinColumn(name="employee_id",referencedColumnName="id"),
-//			inverseJoinColumns=@JoinColumn(name="payroll_id",referencedColumnName="id"))	
+	//@JsonBackReference	
 	private List<Payroll>payrolls = new ArrayList<>();
+	
+	// Constructor without id.
+	public Employee(String name,String surname,LocalDateTime birthDate,EmployeeType employeeType,List<Expense>expenses,List<Payroll>payrolls) {
+		this.name = name;
+		this.surname = surname;
+		this.birthDate = birthDate;
+		this.employeeType = employeeType;
+		this.expenses = expenses;
+		this.payrolls = payrolls;
+	}
 	
 	public void addExpense(Expense expense) {
 		expenses.add(expense);

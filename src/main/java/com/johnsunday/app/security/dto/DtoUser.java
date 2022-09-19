@@ -3,8 +3,6 @@ package com.johnsunday.app.security.dto;
 import java.util.Collection;
 import java.util.HashSet;
 
-import com.johnsunday.app.entity.BaseEntity;
-import com.johnsunday.app.security.entity.Role;
 import com.johnsunday.app.security.entity.User;
 
 import lombok.AllArgsConstructor;
@@ -16,12 +14,22 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class DtoUser extends BaseEntity{
+public class DtoUser extends User{
 	
 	private static final long serialVersionUID = 1L;
-	private String dtoUserName;
-	private String dtoUserSurname;
-	private String dtoUserEmail;
-	private String dtoUserPassword;
-	private Collection<Role>dtoUserRoles = new HashSet<>();	
+	
+	private Integer id;
+	private String name;
+	private String surname;
+	private String email;
+	private String password;
+	private Collection<DtoRole>dtoRoles = new HashSet<>();
+	// Constructor WITHOUT id.
+	public DtoUser(String name,String surname,String email,String password,Collection<DtoRole>dtoRoles) {
+		this.name = name;
+		this.surname = surname;
+		this.email = email;
+		this.password = password;
+		this.dtoRoles = dtoRoles;
+	}
 }

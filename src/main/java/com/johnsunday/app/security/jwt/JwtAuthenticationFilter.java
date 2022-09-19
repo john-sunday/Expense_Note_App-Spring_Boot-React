@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
@@ -28,7 +29,7 @@ import io.jsonwebtoken.Claims;
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter{
 
-	@Autowired private JwtAuthenticationUtil jwtAuthUtil;
+	@Autowired private static JwtAuthenticationUtil jwtAuthUtil;
 	@Autowired private IUserDao userDao;
 	
 	@Override
@@ -48,10 +49,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
 			return;
 		}
 		//TODO ---> To finish the method which compare the id's(id Token and id URL parameter) 
-		UserDetails userDetails = setAuthenticationContext(accessToken,request);
-		
+		UserDetails userDetails =  setAuthenticationContext(accessToken,request);
+				
 		String userEmail = userDetails.getUsername();
-		Optional<User>optionalUser = userDao.findByUserEmail(userEmail);
+		Optional<User>optionalUser = userDao.findByEmail(userEmail);
 		User user = optionalUser.get();
 		int tokenUserId = user.getId();
 				
@@ -86,10 +87,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 		return userDetails;
 	}
-	private UserDetails getUserDetails(String accessToken) {
+	public static UserDetails getUserDetails(String accessToken) {
 		User userDetails = new User();
 		Claims claims = jwtAuthUtil.parseClaims(accessToken);
-		String claimRoles = (String) claims.get("roles");		
+		String claimRoles = (String) claims.get("roles");
+		//String claimSub = claims.getSubject();
 		
 		// Testing
 		System.out.println("Claim Roles: " + claimRoles);
@@ -100,9 +102,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
 			userDetails.addRole(new Role(roleName));
 		}		
 		String subject = (String)claims.get(Claims.SUBJECT);		
-		String[] subjectArray = subject.split(",");
+		String[]subjectArray = subject.split(",");
 		userDetails.setId(Integer.parseInt(subjectArray[0]));
-		userDetails.setUserEmail(subjectArray[1]);
+		userDetails.setEmail(subjectArray[1]);
 		
 		return userDetails;
 	}

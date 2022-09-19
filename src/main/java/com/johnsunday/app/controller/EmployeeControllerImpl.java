@@ -26,7 +26,7 @@ import com.johnsunday.app.service.EmployeeServiceImpl;
 @CrossOrigin(origins="*")
 @RequestMapping("api/v1/employee")
 @RestController
-public class EmployeeControllerImpl implements IEmployeeController<Employee,Integer>{
+public class EmployeeControllerImpl implements IEmployeeController<Employee>{
 	
 	@Autowired EmployeeServiceImpl employeeService;
 	
@@ -61,7 +61,7 @@ public class EmployeeControllerImpl implements IEmployeeController<Employee,Inte
 										  @RequestParam("requestUserId") Integer requestUserId) {
 		try {
 			
-			return ResponseEntity.status(HttpStatus.OK).body(employeeService.save(EmployeeMapper.dtoToEmployee(dtoEmployee)));
+			return ResponseEntity.status(HttpStatus.OK).body(employeeService.save(EmployeeMapper.dtoToEmployeeWithId(dtoEmployee)));
 		}catch(Exception e) {
 			e.printStackTrace();
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. Please, Try it later. It is NOT possible to SAVE the employee.\"}");
@@ -85,7 +85,7 @@ public class EmployeeControllerImpl implements IEmployeeController<Employee,Inte
 										    @RequestBody @Valid DtoEmployee dtoEmployee,
 										    @RequestParam("requestUserId")Integer requestUserId){
 		try {
-			return ResponseEntity.status(HttpStatus.OK).body(employeeService.update(employeeId, EmployeeMapper.dtoToEmployee(dtoEmployee)));
+			return ResponseEntity.status(HttpStatus.OK).body(employeeService.update(employeeId, EmployeeMapper.dtoToEmployeeWithId(dtoEmployee)));
 		}catch(Exception e) {
 			e.printStackTrace();
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. Please, Try it later. It is NOT possible UPDATE the employee who you are looking for.\"}");

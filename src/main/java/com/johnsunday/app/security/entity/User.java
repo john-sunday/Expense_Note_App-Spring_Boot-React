@@ -1,5 +1,6 @@
 package com.johnsunday.app.security.entity;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -9,6 +10,9 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
@@ -20,69 +24,82 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.johnsunday.app.entity.BaseEntity;
-
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name="user_employee",uniqueConstraints=@UniqueConstraint(columnNames="user_email"))
+@Table(name="user_employee",uniqueConstraints=@UniqueConstraint(columnNames="email"))
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-
-public class User extends BaseEntity 
- 				  implements UserDetails   {
+@RequiredArgsConstructor
+public class User implements Serializable,UserDetails   {
 
 	private static final long serialVersionUID = 1L;
-
-	@Column(name="user_name",nullable=false)
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	private Integer id;
+	@Column(name="name",nullable=false)
 	@Length(min=2,max=50)
 	@Getter(AccessLevel.NONE)
-	private String userName;
-	@Column(name="user_surname",nullable=false)
+	@NonNull
+	private String name;
+	@Column(name="surname",nullable=false)
 	@Length(min=2,max=128)
-	private String userSurname;
-	@Column(name="user_email",nullable=false)
+	@NonNull
+	private String surname;
+	@Column(name="email",nullable=false)
 	@Length(min=3,max=50)
-	private String userEmail;
-	@Column(name="user_password",nullable=false)
+	@NonNull
+	private String email;
+	@Column(name="password",nullable=false)
 	@Length(min=4,max=64)
-	private String userPassword;
+	@NonNull
+	private String password;
+	// Constructor without ID.
+	public User(String name,String surname,String email,String password,Collection<Role>roles) {
+		this.name = name;
+		this.surname = surname;
+		this.email = email;
+		this.password = password;
+		this.roles = roles;
+	}
 
 	@ManyToMany(fetch=FetchType.LAZY,cascade=CascadeType.ALL)
 	@JoinTable(
 			name="useremployee_role",
 			joinColumns=@JoinColumn(name="user_id",referencedColumnName="id"),
 			inverseJoinColumns=@JoinColumn(name="role_id",referencedColumnName="id")
-			)	
-	private Collection<Role>userRoles = new HashSet<>();
+			)
+	private Collection<Role>roles = new HashSet<>();
 	public void addRole(Role role) {
-		this.userRoles.add(role);
+		this.roles.add(role);
 	}
 	public void removeRole(Role role) {
-		this.userRoles.remove(role);
+		this.roles.remove(role);
 	}
 	
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		List<SimpleGrantedAuthority>authorities = new ArrayList<>();
-		for(Role role:this.userRoles) {
-			authorities.add(new SimpleGrantedAuthority(role.getRoleType()));
+		for(Role role:this.roles) {
+			authorities.add(new SimpleGrantedAuthority(role.getName()));
 		}
 		return authorities;
 	}
 	@Override
 	public String getPassword() {
-		return this.userPassword;
+		return this.password;
 	}
 	@Override
 	public String getUsername() {
-		return this.userEmail;
+		return this.email;
 	}
 	@Override
 	public boolean isAccountNonExpired() {
@@ -100,8 +117,8 @@ public class User extends BaseEntity
 	public boolean isEnabled() {
 		return true;
 	}
-	public String getUserName() {
-		return this.userName;
+	public String getName() {
+		return this.name;
 	}
 }
 

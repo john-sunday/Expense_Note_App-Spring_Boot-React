@@ -50,7 +50,7 @@ public class AuthenticationController {
 									authRequest.getEmail(),authRequest.getPassword()));			
 			User user = (User) authentication.getPrincipal();
 			String accessToken = jwtAuthUtil.generateAccessToken(user);
-			AuthenticationResponse authzResponse = new AuthenticationResponse(user.getUserEmail(),accessToken);
+			AuthenticationResponse authzResponse = new AuthenticationResponse(user.getEmail(),accessToken);
 			return ResponseEntity.ok(authzResponse);
 		}catch(BadCredentialsException ex) {
 			ex.printStackTrace();

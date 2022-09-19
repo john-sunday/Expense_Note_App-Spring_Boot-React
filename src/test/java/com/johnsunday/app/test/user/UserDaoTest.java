@@ -39,7 +39,7 @@ public class UserDaoTest {
 				"otisredding@gmail.com",
 				encodedPassword,
 				//Arrays.asList(new UserRole("ROLE_ADMIN"))
-				Arrays.asList(roleDao.findByRoleType("ROLE_ADMIN").get())
+				Arrays.asList(roleDao.findByName("ROLE_ADMIN").get())
 				);
 		User savedUser = userDao.save(newUser);
 		
@@ -48,12 +48,12 @@ public class UserDaoTest {
 	}
 	@Test
 	public void assignRoleToUser() {
-		Optional<User>optUser = userDao.findByUserEmail("neilyoung@gmail.com");
-		Optional<Role>optRole = roleDao.findByRoleType("ADMIN_ROLE");
+		Optional<User>optUser = userDao.findByEmail("neilyoung@gmail.com");
+		Optional<Role>optRole = roleDao.findByName("ADMIN_ROLE");
 		User user = optUser.get();
 		user.addRole(optRole.get());
 		User updatedUser = userDao.save(user);
 		
-		assertThat(updatedUser.getUserRoles().size()==2);		
+		assertThat(updatedUser.getRoles().size()==2);		
 	}
 }

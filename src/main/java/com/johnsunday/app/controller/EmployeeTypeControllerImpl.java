@@ -20,14 +20,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.johnsunday.app.dto.DtoEmployeeType;
 import com.johnsunday.app.dto.EmployeeTypeMapper;
-import com.johnsunday.app.entity.EmployeeType;
 import com.johnsunday.app.service.EmployeeTypeServiceImpl;
 
 @CrossOrigin(origins="*")
 @RequestMapping("api/v1/employee_type")
 @RestController
-public class EmployeeTypeControllerImpl implements IEmployeeTypeController<EmployeeType,Integer>
-/* extends BaseControllerImpl<EmployeeType, EmployeeTypeServiceImpl> */ {
+public class EmployeeTypeControllerImpl implements IEmployeeTypeController {
 
 	
 	@Autowired
