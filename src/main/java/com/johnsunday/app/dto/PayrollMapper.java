@@ -4,22 +4,22 @@ import com.johnsunday.app.entity.Payroll;
 
 public class PayrollMapper {
 	// Without ID.
-	public static Payroll dtoToPayroll(DtoPayroll dtoPayroll) {
+	public static Payroll dtoToPayroll(PayrollDto dtoPayroll) {
 		return new Payroll(
 				dtoPayroll.getAmount(),
 				dtoPayroll.getDate(),
 				EmployeeMapper.dtoToEmployeeWithId(dtoPayroll.getDtoEmployee())								
 				);
 	}	
-	public static DtoPayroll payrollToDto(Payroll payroll) {
-		return new DtoPayroll(
+	public static PayrollDto payrollToDto(Payroll payroll) {
+		return new PayrollDto(
 				payroll.getAmount(),
 				payroll.getDate(),
 				EmployeeMapper.employeeToDtoWithId(payroll.getEmployee())								
 				);
 	}
 	// With ID.
-	public static Payroll dtoToPayrollWithId(DtoPayroll dtoPayroll) {
+	public static Payroll dtoToPayrollWithId(PayrollDto dtoPayroll) {
 		return new Payroll(
 				dtoPayroll.getId(),
 				dtoPayroll.getAmount(),
@@ -27,8 +27,8 @@ public class PayrollMapper {
 				EmployeeMapper.dtoToEmployeeWithId(dtoPayroll.getDtoEmployee())								
 				);
 	}	
-	public static DtoPayroll payrollToDtoWithId(Payroll payroll) {
-		return new DtoPayroll(
+	public static PayrollDto payrollToDtoWithId(Payroll payroll) {
+		return new PayrollDto(
 				payroll.getId(),
 				payroll.getAmount(),
 				payroll.getDate(),

@@ -12,6 +12,6 @@ public interface IUserService {
 	public User findById(Integer id) throws Exception;
 	public Boolean delete(Integer id) throws Exception;
 	public User save(DtoUser dtoUser) throws Exception;
-	public User update(Integer userId, DtoUser dtoUser) throws Exception;
+	public User update(Integer userId,DtoUser dtoUser) throws Exception;
 	public Optional<User> findByEmail(String userEmail) throws Exception;
 }

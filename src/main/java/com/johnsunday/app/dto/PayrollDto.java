@@ -1,6 +1,8 @@
 package com.johnsunday.app.dto;
 
-import com.johnsunday.app.entity.EmployeeType;
+import java.time.LocalDateTime;
+
+import com.johnsunday.app.entity.Payroll;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,10 +16,14 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @RequiredArgsConstructor
-public class DtoEmployeeType extends EmployeeType{
+public class PayrollDto extends Payroll{
 
 	private static final long serialVersionUID = 1L;
-	private Integer dtoEmployeeTypeId;
+	private Integer id;
 	@NonNull
-	private String dtoEmployeeTypeName;
+	private Double amount;
+	@NonNull
+	private LocalDateTime date;
+	@NonNull
+	private EmployeeDto dtoEmployee;
 }

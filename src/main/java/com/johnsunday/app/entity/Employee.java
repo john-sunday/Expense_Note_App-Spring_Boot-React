@@ -28,6 +28,7 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Entity
 @Table(name="employee")
@@ -37,6 +38,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @RequiredArgsConstructor
 //@Audited
+@ToString
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Employee implements Serializable {
 	

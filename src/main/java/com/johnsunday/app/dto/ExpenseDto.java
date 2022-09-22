@@ -16,18 +16,18 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @RequiredArgsConstructor
-public class DtoExpense extends Expense{
+public class ExpenseDto extends Expense{
 	
 	private static final long serialVersionUID = 1L;
-	private Integer dtoExpenseId;
+	private Integer id;
 	@NonNull
-	private String dtoExpenseConcept;
+	private String concept;
 	@NonNull
-	private String dtoExpenseNote;
+	private String note;
 	@NonNull
-	private LocalDateTime dtoExpenseDate;
+	private LocalDateTime date;
 	@NonNull
-	private Double dtoExpenseAmount;
+	private Double amount;
 	@NonNull
-	private DtoEmployee dtoEmployee;
+	private EmployeeDto dtoEmployee;
 }

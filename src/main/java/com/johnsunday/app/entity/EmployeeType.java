@@ -35,5 +35,10 @@ public class EmployeeType implements Serializable {
 	@Column(name="name",nullable=false)
 	@Length(min=3,max=128)
 	@NonNull
-	private String name;	
+	private String name;
+	
+	// Constructor withOUT id.
+//	public EmployeeType(String name) {
+//		this.name = name;
+//	}
 }

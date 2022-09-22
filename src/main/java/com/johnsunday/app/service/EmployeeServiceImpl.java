@@ -1,5 +1,6 @@
 package com.johnsunday.app.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -9,37 +10,45 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.johnsunday.app.dao.IEmployeeDao;
+import com.johnsunday.app.dao.IEmployeeTypeDao;
+import com.johnsunday.app.dto.EmployeeDto;
+import com.johnsunday.app.dto.EmployeeMapper;
 import com.johnsunday.app.entity.Employee;
 
 @Service
 public class EmployeeServiceImpl implements IEmployeeService{
 	
 	@Autowired IEmployeeDao employeeDao;
+	@Autowired IEmployeeTypeDao employeeTypeDao;
 	
 	@Override 
-	public Employee findByNameAndSurnameAllIgnoreCase(String name,String surname) throws Exception {
+	public EmployeeDto findByNameAndSurnameAllIgnoreCase(String name,String surname) throws Exception {
 		Optional<Employee>optionalEmployee  = employeeDao.findByNameAndSurnameAllIgnoreCase(name,surname);
 		Employee searchedEmployee = null;
 		if (!optionalEmployee.isEmpty()) {
 			searchedEmployee = optionalEmployee.get();
 		}
-		return searchedEmployee;
-		
+		return EmployeeMapper.employeeToDtoWithId(searchedEmployee);		
 	}
 	@Override
-	public List<Employee> findAll() throws Exception {
+	public List<EmployeeDto> findAll() throws Exception {
 		try {
-			return employeeDao.findAll();
+			List<Employee>employees = employeeDao.findAll();
+			List<EmployeeDto>dtoEmployees = new ArrayList<>();
+			for (Employee e:employees) {
+				dtoEmployees.add(EmployeeMapper.employeeToDtoWithId(e));
+			}			
+			return dtoEmployees;
 		}catch(Exception e) {
 			e.printStackTrace();
 			throw new Exception(e.getMessage());
 		}
 	}
 	@Override
-	public Employee findById(Integer id) throws Exception {
+	public EmployeeDto findById(Integer id) throws Exception {
 		try {
-			Optional<Employee> optionalEmployee = employeeDao.findById(id);
-			return optionalEmployee.get();
+			Optional<Employee> optionalEmployee = employeeDao.findById(id);		
+			return EmployeeMapper.employeeToDtoWithId(optionalEmployee.get());
 		}catch(Exception e) {			
 			e.printStackTrace();
 			throw new Exception(e.getMessage());
@@ -47,10 +56,10 @@ public class EmployeeServiceImpl implements IEmployeeService{
 	}
 	@Override
 	@Transactional
-	public Employee save(Employee employee) throws Exception {
+	public EmployeeDto save(EmployeeDto dtoEmployee) throws Exception {
 		try {
-			Employee newEmployee = employeeDao.save(employee);
-			return newEmployee;
+			Employee enteredEmployee = EmployeeMapper.dtoToEmployee(dtoEmployee);
+			return EmployeeMapper.employeeToDtoWithId(employeeDao.save(enteredEmployee));			
 		}catch(Exception e) {
 			e.printStackTrace();
 			throw new Exception(e.getMessage());
@@ -58,19 +67,20 @@ public class EmployeeServiceImpl implements IEmployeeService{
 	}
 	@Override
 	@Transactional
-	public Employee update(Integer id,Employee employee) throws Exception {
+	public EmployeeDto update(Integer id,EmployeeDto dtoEmployee) throws Exception {
 		Employee employeeUpdated = null;
 		try {
+			Employee employeeToUpdate = EmployeeMapper.dtoToEmployeeWithId(dtoEmployee);
 			Optional<Employee> optionalEmployee = employeeDao.findById(id);
-			Employee oldEmployee = optionalEmployee.get();			
-			if(oldEmployee!=null) {
-				employeeUpdated = employeeDao.save(employee);	
+					
+			if(optionalEmployee!=null) {
+				employeeUpdated = employeeDao.save(employeeToUpdate);	
 			}					
 		}catch(Exception e) {
 			e.printStackTrace();
 			throw new Exception(e.getMessage());
 		}
-		return employeeUpdated;	
+		return EmployeeMapper.employeeToDtoWithId(employeeUpdated);	
 	}
 	@Override
 	@Transactional

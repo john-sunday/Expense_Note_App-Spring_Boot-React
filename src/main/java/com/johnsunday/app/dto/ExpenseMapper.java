@@ -4,7 +4,7 @@ import com.johnsunday.app.entity.Expense;
 
 public class ExpenseMapper {
 	// Without ID.
-	public static Expense dtoToExpense(DtoExpense dtoExpense) {
+	public static Expense dtoToExpense(ExpenseDto dtoExpense) {
 		return new Expense(
 				dtoExpense.getConcept(),
 				dtoExpense.getNote(),
@@ -13,8 +13,8 @@ public class ExpenseMapper {
 				EmployeeMapper.dtoToEmployeeWithId(dtoExpense.getDtoEmployee())
 				);
 	}
-	public static DtoExpense expenseToDto(Expense expense) {
-		return new DtoExpense(
+	public static ExpenseDto expenseToDto(Expense expense) {
+		return new ExpenseDto(
 				expense.getConcept(),
 				expense.getNote(),
 				expense.getDate(),
@@ -23,7 +23,7 @@ public class ExpenseMapper {
 				);
 	}
 	// With ID.
-	public static Expense dtoToExpenseWithId(DtoExpense dtoExpense) {
+	public static Expense dtoToExpenseWithId(ExpenseDto dtoExpense) {
 		return new Expense(
 				dtoExpense.getId(),
 				dtoExpense.getConcept(),
@@ -33,8 +33,8 @@ public class ExpenseMapper {
 				EmployeeMapper.dtoToEmployeeWithId(dtoExpense.getDtoEmployee())
 				);
 	}	
-	public static DtoExpense expenseToDtoWithId(Expense expense) {
-		return new DtoExpense(
+	public static ExpenseDto expenseToDtoWithId(Expense expense) {
+		return new ExpenseDto(
 				expense.getId(),
 				expense.getConcept(),
 				expense.getNote(),

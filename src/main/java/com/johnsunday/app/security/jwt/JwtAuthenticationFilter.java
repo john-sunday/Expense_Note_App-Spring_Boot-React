@@ -29,7 +29,7 @@ import io.jsonwebtoken.Claims;
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter{
 
-	@Autowired private static JwtAuthenticationUtil jwtAuthUtil;
+	@Autowired private JwtAuthenticationUtil jwtAuthUtil;
 	@Autowired private IUserDao userDao;
 	
 	@Override
@@ -87,7 +87,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 		return userDetails;
 	}
-	public static UserDetails getUserDetails(String accessToken) {
+	public UserDetails getUserDetails(String accessToken) {
 		User userDetails = new User();
 		Claims claims = jwtAuthUtil.parseClaims(accessToken);
 		String claimRoles = (String) claims.get("roles");

@@ -22,8 +22,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.johnsunday.app.dto.DtoEmployee;
-import com.johnsunday.app.dto.DtoExpense;
+import com.johnsunday.app.dto.EmployeeDto;
+import com.johnsunday.app.dto.ExpenseDto;
 import com.johnsunday.app.dto.EmployeeMapper;
 import com.johnsunday.app.dto.ExpenseMapper;
 import com.johnsunday.app.entity.Employee;
@@ -38,11 +38,12 @@ import com.johnsunday.app.service.ExpenseServiceImpl;
 @CrossOrigin(origins="*")
 @RequestMapping("api/v1/expense")
 @RestController
-public class ExpenseControllerImpl implements IExpenseController{
+public class ExpenseControllerImpl implements IExpenseController<Expense> {
 
 	@Autowired private ExpenseServiceImpl expenseService;
 	@Autowired private EmployeeServiceImpl employeeService;
 	@Autowired private JwtAuthenticationUtil jwtAuthUtil;
+	@Autowired private JwtAuthenticationFilter jwtAuthFilter;
 	@Autowired UserServiceImpl userService;
 	
 	@Override
@@ -89,7 +90,7 @@ public class ExpenseControllerImpl implements IExpenseController{
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
 	@PostMapping("/save")
 	@ResponseBody
-	public ResponseEntity<?> saveExpense(@RequestBody @Valid DtoExpense dtoExpense,
+	public ResponseEntity<?> saveExpense(@RequestBody @Valid ExpenseDto dtoExpense,
 										 @RequestParam("requestUserId") Integer requestUserId,
 										 @RequestHeader(name="Authorization") String token) {
 		System.out.println("TOKEN TEST ---> " + token);
@@ -97,7 +98,9 @@ public class ExpenseControllerImpl implements IExpenseController{
 		ResponseEntity<Expense> responseEntity = null;
 		try {
 			// Form A to extract the Id user from token(UserDetails-->Email-->user Data Base)
-			UserDetails userTokenDetails = JwtAuthenticationFilter.getUserDetails(token);
+			UserDetails userTokenDetails = null;
+			userTokenDetails = jwtAuthFilter.getUserDetails(token);
+
 			String userEmail = userTokenDetails.getUsername();
 			Optional<User>dbOptionalUser = userService.findByEmail(userEmail);
 			User dbUser = dbOptionalUser.get();						
@@ -110,8 +113,8 @@ public class ExpenseControllerImpl implements IExpenseController{
 			System.out.println("TOKEN User Id: " + tokenUserId);
 			
 			
-			DtoEmployee dtoEmployee = dtoExpense.getDtoEmployee();
-			System.out.println("DTO Employee Name: " + dtoEmployee.getDtoEmployeeName());
+			EmployeeDto dtoEmployee = dtoExpense.getDtoEmployee();
+			System.out.println("DTO Employee Name: " + dtoEmployee.getName());
 			Expense enteredExpense = ExpenseMapper.dtoToExpense(dtoExpense);
 			// Check the if the expense exists.
 			if (expenseService.findByAmountAndExpenseDateAndConceptAndEmployeeIdFk(enteredExpense.getAmount(), 
@@ -158,7 +161,7 @@ public class ExpenseControllerImpl implements IExpenseController{
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PutMapping("/{id}")	
 	public ResponseEntity<?> updateExpense(@PathVariable("expenseId")Integer expenseId, 
-										   @RequestBody @Valid DtoExpense dtoExpense,
+										   @RequestBody @Valid ExpenseDto dtoExpense,
 										   @RequestParam("requestUserId")Integer requestUserId){
 		try {
 			return ResponseEntity.status(HttpStatus.OK).body(expenseService.update(expenseId, ExpenseMapper.dtoToExpense(dtoExpense)));

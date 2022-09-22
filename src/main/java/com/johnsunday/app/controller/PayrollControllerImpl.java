@@ -18,8 +18,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.johnsunday.app.dto.DtoEmployee;
-import com.johnsunday.app.dto.DtoPayroll;
+import com.johnsunday.app.dto.EmployeeDto;
+import com.johnsunday.app.dto.PayrollDto;
 import com.johnsunday.app.dto.EmployeeMapper;
 import com.johnsunday.app.dto.PayrollMapper;
 import com.johnsunday.app.entity.Employee;
@@ -73,11 +73,11 @@ public class PayrollControllerImpl implements IPayrollController {
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
 	@PostMapping("/save")
 	@ResponseBody
-	public ResponseEntity<?> savePayroll(@RequestBody @Valid DtoPayroll dtoPayroll,
+	public ResponseEntity<?> savePayroll(@RequestBody @Valid PayrollDto dtoPayroll,
 										 @RequestParam("requestUserId") Integer requestUserId) {
 		ResponseEntity<Payroll> responseEntity;
 		try {
-			DtoEmployee newDtoEmployee = dtoPayroll.getDtoEmployee();
+			EmployeeDto newDtoEmployee = dtoPayroll.getDtoEmployee();
 			Employee newEmployee = EmployeeMapper.dtoToEmployeeWithId(newDtoEmployee);
 			responseEntity = ResponseEntity.status(HttpStatus.OK).body(payrollService.save(PayrollMapper.dtoToPayroll(dtoPayroll)));
 			newEmployee.addPayroll(PayrollMapper.dtoToPayroll(dtoPayroll));
@@ -107,7 +107,7 @@ public class PayrollControllerImpl implements IPayrollController {
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
 	@PutMapping("/update/{payrollId}")	
 	public ResponseEntity<?> updatePayroll(@PathVariable("payrollId")Integer payrollId, 
-										   @RequestBody DtoPayroll dtoPayroll,
+										   @RequestBody PayrollDto dtoPayroll,
 										   @RequestParam("requestUserId")Integer requestUserId){
 		try {
 			return ResponseEntity.status(HttpStatus.OK).body(payrollService.update(payrollId, dtoPayroll));
