@@ -1,6 +1,5 @@
 package com.johnsunday.app.service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -11,8 +10,6 @@ import org.springframework.stereotype.Service;
 
 import com.johnsunday.app.dao.IEmployeeDao;
 import com.johnsunday.app.dao.IEmployeeTypeDao;
-import com.johnsunday.app.dto.EmployeeDto;
-import com.johnsunday.app.dto.EmployeeMapper;
 import com.johnsunday.app.entity.Employee;
 
 @Service
@@ -22,33 +19,28 @@ public class EmployeeServiceImpl implements IEmployeeService{
 	@Autowired IEmployeeTypeDao employeeTypeDao;
 	
 	@Override 
-	public EmployeeDto findByNameAndSurnameAllIgnoreCase(String name,String surname) throws Exception {
+	public Employee findByNameAndSurnameAllIgnoreCase(String name,String surname) throws Exception {
 		Optional<Employee>optionalEmployee  = employeeDao.findByNameAndSurnameAllIgnoreCase(name,surname);
 		Employee searchedEmployee = null;
 		if (!optionalEmployee.isEmpty()) {
 			searchedEmployee = optionalEmployee.get();
 		}
-		return EmployeeMapper.employeeToDtoWithId(searchedEmployee);		
+		return searchedEmployee;		
 	}
 	@Override
-	public List<EmployeeDto> findAll() throws Exception {
+	public List<Employee> findAll() throws Exception {
 		try {
-			List<Employee>employees = employeeDao.findAll();
-			List<EmployeeDto>dtoEmployees = new ArrayList<>();
-			for (Employee e:employees) {
-				dtoEmployees.add(EmployeeMapper.employeeToDtoWithId(e));
-			}			
-			return dtoEmployees;
+			return  employeeDao.findAll();										
 		}catch(Exception e) {
 			e.printStackTrace();
 			throw new Exception(e.getMessage());
 		}
 	}
 	@Override
-	public EmployeeDto findById(Integer id) throws Exception {
+	public Employee findById(Integer id) throws Exception {
 		try {
 			Optional<Employee> optionalEmployee = employeeDao.findById(id);		
-			return EmployeeMapper.employeeToDtoWithId(optionalEmployee.get());
+			return optionalEmployee.get();
 		}catch(Exception e) {			
 			e.printStackTrace();
 			throw new Exception(e.getMessage());
@@ -56,10 +48,9 @@ public class EmployeeServiceImpl implements IEmployeeService{
 	}
 	@Override
 	@Transactional
-	public EmployeeDto save(EmployeeDto dtoEmployee) throws Exception {
-		try {
-			Employee enteredEmployee = EmployeeMapper.dtoToEmployee(dtoEmployee);
-			return EmployeeMapper.employeeToDtoWithId(employeeDao.save(enteredEmployee));			
+	public Employee save(Employee employee) throws Exception {
+		try {			
+			return employeeDao.save(employee);			
 		}catch(Exception e) {
 			e.printStackTrace();
 			throw new Exception(e.getMessage());
@@ -67,20 +58,19 @@ public class EmployeeServiceImpl implements IEmployeeService{
 	}
 	@Override
 	@Transactional
-	public EmployeeDto update(Integer id,EmployeeDto dtoEmployee) throws Exception {
+	public Employee update(Integer id,Employee employee) throws Exception {
 		Employee employeeUpdated = null;
 		try {
-			Employee employeeToUpdate = EmployeeMapper.dtoToEmployeeWithId(dtoEmployee);
 			Optional<Employee> optionalEmployee = employeeDao.findById(id);
 					
 			if(optionalEmployee!=null) {
-				employeeUpdated = employeeDao.save(employeeToUpdate);	
+				employeeUpdated = employeeDao.save(employee);	
 			}					
 		}catch(Exception e) {
 			e.printStackTrace();
 			throw new Exception(e.getMessage());
 		}
-		return EmployeeMapper.employeeToDtoWithId(employeeUpdated);	
+		return employeeUpdated;	
 	}
 	@Override
 	@Transactional

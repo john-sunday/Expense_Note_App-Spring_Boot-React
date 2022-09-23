@@ -30,17 +30,26 @@ public class UserDaoTest {
 	@Test
 	public void testSaveUser() {
 		PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-		String rawPassword = "otis1234";
+		
+		String rawPassword = "george1234";
 		String encodedPassword = passwordEncoder.encode(rawPassword);
 		
 		User newUser = new User(
-				"Otis",
-				"Ray Redding",
-				"otisredding@gmail.com",
+				"George",
+				"Harrison",
+				"georgeharrison@gmail.com",
 				encodedPassword,
 				//Arrays.asList(new UserRole("ROLE_ADMIN"))
-				Arrays.asList(roleDao.findByName("ROLE_ADMIN").get())
+				Arrays.asList(roleDao.findByName("ROLE_USER").get())
 				);
+//		User newAdminUser = new User(
+//				"Otis",
+//				"Ray Redding",
+//				"otisredding@gmail.com",
+//				encodedPassword,
+//				//Arrays.asList(new UserRole("ROLE_ADMIN"))
+//				Arrays.asList(roleDao.findByName("ROLE_ADMIN").get())
+//				);
 		User savedUser = userDao.save(newUser);
 		
 		assertThat(savedUser).isNotNull();

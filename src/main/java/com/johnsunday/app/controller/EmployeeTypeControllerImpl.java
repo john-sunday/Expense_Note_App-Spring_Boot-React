@@ -18,14 +18,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.johnsunday.app.dto.EmployeeTypeDto;
-import com.johnsunday.app.dto.EmployeeTypeMapper;
+
+import com.johnsunday.app.entity.EmployeeType;
 import com.johnsunday.app.service.EmployeeTypeServiceImpl;
 
 @CrossOrigin(origins="*")
 @RequestMapping("api/v1/employee_type")
 @RestController
-public class EmployeeTypeControllerImpl implements IEmployeeTypeController {
+public class EmployeeTypeControllerImpl implements IEmployeeTypeController<EmployeeType> {
 
 	
 	@Autowired
@@ -58,10 +58,10 @@ public class EmployeeTypeControllerImpl implements IEmployeeTypeController {
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
 	@PostMapping("/save")
 	@ResponseBody
-	public ResponseEntity<?> saveEmployeeType(@RequestBody @Valid EmployeeTypeDto dtoEmployeeType,
+	public ResponseEntity<?> saveEmployeeType(@RequestBody @Valid EmployeeType employeeType,
 										 	  @RequestParam("requestUserId") Integer requestUserId) {
 		try {
-			return ResponseEntity.status(HttpStatus.OK).body(employeeTypeService.save(EmployeeTypeMapper.dtoToEmployeeType(dtoEmployeeType)));
+			return ResponseEntity.status(HttpStatus.OK).body(employeeTypeService.save(employeeType));
 		}catch(Exception e) {
 			e.printStackTrace();
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. Please, Try it later. It is NOT possible to SAVE the employee type.\"}");
@@ -82,10 +82,10 @@ public class EmployeeTypeControllerImpl implements IEmployeeTypeController {
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
 	@PutMapping("/update/{employeeTypeId}")	
 	public ResponseEntity<?> updateEmployeeType(@PathVariable("employeeTypeId")Integer employeeTypeId, 
-										   		@RequestBody @Valid EmployeeTypeDto dtoEmployeeType,
+										   		@RequestBody @Valid EmployeeType employeeType,
 										   		@RequestParam("requestUserId")Integer requestUserId){
 		try {
-			return ResponseEntity.status(HttpStatus.OK).body(employeeTypeService.update(employeeTypeId, EmployeeTypeMapper.dtoToEmployeeType(dtoEmployeeType)));
+			return ResponseEntity.status(HttpStatus.OK).body(employeeTypeService.update(employeeTypeId,employeeType));
 		}catch(Exception e) {
 			e.printStackTrace();
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. Please, Try it later. It is NOT possible UPDATE the employee type which you are looking for.\"}");

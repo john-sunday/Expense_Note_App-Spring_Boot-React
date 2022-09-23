@@ -42,7 +42,7 @@ public class ExpenseServiceImpl implements IExpenseService {
 	}
 	@Override
 	public Expense save(Expense expense) throws Exception {
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-ddTHH:mm:00:000",Locale.ROOT);
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:00:000");
 		String formattedStringDate = formatter.format(expense.getDate());
 		//Test.
 		System.out.println(formattedStringDate);

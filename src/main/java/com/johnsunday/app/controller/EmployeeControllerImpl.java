@@ -18,11 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.johnsunday.app.dto.EmployeeDto;
-import com.johnsunday.app.dto.EmployeeMapper;
-import com.johnsunday.app.dto.EmployeeTypeMapper;
 import com.johnsunday.app.entity.Employee;
-import com.johnsunday.app.entity.EmployeeType;
 import com.johnsunday.app.service.EmployeeServiceImpl;
 
 @CrossOrigin(origins="*")
@@ -47,7 +43,7 @@ public class EmployeeControllerImpl implements IEmployeeController<Employee>{
 	@ResponseBody
 	public ResponseEntity<?> getOneEmployee(@PathVariable("employeeId")Integer employeeId,
 										    @RequestParam("requestUserId")Integer requestUserId){
-		System.out.println("Request User ID: " + requestUserId);
+		//System.out.println("Request User ID: " + requestUserId);
 		try {
 			return ResponseEntity.status(HttpStatus.OK).body(employeeService.findById(employeeId));
 		}catch(Exception e) {
@@ -59,10 +55,10 @@ public class EmployeeControllerImpl implements IEmployeeController<Employee>{
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
 	@PostMapping("/save")
 	@ResponseBody
-	public ResponseEntity<?> saveEmployee(@RequestBody @Valid EmployeeDto dtoEmployee,
+	public ResponseEntity<?> saveEmployee(@RequestBody @Valid Employee employee,
 										  @RequestParam("requestUserId") Integer requestUserId) {
 		try {		
-			return ResponseEntity.status(HttpStatus.OK).body(employeeService.save(dtoEmployee));
+			return ResponseEntity.status(HttpStatus.OK).body(employeeService.save(employee));
 		}catch(Exception e) {
 			e.printStackTrace();
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. Please, Try it later. It is NOT possible to SAVE the employee.\"}");
@@ -83,10 +79,10 @@ public class EmployeeControllerImpl implements IEmployeeController<Employee>{
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PutMapping("/update/{employeeId}")	
 	public ResponseEntity<?> updateEmployee(@PathVariable("employeeId")Integer employeeId, 
-										    @RequestBody @Valid EmployeeDto dtoEmployee,
+										    @RequestBody @Valid Employee employee,
 										    @RequestParam("requestUserId")Integer requestUserId){
 		try {
-			return ResponseEntity.status(HttpStatus.OK).body(employeeService.update(employeeId,dtoEmployee));
+			return ResponseEntity.status(HttpStatus.OK).body(employeeService.update(employeeId,employee));
 		}catch(Exception e) {
 			e.printStackTrace();
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. Please, Try it later. It is NOT possible UPDATE the employee who you are looking for.\"}");

@@ -18,10 +18,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.johnsunday.app.dto.EmployeeDto;
-import com.johnsunday.app.dto.PayrollDto;
-import com.johnsunday.app.dto.EmployeeMapper;
-import com.johnsunday.app.dto.PayrollMapper;
 import com.johnsunday.app.entity.Employee;
 import com.johnsunday.app.entity.Payroll;
 import com.johnsunday.app.service.PayrollServiceImpl;
@@ -29,7 +25,7 @@ import com.johnsunday.app.service.PayrollServiceImpl;
 @CrossOrigin(origins="*")
 @RequestMapping("api/v1/payroll")
 @RestController
-public class PayrollControllerImpl implements IPayrollController {
+public class PayrollControllerImpl implements IPayrollController<Payroll> {
 	@Autowired
 	private PayrollServiceImpl payrollService;
 	
@@ -73,14 +69,13 @@ public class PayrollControllerImpl implements IPayrollController {
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
 	@PostMapping("/save")
 	@ResponseBody
-	public ResponseEntity<?> savePayroll(@RequestBody @Valid PayrollDto dtoPayroll,
+	public ResponseEntity<?> savePayroll(@RequestBody @Valid Payroll payroll,
 										 @RequestParam("requestUserId") Integer requestUserId) {
 		ResponseEntity<Payroll> responseEntity;
-		try {
-			EmployeeDto newDtoEmployee = dtoPayroll.getDtoEmployee();
-			Employee newEmployee = EmployeeMapper.dtoToEmployeeWithId(newDtoEmployee);
-			responseEntity = ResponseEntity.status(HttpStatus.OK).body(payrollService.save(PayrollMapper.dtoToPayroll(dtoPayroll)));
-			newEmployee.addPayroll(PayrollMapper.dtoToPayroll(dtoPayroll));
+		try {			
+			Employee employee = payroll.getEmployee();
+			responseEntity = ResponseEntity.status(HttpStatus.OK).body(payrollService.save(payroll));
+			employee.addPayroll(payroll);
 		}catch(Exception e) {
 			e.printStackTrace();
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. Please, Try it later. It is NOT possible to SAVE the entity.\"}");
@@ -107,10 +102,10 @@ public class PayrollControllerImpl implements IPayrollController {
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
 	@PutMapping("/update/{payrollId}")	
 	public ResponseEntity<?> updatePayroll(@PathVariable("payrollId")Integer payrollId, 
-										   @RequestBody PayrollDto dtoPayroll,
+										   @RequestBody Payroll payroll,
 										   @RequestParam("requestUserId")Integer requestUserId){
 		try {
-			return ResponseEntity.status(HttpStatus.OK).body(payrollService.update(payrollId, dtoPayroll));
+			return ResponseEntity.status(HttpStatus.OK).body(payrollService.update(payrollId,payroll));
 		}catch(Exception e) {
 			e.printStackTrace();
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. Please, Try it later. It is NOT possible UPDATE the payroll which you are looking for.\"}");

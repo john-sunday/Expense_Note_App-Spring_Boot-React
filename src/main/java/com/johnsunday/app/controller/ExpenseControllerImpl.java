@@ -22,10 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.johnsunday.app.dto.EmployeeDto;
-import com.johnsunday.app.dto.ExpenseDto;
-import com.johnsunday.app.dto.EmployeeMapper;
-import com.johnsunday.app.dto.ExpenseMapper;
+
 import com.johnsunday.app.entity.Employee;
 import com.johnsunday.app.entity.Expense;
 import com.johnsunday.app.security.entity.User;
@@ -90,53 +87,54 @@ public class ExpenseControllerImpl implements IExpenseController<Expense> {
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
 	@PostMapping("/save")
 	@ResponseBody
-	public ResponseEntity<?> saveExpense(@RequestBody @Valid ExpenseDto dtoExpense,
+	public ResponseEntity<?> saveExpense(@RequestBody @Valid Expense expense,
 										 @RequestParam("requestUserId") Integer requestUserId,
 										 @RequestHeader(name="Authorization") String token) {
-		System.out.println("TOKEN TEST ---> " + token);
+		//System.out.println("TOKEN TEST ---> " + token);
 		
 		ResponseEntity<Expense> responseEntity = null;
 		try {
-			// Form A to extract the Id user from token(UserDetails-->Email-->user Data Base)
-			UserDetails userTokenDetails = null;
-			userTokenDetails = jwtAuthFilter.getUserDetails(token);
-
-			String userEmail = userTokenDetails.getUsername();
-			Optional<User>dbOptionalUser = userService.findByEmail(userEmail);
-			User dbUser = dbOptionalUser.get();						
-			System.out.println("DATA BASE User Id: " + dbUser.getId());
-			
-			// Form B to extract the Id user from token(JwtAuthenticationUtil.getSubject(token))
-			String subject = jwtAuthUtil.getSubject(token);
-			String[]arrSubject = subject.split(",");
-			int tokenUserId = Integer.parseInt(arrSubject[0]);
-			System.out.println("TOKEN User Id: " + tokenUserId);
-			
-			
-			EmployeeDto dtoEmployee = dtoExpense.getDtoEmployee();
-			System.out.println("DTO Employee Name: " + dtoEmployee.getName());
-			Expense enteredExpense = ExpenseMapper.dtoToExpense(dtoExpense);
-			// Check the if the expense exists.
-			if (expenseService.findByAmountAndExpenseDateAndConceptAndEmployeeIdFk(enteredExpense.getAmount(), 
-																				   enteredExpense.getDate(), 
-																				   enteredExpense.getConcept(), 
-																				   enteredExpense.getEmployee().getId())) {
-				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. The expense you are trying to introduce alredy exists.\"}");
-			}
-			Employee enteredEmployee = EmployeeMapper.dtoToEmployeeWithId(dtoEmployee);
-			Employee searchedEmployee = employeeService.findById(enteredEmployee.getId());
-//			Employee searchedEmployee = employeeService.findByNameAndSurnameAllIgnoreCase(newEmployee.getName(), newEmployee.getSurname());
-			if (searchedEmployee!=null) {
-				responseEntity = ResponseEntity.status(HttpStatus.OK).body(expenseService.save(enteredExpense));			
-				searchedEmployee.addExpense(enteredExpense);
-			} else {
-				return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"error\":\"Error. The requested resource does NOT exist, and the server does not know if it ever existed.\"}");
-			}
+//			// Form A to extract the Id user from token(UserDetails-->Email-->user Data Base)
+//			UserDetails userTokenDetails = null;
+//			userTokenDetails = jwtAuthFilter.getUserDetails(token);
+//
+//			String userEmail = userTokenDetails.getUsername();
+//			Optional<User>dbOptionalUser = userService.findByEmail(userEmail);
+//			User dbUser = dbOptionalUser.get();						
+//			System.out.println("DATA BASE User Id: " + dbUser.getId());
+//			
+//			// Form B to extract the Id user from token(JwtAuthenticationUtil.getSubject(token))
+//			String subject = jwtAuthUtil.getSubject(token);
+//			String[]arrSubject = subject.split(",");
+//			int tokenUserId = Integer.parseInt(arrSubject[0]);
+//			System.out.println("TOKEN User Id: " + tokenUserId);
+//			
+//			
+//			EmployeeDto dtoEmployee = dtoExpense.getDtoEmployee();
+//			System.out.println("DTO Employee Name: " + dtoEmployee.getName());
+//			Expense enteredExpense = ExpenseMapper.dtoToExpense(dtoExpense);
+//			// Check the if the expense exists.
+//			if (expenseService.findByAmountAndExpenseDateAndConceptAndEmployeeIdFk(enteredExpense.getAmount(), 
+//																				   enteredExpense.getDate(), 
+//																				   enteredExpense.getConcept(), 
+//																				   enteredExpense.getEmployee().getId())) {
+//				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. The expense you are trying to introduce alredy exists.\"}");
+//			}
+//			Employee enteredEmployee = EmployeeMapper.dtoToEmployeeWithId(dtoEmployee);
+//			Employee searchedEmployee = employeeService.findById(enteredEmployee.getId());
+////			Employee searchedEmployee = employeeService.findByNameAndSurnameAllIgnoreCase(newEmployee.getName(), newEmployee.getSurname());
+//			if (searchedEmployee!=null) {
+//				responseEntity = ResponseEntity.status(HttpStatus.OK).body(expenseService.save(enteredExpense));			
+//				searchedEmployee.addExpense(enteredExpense);
+//			} else {
+//				return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"error\":\"Error. The requested resource does NOT exist, and the server does not know if it ever existed.\"}");
+//			}
+			return ResponseEntity.status(HttpStatus.OK).body(expenseService.save(expense));
 		}catch(Exception e) {
 			e.printStackTrace();
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. Please, Try it later. NOT possible to SAVE the expense.\"}");
 		}
-		return responseEntity;
+		//return responseEntity;
 	}
 	@Override
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -161,10 +159,10 @@ public class ExpenseControllerImpl implements IExpenseController<Expense> {
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PutMapping("/{id}")	
 	public ResponseEntity<?> updateExpense(@PathVariable("expenseId")Integer expenseId, 
-										   @RequestBody @Valid ExpenseDto dtoExpense,
+										   @RequestBody @Valid Expense expense,
 										   @RequestParam("requestUserId")Integer requestUserId){
 		try {
-			return ResponseEntity.status(HttpStatus.OK).body(expenseService.update(expenseId, ExpenseMapper.dtoToExpense(dtoExpense)));
+			return ResponseEntity.status(HttpStatus.OK).body(expenseService.update(expenseId,expense));
 		}catch(Exception e) {
 			e.printStackTrace();
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. Please, Try it later. NOT possible UPDATE the expense which you are looking for.\"}");

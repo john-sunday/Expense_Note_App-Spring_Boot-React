@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.johnsunday.app.dto.PayrollDto;
 
 public interface IPayrollController<Payroll> {
 
@@ -16,10 +15,10 @@ public interface IPayrollController<Payroll> {
 	public ResponseEntity<?> getAllPayroll(@RequestParam Integer requestUserId);	
 	public ResponseEntity<?> getOnePayroll(@PathVariable Integer payrollId,
 										   @RequestParam Integer requestUserId);
-	public ResponseEntity<?> savePayroll(@RequestBody @Valid PayrollDto dtoPayroll,
+	public ResponseEntity<?> savePayroll(@RequestBody @Valid Payroll payroll,
 			  						     @RequestParam Integer requestUserId);
 	public ResponseEntity<?> updatePayroll(@PathVariable Integer userId,
-										   @RequestBody @Valid PayrollDto dtoPayroll,
+										   @RequestBody @Valid Payroll payroll,
 										   @RequestParam Integer requestUserId);
 	public ResponseEntity<?> deletePayroll(@PathVariable Integer payrollId,
 										   @RequestParam Integer requestUserId);
