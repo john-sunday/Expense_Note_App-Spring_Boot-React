@@ -19,6 +19,5 @@ public interface IEmployeeTypeController<EmployeeType> {
 										        @RequestBody @Valid EmployeeType employeeType,
 										        @RequestParam Integer requestUserId);
 	public ResponseEntity<?> deleteEmployeeType(@PathVariable Integer id,
-										    	@RequestParam Integer requestUserId);
-	
+										    	@RequestParam Integer requestUserId);	
 }

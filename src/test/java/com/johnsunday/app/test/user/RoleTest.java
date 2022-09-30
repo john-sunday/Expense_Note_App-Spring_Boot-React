@@ -19,7 +19,7 @@ import com.johnsunday.app.security.entity.Role;
 @DataJpaTest
 @AutoConfigureTestDatabase(replace=Replace.NONE)
 @Rollback(false)
-public class RoleDaoTest {
+public class RoleTest {
 
 	@Autowired private IRoleDao roleDao;
 	

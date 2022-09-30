@@ -2,8 +2,11 @@ package com.johnsunday.app.security.service;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -15,12 +18,12 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.johnsunday.app.entity.Employee;
 import com.johnsunday.app.security.dao.IRoleDao;
 import com.johnsunday.app.security.dao.IUserDao;
-import com.johnsunday.app.security.dto.DtoUser;
-import com.johnsunday.app.security.dto.UserMapper;
 import com.johnsunday.app.security.entity.Role;
 import com.johnsunday.app.security.entity.User;
+import com.johnsunday.app.service.EmployeeServiceImpl;
 
 @Service
 public class UserServiceImpl implements IUserService,UserDetailsService {
@@ -28,35 +31,44 @@ public class UserServiceImpl implements IUserService,UserDetailsService {
 	private final String ROLE_USER = "ROLE_USER";
 	@Autowired private IUserDao userDao;
 	@Autowired private IRoleDao roleDao;
-	@Autowired @Lazy private BCryptPasswordEncoder passwordEncoder;	
+	@Autowired @Lazy private BCryptPasswordEncoder passwordEncoder;
+	@Autowired private EmployeeServiceImpl employeeService;
 	
 	@Override
-	public User save(DtoUser dtoUser) throws Exception{
-		try {			
-			User newUser = UserMapper.dtoToUserWithId(dtoUser);			
-			newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
-			newUser.getRoles().add(roleDao.findByName(ROLE_USER).get());
-			return userDao.save(newUser);			
+	@Transactional
+	public User save(User user) throws Exception {
+		User savedUser = new User();
+		try {
+			Employee employee = employeeService.findByEmail(user.getEmail());
+			if (employee!=null) {
+				user.setPassword(passwordEncoder.encode(user.getPassword()));
+				if((user.getRoles()==null)||(user.getRoles().size()==0)) user.getRoles().add(roleDao.findByName(ROLE_USER).get());				 
+				
+				savedUser = userDao.save(user);	
+			}
 		}catch(Exception e) {
+			System.out.println("e.getCause(): " + e.getCause());
 			e.printStackTrace();
-			throw new Exception(e.getMessage());
+			throw new Exception(e.getCause());
 		}
+		return savedUser;
 	}
 	@Override
-	public User update(Integer userId, DtoUser dtoUser) throws Exception {
-		User updatedUser = null;
+	@Transactional
+	public User update(Integer userId,User user) throws Exception {
+		User updatedUser = new User();
 		try {
-			User userToUpdate = UserMapper.dtoToUserWithId(dtoUser);
 			Optional<User>optionalUser = userDao.findById(userId);
 			if (!optionalUser.isEmpty()) {
-				updatedUser = userDao.save(userToUpdate);			
+				 updatedUser = userDao.save(optionalUser.get());			
 			}
 		}catch(Exception e) {
 			e.printStackTrace();
 			throw new Exception(e.getMessage());
-		}		
+		}
 		return updatedUser;
 	}
+	// Load an User by 'email', NOT name.
 	@Override
 	public UserDetails loadUserByUsername(String userEmail) throws UsernameNotFoundException {
 		Optional<User> optionalUser = userDao.findByEmail(userEmail);
@@ -69,7 +81,7 @@ public class UserServiceImpl implements IUserService,UserDetailsService {
 				optionalUser.get().getPassword(),
 				mappAuthorityRole(optionalUser.get().getRoles()));		
 	}
-	private Collection<? extends GrantedAuthority> mappAuthorityRole(Collection<Role>roles){
+	public Collection<? extends GrantedAuthority> mappAuthorityRole(Collection<Role>roles) {
 		return roles
 				.stream()
 				.map(role->new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList());
@@ -84,18 +96,23 @@ public class UserServiceImpl implements IUserService,UserDetailsService {
 		return Optional.of(searchedUser);
 	}
 	@Override
-	public List<User> findAll() throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+	public List<User> findAll() throws Exception {		
+		return userDao.findAll();
 	}
 	@Override
-	public User findById(Integer id) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+	public Optional<User> findById(Integer id) throws Exception {
+		Optional<User>optUser = userDao.findById(id);
+		return optUser;
 	}
 	@Override
+	@Transactional
 	public Boolean delete(Integer id) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		boolean isDeleted = false;
+		Optional<User>optUser = userDao.findById(id);
+		if (optUser!=null) {
+			userDao.delete(optUser.get());
+			isDeleted = true;
+		}
+		return isDeleted;
 	}
 }

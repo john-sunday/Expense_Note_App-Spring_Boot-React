@@ -2,7 +2,6 @@ package com.johnsunday.app.security.configuration;
 
 import javax.servlet.http.HttpServletResponse;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,6 +18,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.johnsunday.app.security.dao.IUserDao;
+import com.johnsunday.app.security.entity.User;
 import com.johnsunday.app.security.jwt.JwtAuthenticationFilter;
 
 @Configuration
@@ -31,15 +31,15 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter{
 
 	@Autowired private IUserDao userDao;
 	@Autowired private JwtAuthenticationFilter jwtAuthFilter;
-	
+
     @Bean 
     public PasswordEncoder passwordEncoder() { 
     	return new BCryptPasswordEncoder();
     }
-    @Bean
-    public ModelMapper modelMapper() {
-        return new ModelMapper();
-    }
+//    @Bean
+//    public ModelMapper modelMapper() {
+//        return new ModelMapper();
+//    }
     
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {

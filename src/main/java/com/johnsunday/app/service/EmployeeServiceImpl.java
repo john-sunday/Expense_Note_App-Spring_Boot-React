@@ -1,5 +1,6 @@
 package com.johnsunday.app.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 import com.johnsunday.app.dao.IEmployeeDao;
 import com.johnsunday.app.dao.IEmployeeTypeDao;
 import com.johnsunday.app.entity.Employee;
+import com.johnsunday.app.util.DateUtil;
 
 @Service
 public class EmployeeServiceImpl implements IEmployeeService{
@@ -49,7 +51,9 @@ public class EmployeeServiceImpl implements IEmployeeService{
 	@Override
 	@Transactional
 	public Employee save(Employee employee) throws Exception {
-		try {			
+		try {
+			LocalDateTime parsedDate = DateUtil.formattingDate(employee.getBirthDate());
+			employee.setBirthDate(parsedDate);			
 			return employeeDao.save(employee);			
 		}catch(Exception e) {
 			e.printStackTrace();
@@ -59,18 +63,19 @@ public class EmployeeServiceImpl implements IEmployeeService{
 	@Override
 	@Transactional
 	public Employee update(Integer id,Employee employee) throws Exception {
-		Employee employeeUpdated = null;
+		Employee updatedEmployee = null;
 		try {
-			Optional<Employee> optionalEmployee = employeeDao.findById(id);
-					
+			Optional<Employee> optionalEmployee = employeeDao.findById(id);					
 			if(optionalEmployee!=null) {
-				employeeUpdated = employeeDao.save(employee);	
+				LocalDateTime parsedDate = DateUtil.formattingDate(employee.getBirthDate());
+				employee.setBirthDate(parsedDate);
+				updatedEmployee = employeeDao.save(employee);	
 			}					
 		}catch(Exception e) {
 			e.printStackTrace();
 			throw new Exception(e.getMessage());
 		}
-		return employeeUpdated;	
+		return updatedEmployee;	
 	}
 	@Override
 	@Transactional
@@ -88,5 +93,15 @@ public class EmployeeServiceImpl implements IEmployeeService{
 			throw new Exception(e.getMessage());
 		}
 		return isDeleted;
+	}
+	@Override
+	public Employee findByEmail(String email) throws Exception {
+		try {
+			Optional<Employee>optEmployee = employeeDao.findByEmail(email);
+			return optEmployee.get();
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new Exception(e.getMessage());
+		}				
 	}
 }

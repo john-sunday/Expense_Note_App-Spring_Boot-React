@@ -8,10 +8,7 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.johnsunday.app.entity.Employee;
 import com.johnsunday.app.security.dao.IRoleDao;
-import com.johnsunday.app.security.dto.DtoRole;
-import com.johnsunday.app.security.dto.RoleMapper;
 import com.johnsunday.app.security.entity.Role;
 
 @Service
@@ -20,23 +17,23 @@ public class RoleServiceImpl implements IRoleService {
 	@Autowired IRoleDao roleDao;
 	
 	@Override
-	public Role save(DtoRole dtoRole) throws Exception{
-		try {			
-			Role newRole = RoleMapper.dtoToRole(dtoRole);			
-			return roleDao.save(newRole);			
+	@Transactional
+	public Role save(Role role) throws Exception{
+		try {									
+			return roleDao.save(role);			
 		}catch(Exception e) {
 			e.printStackTrace();
 			throw new Exception(e.getMessage());
 		}
 	}
 	@Override
-	public Role update(Integer roleId, DtoRole dtoRole) throws Exception {
+	@Transactional
+	public Role update(Integer roleId,Role role) throws Exception {
 		Role updatedRole = null;
 		try {
-			Role roleToUpdate = RoleMapper.dtoToRole(dtoRole);
 			Optional<Role>optionalRole = roleDao.findById(roleId);
 			if (!optionalRole.isEmpty()) {
-				updatedRole = roleDao.save(roleToUpdate);			
+				updatedRole = roleDao.save(role);			
 			}
 		}catch(Exception e) {
 			e.printStackTrace();
@@ -54,10 +51,10 @@ public class RoleServiceImpl implements IRoleService {
 		}
 	}
 	@Override
-	public Role findById(Integer id) throws Exception {
+	public Optional<Role> findById(Integer id) throws Exception {
 		try {
 			Optional<Role> optionalRole = roleDao.findById(id);
-			return optionalRole.get();
+			return Optional.of(optionalRole.get());
 		}catch(Exception e) {			
 			e.printStackTrace();
 			throw new Exception(e.getMessage());

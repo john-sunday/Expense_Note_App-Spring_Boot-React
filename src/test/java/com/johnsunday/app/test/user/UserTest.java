@@ -22,13 +22,13 @@ import com.johnsunday.app.security.entity.Role;
 @DataJpaTest
 @AutoConfigureTestDatabase(replace=Replace.NONE)
 @Rollback(false)
-public class UserDaoTest {
+public class UserTest {
 
 	@Autowired IUserDao userDao;
 	@Autowired IRoleDao roleDao;
 	
 	@Test
-	public void testSaveUser() {
+	public void testUserSaving() {
 		PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 		
 		String rawPassword = "george1234";

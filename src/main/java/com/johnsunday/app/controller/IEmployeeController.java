@@ -1,5 +1,6 @@
 package com.johnsunday.app.controller;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.http.ResponseEntity;
@@ -7,8 +8,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.johnsunday.app.entity.Employee;
 
-public interface IEmployeeController<Employee> {
+
+public interface IEmployeeController {
 
 	public ResponseEntity<?> getAllEmployee(@RequestParam Integer requestUserId);	
 	public ResponseEntity<?> getOneEmployee(@PathVariable Integer employeeId,
@@ -20,5 +23,7 @@ public interface IEmployeeController<Employee> {
 										   @RequestParam Integer requestUserId);
 	public ResponseEntity<?> deleteEmployee(@PathVariable Integer employeeId,
 										    @RequestParam Integer requestUserId);
-	
+	public ResponseEntity<?> findByNameAndSurnameAllIgnoreCase(@PathVariable String name,
+															   @PathVariable String surname,
+															   @RequestParam Integer requestUserId);
 }

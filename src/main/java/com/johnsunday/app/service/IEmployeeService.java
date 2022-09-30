@@ -11,4 +11,5 @@ public interface IEmployeeService {
 	public Employee update(Integer id,Employee employee) throws Exception;
 	public Boolean delete(Integer id) throws Exception;
 	public Employee findByNameAndSurnameAllIgnoreCase(String employeeName,String employeeSurname) throws Exception;
+	public Employee findByEmail(String email) throws Exception;
 }

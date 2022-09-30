@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import com.johnsunday.app.dao.IExpenseDao;
 import com.johnsunday.app.entity.Employee;
 import com.johnsunday.app.entity.Expense;
+import com.johnsunday.app.util.DateUtil;
 
 @Service
 public class ExpenseServiceImpl implements IExpenseService {
@@ -41,14 +42,10 @@ public class ExpenseServiceImpl implements IExpenseService {
 																						   employeeIdFk);
 	}
 	@Override
+	@Transactional
 	public Expense save(Expense expense) throws Exception {
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:00:000");
-		String formattedStringDate = formatter.format(expense.getDate());
-		//Test.
-		System.out.println(formattedStringDate);
-		LocalDateTime parsedDate = LocalDateTime.parse(formattedStringDate, formatter);
-		expense.setDate(parsedDate);
-				
+		LocalDateTime parsedDate = DateUtil.formattingDate(expense.getDate());
+		expense.setDate(parsedDate);				
 		return expenseDao.save(expense);
 	}
 	@Override
@@ -78,6 +75,8 @@ public class ExpenseServiceImpl implements IExpenseService {
 			Optional<Expense> optionalExpense = expenseDao.findById(id);
 			Expense oldExpense = optionalExpense.get();			
 			if(oldExpense!=null) {
+				LocalDateTime parsedDate = DateUtil.formattingDate(expense.getDate());
+				expense.setDate(parsedDate);
 				expenseUpdated = expenseDao.save(expense);				
 			}					
 		}catch(Exception e) {
@@ -102,5 +101,5 @@ public class ExpenseServiceImpl implements IExpenseService {
 			throw new Exception(e.getMessage());
 		}
 		return isDeleted;
-	}	
+	}
 }

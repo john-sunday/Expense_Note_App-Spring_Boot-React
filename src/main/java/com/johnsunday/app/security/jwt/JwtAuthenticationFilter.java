@@ -1,6 +1,7 @@
 package com.johnsunday.app.security.jwt;
 
 import java.io.IOException;
+import java.util.Collection;
 import java.util.Optional;
 
 import javax.servlet.FilterChain;
@@ -9,10 +10,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
@@ -23,6 +23,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import com.johnsunday.app.security.dao.IUserDao;
 import com.johnsunday.app.security.entity.Role;
 import com.johnsunday.app.security.entity.User;
+import com.johnsunday.app.security.service.UserServiceImpl;
 
 import io.jsonwebtoken.Claims;
 
@@ -30,7 +31,8 @@ import io.jsonwebtoken.Claims;
 public class JwtAuthenticationFilter extends OncePerRequestFilter{
 
 	@Autowired private JwtAuthenticationUtil jwtAuthUtil;
-	@Autowired private IUserDao userDao;
+	//@Autowired private IUserDao userDao;
+	private User tokenUserDetails = new User();
 	
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, 
@@ -49,17 +51,83 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
 			return;
 		}
 		//TODO ---> To finish the method which compare the id's(id Token and id URL parameter) 
-		UserDetails userDetails =  setAuthenticationContext(accessToken,request);
-				
-		String userEmail = userDetails.getUsername();
-		Optional<User>optionalUser = userDao.findByEmail(userEmail);
-		User user = optionalUser.get();
-		int tokenUserId = user.getId();
-				
-		String reqUserId = request.getParameter("requestUserId");
-		System.out.println("Requesting User Id: " + reqUserId);
+		setAuthenticationContext(accessToken,request);
+		//System.out.println("JWT Query String: " + request.getQueryString());// print param
+//		System.out.println("JWT Header Names Test: " + request.getHeaderNames());
+//		Enumeration<String>headerNames = request.getHeaderNames();
+//		//Iterator<String>itNames = headerNames.asIterator();
+//		headerNames.asIterator().forEachRemaining(n->System.out.println(n));
 		
-		//if (tokenUserId != Integer.parseInt(reqUserId)) return;
+//		for (Enumeration<String>e =  .elements(); e.hasMoreElements();)
+//			System.out.println(e.nextElement());
+		
+//		System.out.println("JWT Body Request: ");
+//		BufferedReader buffReader = request.getReader();
+//		String line;
+//		while((line = buffReader.readLine()) != null) {
+//			System.out.println(line); // Display the file's contents on the screen, one line at a time
+//		}
+		
+//		System.out.println("Remote User Request: " + request.getRemoteUser());//->null
+//		System.out.println("Principal User Request: " + request.getUserPrincipal());//->null
+		
+		Integer requestUserId = Integer.parseInt(request.getParameter("requestUserId"));
+		
+		boolean isAdmin = false;
+		Collection<? extends GrantedAuthority>grantedAuths = tokenUserDetails.getAuthorities();
+		for (GrantedAuthority auth:grantedAuths) {
+			String strAuth = auth.getAuthority();
+			// Test.
+			System.out.println("String Authority: " + strAuth);
+			if (strAuth.equalsIgnoreCase("ROLE_ADMIN")) {
+				isAdmin = true;
+			}
+		}
+		/* If the user hasn't role Admin, and the id user from token doesn't match with 
+		 * the request param 'requestUserId', we return the flow. */ 
+		if (!isAdmin) {
+			if (tokenUserDetails.getId()!=Integer.parseInt(request.getParameter("requestUserId"))){
+				return;
+			}
+		}
+		
+		
+		System.out.println("Method Request: " + request.getMethod());
+		System.out.println("Request URI: " + request.getRequestURI());
+		
+		
+		
+//		ServletInputStream requestBody = request.getInputStream();
+////		byte[]byteBody = requestBody.readAllBytes();
+//		int length = requestBody.available();
+//		byte[]byteBody = new byte[8192];
+//		int ch;
+//		String body = "";
+//		while (requestBody.read()!=-1) {
+//			ch = requestBody.readLine(byteBody, 0, length);
+//			if(ch==-1)break;
+//			body += new String(byteBody,0,ch);
+//		}
+//		System.out.println("Print Body Test " + body);
+//		
+//		Expense expense = null;
+		
+//		if((request.getMethod()).compareToIgnoreCase("POST")==0) {
+//			if(!UserUtil.checkUserAdminRole(accessToken, this)) {
+//				if (ExpenseUserIdCheckUtil.compareExpenseUserId(accessToken,expense,requestUserId)) {
+//					
+//				}
+//			}
+//		}
+		
+//		String userEmail = userDetails.getUsername();
+//		Optional<User>optionalUser = userDao.findByEmail(userEmail);
+//		User user = optionalUser.get();
+//		int tokenUserId = user.getId();
+				
+//		String reqUserId = request.getParameter("requestUserId");
+//		System.out.println("Requesting User Id: " + reqUserId);
+		
 				
 		filterChain.doFilter(request, response);		
 	}
@@ -78,17 +146,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
 		System.out.println("Access token: " + token);
 		return token;
 	}
-	private UserDetails setAuthenticationContext(String accessToken, HttpServletRequest request) {
+	private void setAuthenticationContext(String accessToken, HttpServletRequest request) {
 		UserDetails userDetails = getUserDetails(accessToken);
 		
 		UsernamePasswordAuthenticationToken authentication =
 				new UsernamePasswordAuthenticationToken(userDetails,null,userDetails.getAuthorities());
 		authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 		SecurityContextHolder.getContext().setAuthentication(authentication);
-		return userDetails;
 	}
-	public UserDetails getUserDetails(String accessToken) {
-		User userDetails = new User();
+	public UserDetails getUserDetails(String accessToken) {		
 		Claims claims = jwtAuthUtil.parseClaims(accessToken);
 		String claimRoles = (String) claims.get("roles");
 		//String claimSub = claims.getSubject();
@@ -99,13 +165,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
 		claimRoles = claimRoles.replace("[", "").replace("]", "");
 		String[]roleNames =  claimRoles.split(",");
 		for(String roleName:roleNames) {
-			userDetails.addRole(new Role(roleName));
+			tokenUserDetails.addRole(new Role(roleName));
 		}		
 		String subject = (String)claims.get(Claims.SUBJECT);		
 		String[]subjectArray = subject.split(",");
-		userDetails.setId(Integer.parseInt(subjectArray[0]));
-		userDetails.setEmail(subjectArray[1]);
+		tokenUserDetails.setId(Integer.parseInt(subjectArray[0]));
+		tokenUserDetails.setEmail(subjectArray[1]);
 		
-		return userDetails;
+		return tokenUserDetails;
 	}
 }

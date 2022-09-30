@@ -11,5 +11,6 @@ import com.johnsunday.app.entity.Employee;
 public interface IEmployeeDao extends JpaRepository<Employee,Integer> {
 
 	//@Query(value="SELECT * FROM employee WHERE employee.name=?1 and employee.surname=?2", nativeQuery=true)
-	Optional<Employee> findByNameAndSurnameAllIgnoreCase(String employeeName,String employeeSurname);
+	Optional<Employee> findByNameAndSurnameAllIgnoreCase(String name,String surname);
+	Optional<Employee> findByEmail(String email);
 }

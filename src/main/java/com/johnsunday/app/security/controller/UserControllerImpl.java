@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.johnsunday.app.security.dto.DtoUser;
+import com.johnsunday.app.security.entity.User;
 import com.johnsunday.app.security.service.UserServiceImpl;
 
 @RestController
@@ -54,10 +54,10 @@ public class UserControllerImpl implements IUserController {
 	@Override
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
 	@PostMapping("/save")	
-	public ResponseEntity<?> saveUser(@Valid @RequestBody DtoUser dtoUser,
+	public ResponseEntity<?> saveUser(@Valid @RequestBody User user,
 									  @RequestParam("requestUserId")Integer requestUserId){
 		try {
-			return ResponseEntity.status(HttpStatus.OK).body(userService.save(dtoUser));
+			return ResponseEntity.status(HttpStatus.OK).body(userService.save(user));
 		}catch(Exception e) {
 			e.printStackTrace();
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. Please, Try it later. NOT possible to SAVE the user.\"}");
@@ -67,10 +67,10 @@ public class UserControllerImpl implements IUserController {
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PutMapping("/update/{userId}")	
 	public ResponseEntity<?> updateUser(@PathVariable("userId")Integer userId,
-										@RequestBody DtoUser dtoUser,
+										@RequestBody User user,
 										@RequestParam("requestUserId")Integer requestUserId){
 		try {
-			return ResponseEntity.status(HttpStatus.OK).body(userService.update(userId, dtoUser));
+			return ResponseEntity.status(HttpStatus.OK).body(userService.update(userId,user));
 		}catch(Exception e) {
 			e.printStackTrace();
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. Please, Try it later. it is NOT possible UPDATE the user who you looking for.\"}");

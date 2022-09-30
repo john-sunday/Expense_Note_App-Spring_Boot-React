@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import com.johnsunday.app.dao.IPayrollDao;
 import com.johnsunday.app.entity.Employee;
 import com.johnsunday.app.entity.Payroll;
+import com.johnsunday.app.util.DateUtil;
 
 @Service
 public class PayrollServiceImpl implements IPayrollService {
@@ -55,9 +56,10 @@ public class PayrollServiceImpl implements IPayrollService {
 	@Override
 	@Transactional
 	public Payroll save(Payroll payroll) throws Exception {
-		try {
-			Payroll newPayroll = payrollDao.save(payroll);
-			return newPayroll;
+		try {			
+			LocalDateTime parsedDate = DateUtil.formattingDate(payroll.getDate());
+			payroll.setDate(parsedDate);
+			return payrollDao.save(payroll);			 
 		}catch(Exception e) {
 			e.printStackTrace();
 			throw new Exception(e.getMessage());
@@ -71,6 +73,8 @@ public class PayrollServiceImpl implements IPayrollService {
 			Optional<Payroll> optionalPayroll = payrollDao.findById(id);
 			Payroll oldPayroll = optionalPayroll.get();			
 			if(oldPayroll!=null) {
+				LocalDateTime parsedDate = DateUtil.formattingDate(payroll.getDate());
+				payroll.setDate(parsedDate);
 				payrollUpdated = payrollDao.save(payroll);				
 			}					
 		}catch(Exception e) {

@@ -1,5 +1,6 @@
 package com.johnsunday.app.controller;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.http.ResponseEntity;
@@ -18,7 +19,8 @@ public interface IExpenseController<Expense> {
 										   @RequestParam Integer requestUserId);
 	public ResponseEntity<?> saveExpense(@RequestBody @Valid Expense expense,
 			  						     @RequestParam Integer requestUserId,
-			  						     @RequestHeader String token);
+			  						     @RequestHeader String token,
+			  						     HttpServletRequest request);
 	public ResponseEntity<?> updateExpense(@PathVariable Integer id,
 										   @RequestBody @Valid Expense expense,
 										   @RequestParam Integer requestUserId);

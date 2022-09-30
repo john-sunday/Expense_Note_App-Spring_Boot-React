@@ -11,4 +11,5 @@ public interface IEmployeeTypeService {
 	public EmployeeType save(EmployeeType employeeType) throws Exception;
 	public EmployeeType update(Integer id,EmployeeType employeeType) throws Exception;
 	public Boolean delete(Integer id) throws Exception;
+	public EmployeeType findByName(String name);
 }

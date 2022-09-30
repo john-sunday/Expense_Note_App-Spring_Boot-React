@@ -79,4 +79,9 @@ public class EmployeeTypeServiceImpl implements IEmployeeTypeService {
 		}
 		return isDeleted;
 	}
+	@Override
+	public EmployeeType findByName(String name) {
+		Optional<EmployeeType>optEmployeeType = employeeTypeDao.findByNameIgnoreCase(name);
+		return optEmployeeType.get();
+	}
 }

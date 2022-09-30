@@ -18,15 +18,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.johnsunday.app.security.dto.DtoRole;
-import com.johnsunday.app.security.dto.DtoUser;
+import com.johnsunday.app.security.entity.Role;
 import com.johnsunday.app.security.service.RoleServiceImpl;
 
 @CrossOrigin(origins="*")
 @RequestMapping("api/v1/role")
 @RestController
-public class RoleControllerImpl 
-			 /*extends BaseControllerImpl<Role, RoleServiceImpl>*/ {	
+public class RoleControllerImpl implements IRoleController {	
 	
 	@Lazy
 	@Autowired
@@ -55,10 +53,10 @@ public class RoleControllerImpl
 	}
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
 	@PostMapping("/save")	
-	public ResponseEntity<?> saveRole(@Valid @RequestBody DtoRole dtoRole,
+	public ResponseEntity<?> saveRole(@Valid @RequestBody Role role,
 									  @RequestParam("requestUserId")Integer requestUserId){
 		try {
-			return ResponseEntity.status(HttpStatus.OK).body(roleService.save(dtoRole));
+			return ResponseEntity.status(HttpStatus.OK).body(roleService.save(role));
 		}catch(Exception e) {
 			e.printStackTrace();
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. Please, Try it later. NOT possible to SAVE the user.\"}");
@@ -66,11 +64,11 @@ public class RoleControllerImpl
 	}
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PutMapping("/update/{roleId}")	
-	public ResponseEntity<?> updateEntity(@PathVariable("roleId")Integer roleId,
-										  @RequestBody DtoRole dtoRole,
-										  @RequestParam("requestUserId")Integer requestUserId){
+	public ResponseEntity<?> updateRole(@PathVariable("roleId")Integer roleId,
+										@RequestBody Role role,
+										@RequestParam("requestUserId")Integer requestUserId){
 		try {
-			return ResponseEntity.status(HttpStatus.OK).body(roleService.update(roleId, dtoRole));
+			return ResponseEntity.status(HttpStatus.OK).body(roleService.update(roleId,role));
 		}catch(Exception e) {
 			e.printStackTrace();
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. Please, Try it later. it is NOT possible UPDATE the user who you looking for.\"}");
@@ -78,8 +76,8 @@ public class RoleControllerImpl
 	}
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@DeleteMapping("/delete/{userId}")	
-	public ResponseEntity<?> deleteEntity(@PathVariable("userId")Integer userId,
-										  @RequestParam("requestUserId")Integer requestUserId){
+	public ResponseEntity<?> deleteRole(@PathVariable("userId")Integer userId,
+										@RequestParam("requestUserId")Integer requestUserId){
 		try {
 			return ResponseEntity.status(HttpStatus.NO_CONTENT).body(roleService.delete(userId));
 		}catch(Exception e) {

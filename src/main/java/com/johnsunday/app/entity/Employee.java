@@ -15,6 +15,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 import org.hibernate.validator.constraints.Length;
 
@@ -31,7 +32,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 @Entity
-@Table(name="employee")
+@Table(name="employee",uniqueConstraints=@UniqueConstraint(columnNames="email"))
 @Getter
 @Setter
 @AllArgsConstructor
@@ -62,6 +63,10 @@ public class Employee implements Serializable {
 	@JoinColumn(name="employee_type_id_fk")
 	@NonNull
 	private EmployeeType employeeType;
+	@Column(name="email",nullable=false)
+	@Length(min=3,max=50)
+	@NonNull
+	private String email;
 	
 	@OneToMany(mappedBy="employee",targetEntity=Expense.class,
 			   cascade= {CascadeType.MERGE, CascadeType.REMOVE,            
@@ -80,11 +85,14 @@ public class Employee implements Serializable {
 	private List<Payroll>payrolls = new ArrayList<>();
 	
 	// Constructor without id.
-	public Employee(String name,String surname,LocalDateTime birthDate,EmployeeType employeeType,List<Expense>expenses,List<Payroll>payrolls) {
+	public Employee(String name,String surname,LocalDateTime birthDate,
+					EmployeeType employeeType,String email,
+					List<Expense>expenses,List<Payroll>payrolls) {
 		this.name = name;
 		this.surname = surname;
 		this.birthDate = birthDate;
 		this.employeeType = employeeType;
+		this.email = email;
 		this.expenses = expenses;
 		this.payrolls = payrolls;
 	}

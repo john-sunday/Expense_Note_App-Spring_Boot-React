@@ -31,6 +31,7 @@ public class EmployeeTypeControllerImpl implements IEmployeeTypeController<Emplo
 	@Autowired
 	private EmployeeTypeServiceImpl employeeTypeService;
 	
+	@Override
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@GetMapping("/all")	
 	public ResponseEntity<?> getAllEmployeeType(@RequestParam("requestUserId")Integer requestUserId) {
@@ -41,7 +42,8 @@ public class EmployeeTypeControllerImpl implements IEmployeeTypeController<Emplo
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"error\":\"Error. Please, Try it later. It is NOT possible to SHOW all employee types\"}");
 		}
 	}
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
+	@Override
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@GetMapping("/one/{employeeTypeId}")
 	@ResponseBody
 	public ResponseEntity<?> getOneEmployeeType(@PathVariable("employeeTypeId")Integer employeeTypeId,
@@ -55,11 +57,12 @@ public class EmployeeTypeControllerImpl implements IEmployeeTypeController<Emplo
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"error\":\"Error. Please, Try it later. NOT possible to SHOW the employee type which you find.\"}");
 		}
 	}
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
+	@Override
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PostMapping("/save")
 	@ResponseBody
 	public ResponseEntity<?> saveEmployeeType(@RequestBody @Valid EmployeeType employeeType,
-										 	  @RequestParam("requestUserId") Integer requestUserId) {
+										 	  @RequestParam("requestUserId")Integer requestUserId) {
 		try {
 			return ResponseEntity.status(HttpStatus.OK).body(employeeTypeService.save(employeeType));
 		}catch(Exception e) {
@@ -67,6 +70,7 @@ public class EmployeeTypeControllerImpl implements IEmployeeTypeController<Emplo
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. Please, Try it later. It is NOT possible to SAVE the employee type.\"}");
 		}
 	}
+	@Override
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@DeleteMapping("/delete/{employeeTypeId}")
 	@ResponseBody
@@ -79,11 +83,12 @@ public class EmployeeTypeControllerImpl implements IEmployeeTypeController<Emplo
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. Please, Try it later. It is NOT possible to DELETE the employee type.\"}");
 		}
 	}
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+	@Override
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PutMapping("/update/{employeeTypeId}")	
 	public ResponseEntity<?> updateEmployeeType(@PathVariable("employeeTypeId")Integer employeeTypeId, 
 										   		@RequestBody @Valid EmployeeType employeeType,
-										   		@RequestParam("requestUserId")Integer requestUserId){
+										   		@RequestParam("requestUserId")Integer requestUserId) {
 		try {
 			return ResponseEntity.status(HttpStatus.OK).body(employeeTypeService.update(employeeTypeId,employeeType));
 		}catch(Exception e) {
