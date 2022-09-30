@@ -2,10 +2,10 @@ package com.johnsunday.app.security.service;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +24,7 @@ import com.johnsunday.app.security.dao.IUserDao;
 import com.johnsunday.app.security.entity.Role;
 import com.johnsunday.app.security.entity.User;
 import com.johnsunday.app.service.EmployeeServiceImpl;
+import com.johnsunday.app.util.UserUtil;
 
 @Service
 public class UserServiceImpl implements IUserService,UserDetailsService {
@@ -33,18 +34,21 @@ public class UserServiceImpl implements IUserService,UserDetailsService {
 	@Autowired private IRoleDao roleDao;
 	@Autowired @Lazy private BCryptPasswordEncoder passwordEncoder;
 	@Autowired private EmployeeServiceImpl employeeService;
+	@Autowired private EntityManager entityManager;
 	
 	@Override
 	@Transactional
 	public User save(User user) throws Exception {
 		User savedUser = new User();
+		User setUser = new User();
 		try {
 			Employee employee = employeeService.findByEmail(user.getEmail());
 			if (employee!=null) {
-				user.setPassword(passwordEncoder.encode(user.getPassword()));
 				if((user.getRoles()==null)||(user.getRoles().size()==0)) user.getRoles().add(roleDao.findByName(ROLE_USER).get());				 
+				else setRoleUser(user);
+				setUser.setPassword(passwordEncoder.encode(setUser.getPassword()));
 				
-				savedUser = userDao.save(user);	
+				savedUser = userDao.save(setUser);	
 			}
 		}catch(Exception e) {
 			System.out.println("e.getCause(): " + e.getCause());
@@ -52,6 +56,20 @@ public class UserServiceImpl implements IUserService,UserDetailsService {
 			throw new Exception(e.getCause());
 		}
 		return savedUser;
+	}
+	private User setRoleUser(User user) {
+		User setUser = new User();
+		//setUser.setId(user.getId());
+		setUser.setEmail(user.getEmail());
+		setUser.setName(user.getName());
+		setUser.setSurname(user.getSurname());
+		setUser.setPassword(user.getPassword());
+		
+		for (Role role:user.getRoles()) {
+			//setUser.getRoles().add(entityManager.getReference(Role.class, role.getId()));
+			setUser.getRoles().add(entityManager.merge(role));
+		}
+		return setUser;
 	}
 	@Override
 	@Transactional

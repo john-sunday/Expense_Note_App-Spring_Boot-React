@@ -77,7 +77,7 @@ public class User implements Serializable,UserDetails   {
 			joinColumns=@JoinColumn(name="user_id",referencedColumnName="id"),
 			inverseJoinColumns=@JoinColumn(name="role_id",referencedColumnName="id")
 			)
-	private Collection<Role>roles = new HashSet<>();
+	private Collection<Role>roles = new ArrayList<>();
 	public void addRole(Role role) {
 		this.roles.add(role);
 	}
