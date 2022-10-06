@@ -15,7 +15,7 @@ public interface IEmployeeTypeController<EmployeeType> {
 										    	@RequestParam Integer requestUserId);
 	public ResponseEntity<?> saveEmployeeType(@RequestBody @Valid EmployeeType employeeType,
 			  						      	  @RequestParam Integer requestUserId);
-	public ResponseEntity<?> updateEmployeeType(@PathVariable Integer userId,
+	public ResponseEntity<?> updateEmployeeType(@PathVariable Integer id,
 										        @RequestBody @Valid EmployeeType employeeType,
 										        @RequestParam Integer requestUserId);
 	public ResponseEntity<?> deleteEmployeeType(@PathVariable Integer id,

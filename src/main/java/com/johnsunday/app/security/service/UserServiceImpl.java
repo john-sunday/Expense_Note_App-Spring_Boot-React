@@ -40,45 +40,49 @@ public class UserServiceImpl implements IUserService,UserDetailsService {
 	@Transactional
 	public User save(User user) throws Exception {
 		User savedUser = new User();
-		User setUser = new User();
+		User settedUser = new User();		
 		try {
 			Employee employee = employeeService.findByEmail(user.getEmail());
 			if (employee!=null) {
-				if((user.getRoles()==null)||(user.getRoles().size()==0)) user.getRoles().add(roleDao.findByName(ROLE_USER).get());				 
-				else setRoleUser(user);
-				setUser.setPassword(passwordEncoder.encode(setUser.getPassword()));
-				
-				savedUser = userDao.save(setUser);	
+				if((user.getRoles()==null)||(user.getRoles().size()==0)) {
+					user.getRoles().add(roleDao.findByName(ROLE_USER).get());										
+				}
+				settedUser = setUser(user);
+				savedUser = userDao.save(settedUser);
 			}
-		}catch(Exception e) {
+		} catch(Exception e) {
 			System.out.println("e.getCause(): " + e.getCause());
 			e.printStackTrace();
 			throw new Exception(e.getCause());
 		}
 		return savedUser;
 	}
-	private User setRoleUser(User user) {
-		User setUser = new User();
-		//setUser.setId(user.getId());
-		setUser.setEmail(user.getEmail());
-		setUser.setName(user.getName());
-		setUser.setSurname(user.getSurname());
-		setUser.setPassword(user.getPassword());
-		
+	private User setUser(User user) throws Exception {
+		User settedUser = new User();
+		if (user.getId()!=null) settedUser.setId(user.getId());
+		settedUser.setEmail(user.getEmail());
+		settedUser.setName(user.getName());
+		settedUser.setSurname(user.getSurname());
+		settedUser.setPassword(passwordEncoder.encode(user.getPassword()));
+				
 		for (Role role:user.getRoles()) {
-			//setUser.getRoles().add(entityManager.getReference(Role.class, role.getId()));
-			setUser.getRoles().add(entityManager.merge(role));
+			if ((roleDao.findById(role.getId())!=null)) {			
+				settedUser.getRoles().add(entityManager.merge(role));
+			} else throw new Exception("The Role name: " + role.getName() + " with id: " + role.getId() + " IS NOT in Data Base");
 		}
-		return setUser;
+		return settedUser;
 	}
 	@Override
 	@Transactional
-	public User update(Integer userId,User user) throws Exception {
+	public User update(Integer id,User user) throws Exception {
 		User updatedUser = new User();
 		try {
-			Optional<User>optionalUser = userDao.findById(userId);
+			Optional<User>optionalUser = userDao.findById(id);
 			if (!optionalUser.isEmpty()) {
-				 updatedUser = userDao.save(optionalUser.get());			
+				//User settedUser = setUser(optionalUser.get());
+				//updatedUser = userDao.save(settedUser);
+				user.setPassword(passwordEncoder.encode(user.getPassword()));
+				updatedUser = userDao.save(user);			
 			}
 		}catch(Exception e) {
 			e.printStackTrace();
@@ -86,7 +90,7 @@ public class UserServiceImpl implements IUserService,UserDetailsService {
 		}
 		return updatedUser;
 	}
-	// Load an User by 'email', NOT name.
+	// Load User by 'email', NOT by name.
 	@Override
 	public UserDetails loadUserByUsername(String userEmail) throws UsernameNotFoundException {
 		Optional<User> optionalUser = userDao.findByEmail(userEmail);
@@ -105,9 +109,9 @@ public class UserServiceImpl implements IUserService,UserDetailsService {
 				.map(role->new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList());
 	}
 	@Override
-	public Optional<User> findByEmail(String userEmail) throws Exception {
+	public Optional<User> findByEmail(String email) throws Exception {
 		User searchedUser = null;
-		Optional<User> optionalUser = userDao.findByEmail(userEmail);
+		Optional<User> optionalUser = userDao.findByEmail(email);
 		if (!optionalUser.isEmpty()) {
 			searchedUser = optionalUser.get();
 		}

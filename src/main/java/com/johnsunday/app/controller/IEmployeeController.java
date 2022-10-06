@@ -1,6 +1,5 @@
 package com.johnsunday.app.controller;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.http.ResponseEntity;
