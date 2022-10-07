@@ -31,7 +31,7 @@ public class UserControllerImpl implements IUserController {
 	@Override
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@GetMapping("/all")	
-	public ResponseEntity<?> getAllUser(@RequestParam("requestUserId")Integer requestUserId){
+	public ResponseEntity<?> findAll(@RequestParam("requestUserId")Integer requestUserId){
 		try {
 			return ResponseEntity.status(HttpStatus.OK).body(userService.findAll());
 		}catch(Exception e) {
@@ -42,8 +42,8 @@ public class UserControllerImpl implements IUserController {
 	@Override
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
 	@GetMapping("/one/{userId}")
-	public ResponseEntity<?> getOneUser(@PathVariable("userId")Integer userId,
-										@RequestParam("requestUserId")Integer requestUserId){
+	public ResponseEntity<?> findById(@PathVariable("userId")Integer userId,
+									  @RequestParam("requestUserId")Integer requestUserId){
 		try {
 			return ResponseEntity.status(HttpStatus.OK).body(userService.findById(userId));
 		}catch(Exception e) {
@@ -54,8 +54,8 @@ public class UserControllerImpl implements IUserController {
 	@Override
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
 	@PostMapping("/save")	
-	public ResponseEntity<?> saveUser(@Valid @RequestBody User user,
-									  @RequestParam("requestUserId")Integer requestUserId){
+	public ResponseEntity<?> save(@Valid @RequestBody User user,
+								  @RequestParam("requestUserId")Integer requestUserId){
 		try {
 			return ResponseEntity.status(HttpStatus.OK).body(userService.save(user));
 		}catch(Exception e) {
@@ -66,9 +66,9 @@ public class UserControllerImpl implements IUserController {
 	@Override
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PutMapping("/update/{userId}")	
-	public ResponseEntity<?> updateUser(@PathVariable("userId")Integer userId,
-										@RequestBody User user,
-										@RequestParam("requestUserId")Integer requestUserId){
+	public ResponseEntity<?> update(@PathVariable("userId")Integer userId,
+									@RequestBody User user,
+									@RequestParam("requestUserId")Integer requestUserId){
 		try {
 			return ResponseEntity.status(HttpStatus.OK).body(userService.update(userId,user));
 		}catch(Exception e) {
@@ -79,10 +79,10 @@ public class UserControllerImpl implements IUserController {
 	@Override
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@DeleteMapping("/delete/{userId}")	
-	public ResponseEntity<?> deleteUser(@PathVariable("userId")Integer userId,
-										@RequestParam("requestUserId")Integer requestUserId){
+	public ResponseEntity<?> delete(@PathVariable("userId")Integer userId,
+									@RequestParam("requestUserId")Integer requestUserId){
 		try {
-			return ResponseEntity.status(HttpStatus.NO_CONTENT).body(userService.delete(userId));
+			return ResponseEntity.status(HttpStatus.OK).body(userService.delete(userId));
 		}catch(Exception e) {
 			e.printStackTrace();
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. Please, Try it later. It is NOT possible DELETE the user who you looking for.\"}");

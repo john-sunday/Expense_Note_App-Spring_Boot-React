@@ -24,7 +24,6 @@ import com.johnsunday.app.security.dao.IUserDao;
 import com.johnsunday.app.security.entity.Role;
 import com.johnsunday.app.security.entity.User;
 import com.johnsunday.app.service.EmployeeServiceImpl;
-import com.johnsunday.app.util.UserUtil;
 
 @Service
 public class UserServiceImpl implements IUserService,UserDetailsService {
@@ -51,8 +50,7 @@ public class UserServiceImpl implements IUserService,UserDetailsService {
 				savedUser = userDao.save(settedUser);
 			}
 		} catch(Exception e) {
-			System.out.println("e.getCause(): " + e.getCause());
-			e.printStackTrace();
+			//System.out.println("e.getCause(): " + e.getCause());
 			throw new Exception(e.getCause());
 		}
 		return savedUser;
@@ -132,6 +130,7 @@ public class UserServiceImpl implements IUserService,UserDetailsService {
 		boolean isDeleted = false;
 		Optional<User>optUser = userDao.findById(id);
 		if (optUser!=null) {
+			optUser.get().getRoles().clear();
 			userDao.delete(optUser.get());
 			isDeleted = true;
 		}
