@@ -45,22 +45,21 @@ public class EmployeeTypeControllerImpl implements IEmployeeTypeController<Emplo
 	@Override
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@GetMapping("/one/{employeeTypeId}")
-	@ResponseBody
-	public ResponseEntity<?> getOneEmployeeType(@PathVariable("employeeTypeId")Integer employeeTypeId,
-										        @RequestParam("requestUserId")Integer requestUserId){
+	//@ResponseBody
+	public ResponseEntity<?> getEmployeeTypeById(@PathVariable("employeeTypeId")Integer employeeTypeId,
+										         @RequestParam("requestUserId")Integer requestUserId){
 		System.out.println("Request User ID: " + requestUserId);
 		try {
 			return ResponseEntity.status(HttpStatus.OK).body(employeeTypeService.findById(employeeTypeId));
 		}catch(Exception e) {
 			e.printStackTrace();
-			System.out.println("401 ******** UNAUTHORIZED ");
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"error\":\"Error. Please, Try it later. NOT possible to SHOW the employee type which you find.\"}");
 		}
 	}
 	@Override
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PostMapping("/save")
-	@ResponseBody
+	//@ResponseBody
 	public ResponseEntity<?> saveEmployeeType(@RequestBody @Valid EmployeeType employeeType,
 										 	  @RequestParam("requestUserId")Integer requestUserId) {
 		try {
@@ -73,7 +72,7 @@ public class EmployeeTypeControllerImpl implements IEmployeeTypeController<Emplo
 	@Override
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@DeleteMapping("/delete/{employeeTypeId}")
-	@ResponseBody
+	//@ResponseBody
 	public ResponseEntity<?> deleteEmployeeType(@PathVariable("employeeTypeId")Integer employeeTypeId,
 										   		@RequestParam("requestUserId")Integer requestUserId) {
 		try {						

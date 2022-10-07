@@ -78,9 +78,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
 		for (GrantedAuthority auth:grantedAuths) {
 			String strAuth = auth.getAuthority();
 			// Test.
-			System.out.println("String Authority: " + strAuth);
+			//System.out.println("String Authority: " + strAuth);
 			if (strAuth.equalsIgnoreCase("ROLE_ADMIN")) {
 				isAdmin = true;
+				break;
 			}
 		}
 		/* If the user hasn't role Admin, and the id user from token doesn't match with 

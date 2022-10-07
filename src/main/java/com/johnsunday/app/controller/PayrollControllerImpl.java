@@ -42,7 +42,7 @@ public class PayrollControllerImpl implements IPayrollController<Payroll> {
 	@Override
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
 	@GetMapping("/all/{employeeId}")
-	@ResponseBody
+	//@ResponseBody
 	public ResponseEntity<?> getAllPayrollByEmployeeId(@PathVariable("employeeId")Integer employeeId,
 											    	   @RequestParam("requestUserId")Integer requestUserId) {
 		try {
@@ -54,21 +54,19 @@ public class PayrollControllerImpl implements IPayrollController<Payroll> {
 	}
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
 	@GetMapping("/one/{payrollId}")
-	@ResponseBody
-	public ResponseEntity<?> getOnePayroll(@PathVariable("payrollId")Integer payrollId,
-										   @RequestParam("requestUserId")Integer requestUserId){
-		System.out.println("Request User ID: " + requestUserId);
+	//@ResponseBody
+	public ResponseEntity<?> getPayrollById(@PathVariable("payrollId")Integer payrollId,
+										    @RequestParam("requestUserId")Integer requestUserId){
 		try {
 			return ResponseEntity.status(HttpStatus.OK).body(payrollService.findById(payrollId));
 		}catch(Exception e) {
 			e.printStackTrace();
-			System.out.println("401 ******** UNAUTHORIZED ");
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"error\":\"Error. Please, Try it later. It is NOT possible to SHOW the payroll which you find.\"}");
 		}
 	}
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
 	@PostMapping("/save")
-	@ResponseBody
+	//@ResponseBody
 	public ResponseEntity<?> savePayroll(@RequestBody @Valid Payroll payroll,
 										 @RequestParam("requestUserId") Integer requestUserId) {
 		ResponseEntity<Payroll> responseEntity;
@@ -84,7 +82,7 @@ public class PayrollControllerImpl implements IPayrollController<Payroll> {
 	}
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@DeleteMapping("/delete/{payrollId}")
-	@ResponseBody
+	//@ResponseBody
 	public ResponseEntity<?> deletePayroll(@PathVariable("payrollId")Integer payrollId,
 										   @RequestParam("requestUserId")Integer requestUserId) {
 		ResponseEntity<Boolean> responseEntity;

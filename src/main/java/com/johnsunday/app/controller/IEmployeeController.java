@@ -13,7 +13,7 @@ import com.johnsunday.app.entity.Employee;
 public interface IEmployeeController {
 
 	public ResponseEntity<?> getAllEmployee(@RequestParam Integer requestUserId);	
-	public ResponseEntity<?> getOneEmployee(@PathVariable Integer employeeId,
+	public ResponseEntity<?> getEmployeeById(@PathVariable Integer employeeId,
 										    @RequestParam Integer requestUserId);
 	public ResponseEntity<?> saveEmployee(@RequestBody @Valid Employee employee,
 			  						      @RequestParam Integer requestUserId);
@@ -22,7 +22,7 @@ public interface IEmployeeController {
 										   @RequestParam Integer requestUserId);
 	public ResponseEntity<?> deleteEmployee(@PathVariable Integer employeeId,
 										    @RequestParam Integer requestUserId);
-	public ResponseEntity<?> findByNameAndSurnameAllIgnoreCase(@PathVariable String name,
+	public ResponseEntity<?> getUserByNameAndSurname(@PathVariable String name,
 															   @PathVariable String surname,
 															   @RequestParam Integer requestUserId);
 }

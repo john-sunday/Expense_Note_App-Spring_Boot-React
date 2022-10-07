@@ -32,7 +32,7 @@ public class RoleControllerImpl implements IRoleController {
 	
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@GetMapping("/all")	
-	public ResponseEntity<?> getAllRole(@RequestParam("requestUserId")Integer requestUserId){
+	public ResponseEntity<?> getAllRole(@RequestParam("requestUserId")Integer requestUserId) {
 		try {
 			return ResponseEntity.status(HttpStatus.OK).body(roleService.findAll());
 		}catch(Exception e) {
@@ -42,8 +42,8 @@ public class RoleControllerImpl implements IRoleController {
 	}
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
 	@GetMapping("/one/{roleId}")
-	public ResponseEntity<?> getOneRole(@PathVariable("roleId")Integer roleId,
-										@RequestParam("requestUserId")Integer requestUserId){
+	public ResponseEntity<?> getRoleById(@PathVariable("roleId")Integer roleId,
+										 @RequestParam("requestUserId")Integer requestUserId) {
 		try {
 			return ResponseEntity.status(HttpStatus.OK).body(roleService.findById(roleId));
 		}catch(Exception e) {
@@ -54,7 +54,7 @@ public class RoleControllerImpl implements IRoleController {
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
 	@PostMapping("/save")	
 	public ResponseEntity<?> saveRole(@Valid @RequestBody Role role,
-									  @RequestParam("requestUserId")Integer requestUserId){
+									  @RequestParam("requestUserId")Integer requestUserId) {
 		try {
 			return ResponseEntity.status(HttpStatus.OK).body(roleService.save(role));
 		}catch(Exception e) {
@@ -66,7 +66,7 @@ public class RoleControllerImpl implements IRoleController {
 	@PutMapping("/update/{roleId}")	
 	public ResponseEntity<?> updateRole(@PathVariable("roleId")Integer roleId,
 										@RequestBody Role role,
-										@RequestParam("requestUserId")Integer requestUserId){
+										@RequestParam("requestUserId")Integer requestUserId) {
 		try {
 			return ResponseEntity.status(HttpStatus.OK).body(roleService.update(roleId,role));
 		}catch(Exception e) {
@@ -75,11 +75,11 @@ public class RoleControllerImpl implements IRoleController {
 		}
 	}
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@DeleteMapping("/delete/{userId}")	
-	public ResponseEntity<?> deleteRole(@PathVariable("userId")Integer userId,
-										@RequestParam("requestUserId")Integer requestUserId){
+	@DeleteMapping("/delete/{roleId}")	
+	public ResponseEntity<?> deleteRole(@PathVariable("roleId")Integer roleId,
+										@RequestParam("requestUserId")Integer requestUserId) {
 		try {
-			return ResponseEntity.status(HttpStatus.NO_CONTENT).body(roleService.delete(userId));
+			return ResponseEntity.status(HttpStatus.NO_CONTENT).body(roleService.delete(roleId));
 		}catch(Exception e) {
 			e.printStackTrace();
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. Please, Try it later. It is NOT possible DELETE the user who you looking for.\"}");

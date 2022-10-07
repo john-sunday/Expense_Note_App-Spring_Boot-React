@@ -17,5 +17,5 @@ public interface IExpenseService {
 	public Boolean findByAmountAndExpenseDateAndConceptAndEmployeeIdFk(Double amount,
 																	   LocalDateTime expenseDate,
 																	   String concept,
-																	   Integer employeeIdFk);
+																	   Integer employeeIdFk) throws Exception;
 }

@@ -11,14 +11,14 @@ import com.johnsunday.app.security.entity.User;
 
 public interface IUserController {
 
-	public ResponseEntity<?> findAll(@RequestParam Integer requestUserId);
-	public ResponseEntity<?> findById(@PathVariable Integer userId,
+	public ResponseEntity<?> getAllUser(@RequestParam Integer requestUserId);
+	public ResponseEntity<?> getUserById(@PathVariable Integer userId,
 										@RequestParam Integer requestUserId);
-	public ResponseEntity<?> save(@RequestBody @Valid User user,
+	public ResponseEntity<?> saveUser(@RequestBody @Valid User user,
 			  						  @RequestParam Integer requestUserId);
-	public ResponseEntity<?> update(@PathVariable Integer userId,
+	public ResponseEntity<?> updateUser(@PathVariable Integer userId,
 										@RequestBody User user,
 										@RequestParam Integer requestUserId);
-	public ResponseEntity<?> delete(@PathVariable Integer userId,
+	public ResponseEntity<?> deleteUser(@PathVariable Integer userId,
 										@RequestParam Integer requestUserId);
 }

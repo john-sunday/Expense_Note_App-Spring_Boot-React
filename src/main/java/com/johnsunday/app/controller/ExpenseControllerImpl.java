@@ -38,8 +38,6 @@ public class ExpenseControllerImpl implements IExpenseController<Expense> {
 
 	@Autowired private ExpenseServiceImpl expenseService;
 	@Autowired private EmployeeServiceImpl employeeService;
-//	@Autowired private JwtAuthenticationUtil jwtAuthUtil;
-//	@Autowired private JwtAuthenticationFilter jwtAuthFilter;
 	@Autowired UserServiceImpl userService;
 	
 	@Override
@@ -55,9 +53,8 @@ public class ExpenseControllerImpl implements IExpenseController<Expense> {
 	}
 	@Override
 	@PreAuthorize("hasAnyRole('ADMIN_ROLE','USER_ROLE')")
-	//@PreAuthorize("hasRole('ROLE_ADMIN')||hasRole('ROLE_USER')")
 	@GetMapping("/all/{employeeId}")
-	@ResponseBody
+	//@ResponseBody
 	public ResponseEntity<?> getAllExpenseByEmployeeId(@PathVariable("employeeId")Integer employeeId,
 											    	   @RequestParam("requestUserId")Integer requestUserId) {
 		try {
@@ -71,25 +68,21 @@ public class ExpenseControllerImpl implements IExpenseController<Expense> {
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
 	@GetMapping("/one/{expenseId}")
 	@ResponseBody
-	public ResponseEntity<?>getOneExpense(@PathVariable("expenseId")Integer expenseId,
+	public ResponseEntity<?>getExpenseById(@PathVariable("expenseId")Integer expenseId,
 										   @RequestParam("requestUserId")Integer requestUserId){
-		System.out.println("Request User ID: " + requestUserId);
 		try {
 			return ResponseEntity.status(HttpStatus.OK).body(expenseService.findById(expenseId));
 		}catch(Exception e) {
 			e.printStackTrace();
-			System.out.println("401 ******** UNAUTHORIZED ");
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"error\":\"Error. Please, Try it later. NOT possible to SHOW the expense which you find.\"}");
 		}
 	}
 	@Override
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
 	@PostMapping("/save")
-	@ResponseBody
+	//@ResponseBody
 	public ResponseEntity<?>saveExpense(@RequestBody @Valid Expense expense,
-										@RequestParam("requestUserId") Integer requestUserId,
-										@RequestHeader(name="Authorization") String token,
-										HttpServletRequest request) {
+										@RequestParam("requestUserId")Integer requestUserId) {
 		//System.out.println("Save Expense TOKEN TEST Controller ---> " + token);		
 		ResponseEntity<?>responseEntity = null;
 		try {
@@ -112,9 +105,9 @@ public class ExpenseControllerImpl implements IExpenseController<Expense> {
 	@Override
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@DeleteMapping("/delete/{expenseId}")
-	@ResponseBody
+	//@ResponseBody
 	public ResponseEntity<?>deleteExpense(@PathVariable("expenseId")Integer expenseId,
-										   @RequestParam("requestUserId")Integer userId) {
+										  @RequestParam("requestUserId")Integer userId) {
 		ResponseEntity<Boolean> responseEntity;
 		try {
 			Expense expense = expenseService.findById(expenseId);
@@ -129,10 +122,10 @@ public class ExpenseControllerImpl implements IExpenseController<Expense> {
 	}
 	@Override
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@PutMapping("/{id}")	
+	@PutMapping("/update/{expenseId}")	
 	public ResponseEntity<?>updateExpense(@PathVariable("expenseId")Integer expenseId, 
-										   @RequestBody @Valid Expense expense,
-										   @RequestParam("requestUserId")Integer requestUserId){
+										  @RequestBody @Valid Expense expense,
+										  @RequestParam("requestUserId")Integer requestUserId){
 		try {
 			return ResponseEntity.status(HttpStatus.OK).body(expenseService.update(expenseId,expense));
 		}catch(Exception e) {
