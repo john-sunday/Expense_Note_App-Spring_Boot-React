@@ -1,30 +1,28 @@
 package com.johnsunday.app.util;
 
-import java.util.Collection;
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
-import com.johnsunday.app.security.dao.IRoleDao;
-import com.johnsunday.app.security.entity.Role;
-import com.johnsunday.app.security.jwt.JwtAuthenticationFilter;
+import com.johnsunday.app.security.jwt.JwtAuthenticationUtil;
+
+import io.jsonwebtoken.Claims;
 
 public class UserUtil {
 	
-	//@Autowired static private JwtAuthenticationFilter jwtAuthFilter;
-	@Autowired static private IRoleDao roleDao;
+	@Autowired static private JwtAuthenticationUtil jwtAuthUtil;	
 	
-	
-	public static Boolean checkUserAdminRole(String token,JwtAuthenticationFilter jwtAuthFilter) {
+	public static Boolean isAdminUser(String token) {
 		boolean isAdmin = false;
-		//UserDetails userTokenDetails = null;
-		UserDetails userTokenDetails = jwtAuthFilter.getUserDetails(token);			
-		Collection<? extends GrantedAuthority>roles = userTokenDetails.getAuthorities();		
-		Optional<Role>optAdminRole = roleDao.findByName("ROLE_ADMIN");		
-		//roles.stream().map(r->r.getAuthority().compareTo("ROLE_ADMIN"));
-		if (roles.contains(optAdminRole)) isAdmin = true;
+		
+		Claims claims = jwtAuthUtil.parseClaims(token);
+		String claimRoles = (String) claims.get("roles");		
+		claimRoles = claimRoles.replace("[", "").replace("]", "");
+		String[]roleNames =  claimRoles.split(",");
+		for (String role:roleNames) {
+			if (role.equalsIgnoreCase("ROLE_ADMIN")) {
+				isAdmin = true;
+				break;
+			}
+		}
 		return isAdmin;
 	}
 }

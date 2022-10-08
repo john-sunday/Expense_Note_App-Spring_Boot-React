@@ -11,14 +11,10 @@ import com.johnsunday.app.security.entity.Role;
 
 public interface IRoleController {
 
-	public ResponseEntity<?> getAllRole(@RequestParam Integer requestRoleId);
-	public ResponseEntity<?> getRoleById(@PathVariable Integer roleId,
-										 @RequestParam Integer requestRoleId);
-	public ResponseEntity<?> saveRole(@RequestBody @Valid Role role,
-			  						  @RequestParam Integer requestRoleId);
-	public ResponseEntity<?> updateRole(@PathVariable Integer roleId,
-										@RequestBody Role role,
-										@RequestParam Integer requestRoleId);
-	public ResponseEntity<?> deleteRole(@PathVariable Integer roleId,
-										@RequestParam Integer requestRoleId);
+	public ResponseEntity<?> getAllRole();
+	public ResponseEntity<?> getRoleById(@PathVariable Integer roleId);
+	public ResponseEntity<?> saveRole(@RequestBody @Valid Role role);
+	public ResponseEntity<?> updateRole(@RequestBody @Valid Role role,
+										@PathVariable Integer roleId);
+	public ResponseEntity<?> deleteRole(@PathVariable Integer roleId);
 }

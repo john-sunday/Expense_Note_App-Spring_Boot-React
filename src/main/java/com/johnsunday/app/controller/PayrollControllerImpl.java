@@ -30,8 +30,8 @@ public class PayrollControllerImpl implements IPayrollController<Payroll> {
 	private PayrollServiceImpl payrollService;
 	
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@GetMapping("/all")	
-	public ResponseEntity<?> getAllPayroll(@RequestParam("requestUserId")Integer requestUserId) {
+	@GetMapping("/")	
+	public ResponseEntity<?> getAllPayroll() {
 		try {
 			return ResponseEntity.status(HttpStatus.OK).body(payrollService.findAll());
 		}catch(Exception e) {
@@ -41,10 +41,9 @@ public class PayrollControllerImpl implements IPayrollController<Payroll> {
 	}
 	@Override
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
-	@GetMapping("/all/{employeeId}")
+	@GetMapping("/employee/{employeeId}")
 	//@ResponseBody
-	public ResponseEntity<?> getAllPayrollByEmployeeId(@PathVariable("employeeId")Integer employeeId,
-											    	   @RequestParam("requestUserId")Integer requestUserId) {
+	public ResponseEntity<?> getAllPayrollByEmployeeId(@PathVariable("employeeId")Integer employeeId) {
 		try {
 			return ResponseEntity.status(HttpStatus.OK).body(payrollService.findAllPayrollByEmployeeId(employeeId));			
 		} catch (Exception e) {
@@ -53,10 +52,9 @@ public class PayrollControllerImpl implements IPayrollController<Payroll> {
 		}
 	}
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
-	@GetMapping("/one/{payrollId}")
+	@GetMapping("/{payrollId}")
 	//@ResponseBody
-	public ResponseEntity<?> getPayrollById(@PathVariable("payrollId")Integer payrollId,
-										    @RequestParam("requestUserId")Integer requestUserId){
+	public ResponseEntity<?> getPayrollById(@PathVariable("payrollId")Integer payrollId){
 		try {
 			return ResponseEntity.status(HttpStatus.OK).body(payrollService.findById(payrollId));
 		}catch(Exception e) {
@@ -65,10 +63,9 @@ public class PayrollControllerImpl implements IPayrollController<Payroll> {
 		}
 	}
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
-	@PostMapping("/save")
+	@PostMapping("/")
 	//@ResponseBody
-	public ResponseEntity<?> savePayroll(@RequestBody @Valid Payroll payroll,
-										 @RequestParam("requestUserId") Integer requestUserId) {
+	public ResponseEntity<?> savePayroll(@RequestBody @Valid Payroll payroll) {
 		ResponseEntity<Payroll> responseEntity;
 		try {			
 			Employee employee = payroll.getEmployee();
@@ -81,10 +78,9 @@ public class PayrollControllerImpl implements IPayrollController<Payroll> {
 		return responseEntity;
 	}
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@DeleteMapping("/delete/{payrollId}")
+	@DeleteMapping("/{payrollId}")
 	//@ResponseBody
-	public ResponseEntity<?> deletePayroll(@PathVariable("payrollId")Integer payrollId,
-										   @RequestParam("requestUserId")Integer requestUserId) {
+	public ResponseEntity<?> deletePayroll(@PathVariable("payrollId")Integer payrollId) {
 		ResponseEntity<Boolean> responseEntity;
 		try {
 			Payroll payroll = payrollService.findById(payrollId);
@@ -98,10 +94,9 @@ public class PayrollControllerImpl implements IPayrollController<Payroll> {
 		return responseEntity;
 	}
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
-	@PutMapping("/update/{payrollId}")	
-	public ResponseEntity<?> updatePayroll(@PathVariable("payrollId")Integer payrollId, 
-										   @RequestBody Payroll payroll,
-										   @RequestParam("requestUserId")Integer requestUserId){
+	@PutMapping("/{payrollId}")	
+	public ResponseEntity<?> updatePayroll(@RequestBody @Valid Payroll payroll,
+										   @PathVariable("payrollId")Integer payrollId) {
 		try {
 			return ResponseEntity.status(HttpStatus.OK).body(payrollService.update(payrollId,payroll));
 		}catch(Exception e) {

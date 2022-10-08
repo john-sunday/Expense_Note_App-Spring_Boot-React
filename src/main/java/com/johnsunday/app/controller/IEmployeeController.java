@@ -12,17 +12,12 @@ import com.johnsunday.app.entity.Employee;
 
 public interface IEmployeeController {
 
-	public ResponseEntity<?> getAllEmployee(@RequestParam Integer requestUserId);	
-	public ResponseEntity<?> getEmployeeById(@PathVariable Integer employeeId,
-										    @RequestParam Integer requestUserId);
-	public ResponseEntity<?> saveEmployee(@RequestBody @Valid Employee employee,
-			  						      @RequestParam Integer requestUserId);
-	public ResponseEntity<?> updateEmployee(@PathVariable Integer userId,
-										   @RequestBody @Valid Employee employee,
-										   @RequestParam Integer requestUserId);
-	public ResponseEntity<?> deleteEmployee(@PathVariable Integer employeeId,
-										    @RequestParam Integer requestUserId);
+	public ResponseEntity<?> getAllEmployee();	
+	public ResponseEntity<?> getEmployeeById(@PathVariable Integer employeeId);
+	public ResponseEntity<?> saveEmployee(@RequestBody @Valid Employee employee);
+	public ResponseEntity<?> updateEmployee(@RequestBody @Valid Employee employee,
+											@PathVariable Integer employeeId);
+	public ResponseEntity<?> deleteEmployee(@PathVariable Integer employeeId);
 	public ResponseEntity<?> getUserByNameAndSurname(@PathVariable String name,
-															   @PathVariable String surname,
-															   @RequestParam Integer requestUserId);
+												     @PathVariable String surname);
 }

@@ -71,7 +71,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
 //		System.out.println("Remote User Request: " + request.getRemoteUser());//->null
 //		System.out.println("Principal User Request: " + request.getUserPrincipal());//->null
 		
-		Integer requestUserId = Integer.parseInt(request.getParameter("requestUserId"));
+		//Integer requestUserId = Integer.parseInt(request.getParameter("requestUserId"));
 		
 		boolean isAdmin = false;
 		Collection<? extends GrantedAuthority>grantedAuths = tokenUserDetails.getAuthorities();
@@ -86,11 +86,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
 		}
 		/* If the user hasn't role Admin, and the id user from token doesn't match with 
 		 * the request param 'requestUserId', we return the flow. */ 
-		if (!isAdmin) {
-			if (tokenUserDetails.getId()!=Integer.parseInt(request.getParameter("requestUserId"))){
-				return;
-			}
-		}
+//		if (!isAdmin) {
+//			if (tokenUserDetails.getId()!=Integer.parseInt(request.getParameter("userId"))){
+//				return;
+//			}
+//		}
 		
 		
 		System.out.println("Method Request: " + request.getMethod());
@@ -144,7 +144,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
 	private String getAccessToken(HttpServletRequest request) {
 		String header = request.getHeader("Authorization");
 		String token = header.split(" ")[1].trim();
-		System.out.println("Access token: " + token);
+		System.out.println("Access token(JwtAuthFilter.getAccessToken()): " + token);
 		return token;
 	}
 	private void setAuthenticationContext(String accessToken, HttpServletRequest request) {
@@ -161,7 +161,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
 		//String claimSub = claims.getSubject();
 		
 		// Testing
-		System.out.println("Claim Roles: " + claimRoles);
+		//System.out.println("Claim Roles: " + claimRoles);
 		
 		claimRoles = claimRoles.replace("[", "").replace("]", "");
 		String[]roleNames =  claimRoles.split(",");

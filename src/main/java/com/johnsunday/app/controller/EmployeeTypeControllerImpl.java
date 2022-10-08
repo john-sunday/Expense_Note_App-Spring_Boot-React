@@ -33,8 +33,8 @@ public class EmployeeTypeControllerImpl implements IEmployeeTypeController<Emplo
 	
 	@Override
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@GetMapping("/all")	
-	public ResponseEntity<?> getAllEmployeeType(@RequestParam("requestUserId")Integer requestUserId) {
+	@GetMapping("/")	
+	public ResponseEntity<?> getAllEmployeeType() {
 		try {
 			return ResponseEntity.status(HttpStatus.OK).body(employeeTypeService.findAll());
 		}catch(Exception e) {
@@ -44,11 +44,9 @@ public class EmployeeTypeControllerImpl implements IEmployeeTypeController<Emplo
 	}
 	@Override
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@GetMapping("/one/{employeeTypeId}")
+	@GetMapping("/{employeeTypeId}")
 	//@ResponseBody
-	public ResponseEntity<?> getEmployeeTypeById(@PathVariable("employeeTypeId")Integer employeeTypeId,
-										         @RequestParam("requestUserId")Integer requestUserId){
-		System.out.println("Request User ID: " + requestUserId);
+	public ResponseEntity<?> getEmployeeTypeById(@PathVariable("employeeTypeId")Integer employeeTypeId){
 		try {
 			return ResponseEntity.status(HttpStatus.OK).body(employeeTypeService.findById(employeeTypeId));
 		}catch(Exception e) {
@@ -58,10 +56,9 @@ public class EmployeeTypeControllerImpl implements IEmployeeTypeController<Emplo
 	}
 	@Override
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@PostMapping("/save")
+	@PostMapping("/")
 	//@ResponseBody
-	public ResponseEntity<?> saveEmployeeType(@RequestBody @Valid EmployeeType employeeType,
-										 	  @RequestParam("requestUserId")Integer requestUserId) {
+	public ResponseEntity<?> saveEmployeeType(@RequestBody @Valid EmployeeType employeeType) {
 		try {
 			return ResponseEntity.status(HttpStatus.OK).body(employeeTypeService.save(employeeType));
 		}catch(Exception e) {
@@ -71,10 +68,9 @@ public class EmployeeTypeControllerImpl implements IEmployeeTypeController<Emplo
 	}
 	@Override
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@DeleteMapping("/delete/{employeeTypeId}")
+	@DeleteMapping("/{employeeTypeId}")
 	//@ResponseBody
-	public ResponseEntity<?> deleteEmployeeType(@PathVariable("employeeTypeId")Integer employeeTypeId,
-										   		@RequestParam("requestUserId")Integer requestUserId) {
+	public ResponseEntity<?> deleteEmployeeType(@PathVariable("employeeTypeId")Integer employeeTypeId) {
 		try {						
 			return ResponseEntity.status(HttpStatus.OK).body(employeeTypeService.delete(employeeTypeId));			
 		}catch(Exception e) {
@@ -84,10 +80,9 @@ public class EmployeeTypeControllerImpl implements IEmployeeTypeController<Emplo
 	}
 	@Override
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@PutMapping("/update/{employeeTypeId}")	
-	public ResponseEntity<?> updateEmployeeType(@PathVariable("employeeTypeId")Integer employeeTypeId, 
-										   		@RequestBody @Valid EmployeeType employeeType,
-										   		@RequestParam("requestUserId")Integer requestUserId) {
+	@PutMapping("/{employeeTypeId}")	
+	public ResponseEntity<?> updateEmployeeType(@RequestBody @Valid EmployeeType employeeType,
+											    @PathVariable("employeeTypeId")Integer employeeTypeId) {
 		try {
 			return ResponseEntity.status(HttpStatus.OK).body(employeeTypeService.update(employeeTypeId,employeeType));
 		}catch(Exception e) {

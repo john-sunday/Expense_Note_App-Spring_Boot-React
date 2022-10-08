@@ -1,9 +1,5 @@
 package com.johnsunday.app.controller;
 
-import java.util.Collection;
-import java.util.Optional;
-
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,16 +15,11 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.johnsunday.app.entity.Employee;
 import com.johnsunday.app.entity.Expense;
-import com.johnsunday.app.security.entity.Role;
-import com.johnsunday.app.security.entity.User;
 import com.johnsunday.app.security.service.UserServiceImpl;
-import com.johnsunday.app.service.EmployeeServiceImpl;
 import com.johnsunday.app.service.ExpenseServiceImpl;
 
 @CrossOrigin(origins="*")
@@ -37,13 +28,12 @@ import com.johnsunday.app.service.ExpenseServiceImpl;
 public class ExpenseControllerImpl implements IExpenseController<Expense> {
 
 	@Autowired private ExpenseServiceImpl expenseService;
-	@Autowired private EmployeeServiceImpl employeeService;
 	@Autowired UserServiceImpl userService;
 	
 	@Override
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@GetMapping("/all")
-	public ResponseEntity<?>getAllExpense(@RequestParam("requestUserId")Integer requestUserId) {
+	@GetMapping("/")
+	public ResponseEntity<?>getAllExpense() {
 		try {
 			return ResponseEntity.status(HttpStatus.OK).body(expenseService.findAll());
 		}catch(Exception e) {
@@ -53,10 +43,9 @@ public class ExpenseControllerImpl implements IExpenseController<Expense> {
 	}
 	@Override
 	@PreAuthorize("hasAnyRole('ADMIN_ROLE','USER_ROLE')")
-	@GetMapping("/all/{employeeId}")
+	@GetMapping("/employee/{employeeId}")
 	//@ResponseBody
-	public ResponseEntity<?> getAllExpenseByEmployeeId(@PathVariable("employeeId")Integer employeeId,
-											    	   @RequestParam("requestUserId")Integer requestUserId) {
+	public ResponseEntity<?> getAllExpenseByEmployeeId(@PathVariable("employeeId")Integer employeeId) {
 		try {
 			return ResponseEntity.status(HttpStatus.OK).body(expenseService.findAllExpenseByEmployeeId(employeeId));			
 		} catch (Exception e) {
@@ -66,10 +55,9 @@ public class ExpenseControllerImpl implements IExpenseController<Expense> {
 	}
 	@Override
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
-	@GetMapping("/one/{expenseId}")
-	@ResponseBody
-	public ResponseEntity<?>getExpenseById(@PathVariable("expenseId")Integer expenseId,
-										   @RequestParam("requestUserId")Integer requestUserId){
+	@GetMapping("/{expenseId}")
+	//@ResponseBody
+	public ResponseEntity<?>getExpenseById(@PathVariable("expenseId")Integer expenseId) {
 		try {
 			return ResponseEntity.status(HttpStatus.OK).body(expenseService.findById(expenseId));
 		}catch(Exception e) {
@@ -79,23 +67,13 @@ public class ExpenseControllerImpl implements IExpenseController<Expense> {
 	}
 	@Override
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
-	@PostMapping("/save")
+	@PostMapping("/")
 	//@ResponseBody
 	public ResponseEntity<?>saveExpense(@RequestBody @Valid Expense expense,
-										@RequestParam("requestUserId")Integer requestUserId) {
-		//System.out.println("Save Expense TOKEN TEST Controller ---> " + token);		
+										@RequestHeader("Authorization")String headerAuth) {		
 		ResponseEntity<?>responseEntity = null;
 		try {
-			boolean isAdmin = false;
-			Employee expenseEmployee = employeeService.findById(expense.getEmployee().getId());
-			Optional<User>optRequestUser = userService.findByEmail(expenseEmployee.getEmail());
-			Collection<Role>roles = optRequestUser.get().getRoles();
-			for (Role role:roles) {
-				if (role.getName().equalsIgnoreCase("ROLE_ADMIN")) {
-					isAdmin = true;
-				}
-			}
-			if (isAdmin||(!isAdmin&&optRequestUser!=null)) responseEntity = ResponseEntity.status(HttpStatus.OK).body(expenseService.save(expense));						
+			responseEntity = ResponseEntity.status(HttpStatus.OK).body(expenseService.save(expense,headerAuth));						
 		}catch(Exception e) {
 			e.printStackTrace();
 			responseEntity = ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. Please, Try it later. NOT possible to SAVE the expense.\"}");
@@ -104,10 +82,9 @@ public class ExpenseControllerImpl implements IExpenseController<Expense> {
 	}
 	@Override
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@DeleteMapping("/delete/{expenseId}")
+	@DeleteMapping("/{expenseId}")
 	//@ResponseBody
-	public ResponseEntity<?>deleteExpense(@PathVariable("expenseId")Integer expenseId,
-										  @RequestParam("requestUserId")Integer userId) {
+	public ResponseEntity<?>deleteExpense(@PathVariable("expenseId")Integer expenseId) {
 		ResponseEntity<Boolean> responseEntity;
 		try {
 			Expense expense = expenseService.findById(expenseId);
@@ -122,10 +99,9 @@ public class ExpenseControllerImpl implements IExpenseController<Expense> {
 	}
 	@Override
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@PutMapping("/update/{expenseId}")	
-	public ResponseEntity<?>updateExpense(@PathVariable("expenseId")Integer expenseId, 
-										  @RequestBody @Valid Expense expense,
-										  @RequestParam("requestUserId")Integer requestUserId){
+	@PutMapping("/{expenseId}")	
+	public ResponseEntity<?>updateExpense(@RequestBody @Valid Expense expense,
+										  @PathVariable("expenseId")Integer expenseId) {
 		try {
 			return ResponseEntity.status(HttpStatus.OK).body(expenseService.update(expenseId,expense));
 		}catch(Exception e) {

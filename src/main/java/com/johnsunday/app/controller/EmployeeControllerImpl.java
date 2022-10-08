@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -30,8 +29,8 @@ public class EmployeeControllerImpl implements IEmployeeController {
 	
 	@Override
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@GetMapping("/all")	
-	public ResponseEntity<?> getAllEmployee(@RequestParam("requestUserId")Integer requestUserId) {
+	@GetMapping("/")	
+	public ResponseEntity<?> getAllEmployee() {
 		try {
 			return ResponseEntity.status(HttpStatus.OK).body(employeeService.findAll());
 		}catch(Exception e) {
@@ -41,11 +40,9 @@ public class EmployeeControllerImpl implements IEmployeeController {
 	}
 	@Override
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
-	@GetMapping("/one/{employeeId}")
-	@ResponseBody
-	public ResponseEntity<?> getEmployeeById(@PathVariable("employeeId")Integer employeeId,
-										     @RequestParam("requestUserId")Integer requestUserId){
-		//System.out.println("Request User ID: " + requestUserId);
+	@GetMapping("/{employeeId}")
+	//@ResponseBody
+	public ResponseEntity<?> getEmployeeById(@PathVariable("employeeId")Integer employeeId){
 		try {
 			return ResponseEntity.status(HttpStatus.OK).body(employeeService.findById(employeeId));
 		}catch(Exception e) {
@@ -55,10 +52,9 @@ public class EmployeeControllerImpl implements IEmployeeController {
 	}
 	@Override
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
-	@PostMapping("/save")
-	@ResponseBody
-	public ResponseEntity<?> saveEmployee(@RequestBody @Valid Employee employee,
-										  @RequestParam("requestUserId")Integer requestUserId) {
+	@PostMapping("/")
+	//@ResponseBody
+	public ResponseEntity<?> saveEmployee(@RequestBody @Valid Employee employee) {
 		try {		
 			return ResponseEntity.status(HttpStatus.OK).body(employeeService.save(employee));
 		}catch(Exception e) {
@@ -68,10 +64,9 @@ public class EmployeeControllerImpl implements IEmployeeController {
 	}
 	@Override
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@DeleteMapping("/delete/{employeeId}")
-	@ResponseBody
-	public ResponseEntity<?> deleteEmployee(@PathVariable("employeeId")Integer employeeId,
-										    @RequestParam("requestUserId")Integer requestUserId) {		
+	@DeleteMapping("/{employeeId}")
+	//@ResponseBody
+	public ResponseEntity<?> deleteEmployee(@PathVariable("employeeId")Integer employeeId) {		
 		try {			
 			return ResponseEntity.status(HttpStatus.OK).body(employeeService.delete(employeeId));			
 		}catch(Exception e) {
@@ -81,10 +76,9 @@ public class EmployeeControllerImpl implements IEmployeeController {
 	}
 	@Override
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@PutMapping("/update/{employeeId}")
-	public ResponseEntity<?> updateEmployee(@PathVariable("employeeId")Integer employeeId, 
-										    @RequestBody @Valid Employee employee,
-										    @RequestParam("requestUserId")Integer requestUserId) {
+	@PutMapping("/{employeeId}")
+	public ResponseEntity<?> updateEmployee(@RequestBody @Valid Employee employee,
+											@PathVariable("employeeId")Integer employeeId) {
 		try {
 			return ResponseEntity.status(HttpStatus.OK).body(employeeService.update(employeeId,employee));
 		}catch(Exception e) {
@@ -94,10 +88,9 @@ public class EmployeeControllerImpl implements IEmployeeController {
 	}
 	@Override
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@GetMapping("/one/{name}/{surname}")
+	@GetMapping("/{name}/{surname}")
 	public ResponseEntity<?> getUserByNameAndSurname(@PathVariable("name")String name,
-													 @PathVariable("surname")String surname,
-													 @RequestParam("requestUserId")Integer requestUserId) {
+													 @PathVariable("surname")String surname) {
 		try {
 			return ResponseEntity.status(HttpStatus.OK).body(employeeService.findByNameAndSurnameAllIgnoreCase(name,surname));
 		}catch(Exception e) {

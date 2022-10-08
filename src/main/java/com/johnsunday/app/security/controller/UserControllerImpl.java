@@ -30,8 +30,8 @@ public class UserControllerImpl implements IUserController {
 	
 	@Override
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@GetMapping("/all")	
-	public ResponseEntity<?> getAllUser(@RequestParam("requestUserId")Integer requestUserId) {
+	@GetMapping("/")	
+	public ResponseEntity<?> getAllUser() {
 		try {
 			return ResponseEntity.status(HttpStatus.OK).body(userService.findAll());
 		}catch(Exception e) {
@@ -41,9 +41,8 @@ public class UserControllerImpl implements IUserController {
 	}
 	@Override
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
-	@GetMapping("/one/{userId}")
-	public ResponseEntity<?> getUserById(@PathVariable("userId")Integer userId,
-									     @RequestParam("requestUserId")Integer requestUserId) {
+	@GetMapping("/{userId}")
+	public ResponseEntity<?> getUserById(@PathVariable("userId")Integer userId) {
 		try {
 			return ResponseEntity.status(HttpStatus.OK).body(userService.findById(userId));
 		}catch(Exception e) {
@@ -52,10 +51,9 @@ public class UserControllerImpl implements IUserController {
 		}
 	}
 	@Override
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
-	@PostMapping("/save")	
-	public ResponseEntity<?> saveUser(@Valid @RequestBody User user,
-								      @RequestParam("requestUserId")Integer requestUserId) {
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@PostMapping("/")	
+	public ResponseEntity<?> saveUser(@RequestBody @Valid User user) {
 		try {
 			return ResponseEntity.status(HttpStatus.OK).body(userService.save(user));
 		}catch(Exception e) {
@@ -65,10 +63,9 @@ public class UserControllerImpl implements IUserController {
 	}
 	@Override
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@PutMapping("/update/{userId}")	
-	public ResponseEntity<?> updateUser(@PathVariable("userId")Integer userId,
-									    @RequestBody User user,
-									    @RequestParam("requestUserId")Integer requestUserId) {
+	@PutMapping("/{userId}")	
+	public ResponseEntity<?> updateUser(@RequestBody @Valid User user,
+										@PathVariable("userId")Integer userId) {
 		try {
 			return ResponseEntity.status(HttpStatus.OK).body(userService.update(userId,user));
 		}catch(Exception e) {
@@ -78,9 +75,8 @@ public class UserControllerImpl implements IUserController {
 	}
 	@Override
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@DeleteMapping("/delete/{userId}")	
-	public ResponseEntity<?> deleteUser(@PathVariable("userId")Integer userId,
-									    @RequestParam("requestUserId")Integer requestUserId) {
+	@DeleteMapping("/{userId}")	
+	public ResponseEntity<?> deleteUser(@PathVariable("userId")Integer userId) {
 		try {
 			return ResponseEntity.status(HttpStatus.OK).body(userService.delete(userId));
 		}catch(Exception e) {

@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.johnsunday.app.security.entity.Role;
@@ -31,8 +30,8 @@ public class RoleControllerImpl implements IRoleController {
 	private RoleServiceImpl roleService;
 	
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@GetMapping("/all")	
-	public ResponseEntity<?> getAllRole(@RequestParam("requestUserId")Integer requestUserId) {
+	@GetMapping("/")	
+	public ResponseEntity<?> getAllRole() {
 		try {
 			return ResponseEntity.status(HttpStatus.OK).body(roleService.findAll());
 		}catch(Exception e) {
@@ -41,9 +40,8 @@ public class RoleControllerImpl implements IRoleController {
 		}
 	}
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
-	@GetMapping("/one/{roleId}")
-	public ResponseEntity<?> getRoleById(@PathVariable("roleId")Integer roleId,
-										 @RequestParam("requestUserId")Integer requestUserId) {
+	@GetMapping("/{roleId}")
+	public ResponseEntity<?> getRoleById(@PathVariable("roleId")Integer roleId) {
 		try {
 			return ResponseEntity.status(HttpStatus.OK).body(roleService.findById(roleId));
 		}catch(Exception e) {
@@ -52,9 +50,8 @@ public class RoleControllerImpl implements IRoleController {
 		}
 	}
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
-	@PostMapping("/save")	
-	public ResponseEntity<?> saveRole(@Valid @RequestBody Role role,
-									  @RequestParam("requestUserId")Integer requestUserId) {
+	@PostMapping("/")	
+	public ResponseEntity<?> saveRole(@Valid @RequestBody Role role) {
 		try {
 			return ResponseEntity.status(HttpStatus.OK).body(roleService.save(role));
 		}catch(Exception e) {
@@ -63,10 +60,9 @@ public class RoleControllerImpl implements IRoleController {
 		}
 	}
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@PutMapping("/update/{roleId}")	
-	public ResponseEntity<?> updateRole(@PathVariable("roleId")Integer roleId,
-										@RequestBody Role role,
-										@RequestParam("requestUserId")Integer requestUserId) {
+	@PutMapping("/{roleId}")	
+	public ResponseEntity<?> updateRole(@RequestBody Role role,
+										@PathVariable("roleId")Integer roleId) {
 		try {
 			return ResponseEntity.status(HttpStatus.OK).body(roleService.update(roleId,role));
 		}catch(Exception e) {
@@ -75,9 +71,8 @@ public class RoleControllerImpl implements IRoleController {
 		}
 	}
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@DeleteMapping("/delete/{roleId}")	
-	public ResponseEntity<?> deleteRole(@PathVariable("roleId")Integer roleId,
-										@RequestParam("requestUserId")Integer requestUserId) {
+	@DeleteMapping("/{roleId}")	
+	public ResponseEntity<?> deleteRole(@PathVariable("roleId")Integer roleId) {
 		try {
 			return ResponseEntity.status(HttpStatus.NO_CONTENT).body(roleService.delete(roleId));
 		}catch(Exception e) {
