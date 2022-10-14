@@ -56,7 +56,7 @@ public class UserTest {
 		assertThat(savedUser.getId()).isGreaterThan(0);
 	}
 	@Test
-	public void assignRoleToUser() {
+	public void testAssignRoleToUser() {
 		Optional<User>optUser = userDao.findByEmail("neilyoung@gmail.com");
 		Optional<Role>optRole = roleDao.findByName("ADMIN_ROLE");
 		User user = optUser.get();

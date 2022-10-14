@@ -1,23 +1,38 @@
 package com.johnsunday.app.util;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.johnsunday.app.dao.IEmployeeDao;
 import com.johnsunday.app.entity.Employee;
-import com.johnsunday.app.service.EmployeeServiceImpl;
+import com.johnsunday.app.security.dao.IUserDao;
+import com.johnsunday.app.security.entity.User;
+import com.johnsunday.app.security.jwt.JwtAuthenticationUtil;
 
 public class EmployeeUtil {
 
-	@Autowired private static EmployeeServiceImpl employeeService;
+	@Autowired private static IEmployeeDao employeeDao;
+	@Autowired private static JwtAuthenticationUtil jwtAuthUtil;
+	@Autowired private static IUserDao userDao;
 	
-	public static Boolean existsEmployeeInDb(Employee employee) {
+	public static Boolean existsInDb(Employee employee) {
 		boolean exists = false;
 		try {
-			if ((employeeService.findById(employee.getId()))!=null) {				
+			if ((employeeDao.findById(employee.getId()))!=null) {				
 				exists = true;
 			}
 		} catch (Exception e) {			
 			e.printStackTrace();
 		}		
 		return exists;
+	}
+	public Boolean matchEmployeeUserEmail(Employee employee,String token) throws Exception {
+		boolean isMatch = false;
+		int tokenUserId = jwtAuthUtil.extractTokenUserId(token);
+		Optional<User>optTokenUser = userDao.findById(tokenUserId);		
+		if(optTokenUser.get().getEmail().equalsIgnoreCase(employee.getEmail())) isMatch = true;
+		else throw new Exception("ERROR -> The token user email DOESN'T MATCH with the employee email.");
+		return isMatch;
 	}
 }

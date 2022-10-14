@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.johnsunday.app.entity.Employee;
@@ -42,16 +42,17 @@ public class EmployeeControllerImpl implements IEmployeeController {
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
 	@GetMapping("/{employeeId}")
 	//@ResponseBody
-	public ResponseEntity<?> getEmployeeById(@PathVariable("employeeId")Integer employeeId){
+	public ResponseEntity<?> getEmployeeById(@PathVariable("employeeId")Integer employeeId,
+											 @RequestHeader("Authorization")String headerAuth){
 		try {
-			return ResponseEntity.status(HttpStatus.OK).body(employeeService.findById(employeeId));
+			return ResponseEntity.status(HttpStatus.OK).body(employeeService.findById(employeeId,headerAuth));
 		}catch(Exception e) {
 			e.printStackTrace();
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"error\":\"Error. Please, Try it later. NOT possible to SHOW the payroll which you find.\"}");
 		}
 	}
 	@Override
-	@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PostMapping("/")
 	//@ResponseBody
 	public ResponseEntity<?> saveEmployee(@RequestBody @Valid Employee employee) {
@@ -87,12 +88,13 @@ public class EmployeeControllerImpl implements IEmployeeController {
 		}
 	}
 	@Override
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
 	@GetMapping("/{name}/{surname}")
-	public ResponseEntity<?> getUserByNameAndSurname(@PathVariable("name")String name,
-													 @PathVariable("surname")String surname) {
+	public ResponseEntity<?> getEmployeeByNameAndSurname(@PathVariable("name")String name,
+													     @PathVariable("surname")String surname,
+													     @RequestHeader("Authorization")String headerAuth) {
 		try {
-			return ResponseEntity.status(HttpStatus.OK).body(employeeService.findByNameAndSurnameAllIgnoreCase(name,surname));
+			return ResponseEntity.status(HttpStatus.OK).body(employeeService.findByNameAndSurnameAllIgnoreCase(name,surname,headerAuth));
 		}catch(Exception e) {
 			e.printStackTrace();
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. Please, Try it later. It is NOT possible to FIND the employee who you are looking for.\"}");

@@ -21,6 +21,7 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Entity
 @Table(name="expense")
@@ -30,6 +31,7 @@ import lombok.Setter;
 @NoArgsConstructor
 //@Audited
 @RequiredArgsConstructor
+@ToString
 public class Expense implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -42,7 +44,7 @@ public class Expense implements Serializable {
 	private String concept;
 	@Column(name="note",nullable=false)
 	@Length(min=3,max=255)
-	@NonNull
+	//@NonNull
 	private String note;
 	@Column(name="date",nullable=false)
 	//@Temporal(TemporalType.TIMESTAMP)
@@ -52,8 +54,17 @@ public class Expense implements Serializable {
 	@NonNull
 	private Double amount;
 	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="employee_id_fk")
+	@JoinColumn(name="employee_id")
 	//@JsonIgnore
 	@NonNull
-	private Employee employee;	
+	private Employee employee;
+	
+	// Constructor without note.
+	public Expense(Integer id,String concept,LocalDateTime date,Double amount,Employee employee) {
+		this.id = id;
+		this.concept = concept;
+		this.date = date;
+		this.amount = amount;
+		this.employee = employee;
+	}
 }

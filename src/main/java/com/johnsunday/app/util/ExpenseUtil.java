@@ -2,22 +2,27 @@ package com.johnsunday.app.util;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.johnsunday.app.dao.IExpenseDao;
 import com.johnsunday.app.entity.Expense;
-import com.johnsunday.app.service.ExpenseServiceImpl;
 
 public class ExpenseUtil {
 
-	@Autowired private static ExpenseServiceImpl expenseService;
+	@Autowired private static IExpenseDao expenseDao;
 	
-	public static Boolean existsExpenseInDb(Expense expense) {
-		boolean exists = false;
-		if (expenseService.findByAmountAndExpenseDateAndConceptAndEmployeeIdFk(
+	public static Expense existsExpenseInDb(Expense expense) {
+		Expense searchedExpense = expenseDao.findByAmountAndDateAndConceptAndEmployeeId(						
 				expense.getAmount(), 
 				expense.getDate(), 
 				expense.getConcept(), 
-				expense.getEmployee().getId())) {			
-			exists = true;
-		}		
-		return exists;
+				expense.getEmployee().getId()).get();		
+		return searchedExpense;
 	}
+	public static String giveMeExpenseEmployeeEmail(Expense expense) {
+		String email = null;
+		if (existsExpenseInDb(expense)!=null) {
+			email = expense.getEmployee().getEmail();
+		}		
+		return email;
+	}
+	
 }

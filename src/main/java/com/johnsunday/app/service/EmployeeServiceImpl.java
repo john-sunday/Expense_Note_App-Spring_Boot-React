@@ -21,7 +21,7 @@ public class EmployeeServiceImpl implements IEmployeeService{
 	@Autowired IEmployeeTypeDao employeeTypeDao;
 	
 	@Override 
-	public Employee findByNameAndSurnameAllIgnoreCase(String name,String surname) throws Exception {
+	public Employee findByNameAndSurnameAllIgnoreCase(String name,String surname,String HeaderAuth) throws Exception {
 		Optional<Employee>optionalEmployee  = employeeDao.findByNameAndSurnameAllIgnoreCase(name,surname);
 		Employee searchedEmployee = null;
 		if (!optionalEmployee.isEmpty()) {
@@ -39,7 +39,7 @@ public class EmployeeServiceImpl implements IEmployeeService{
 		}
 	}
 	@Override
-	public Employee findById(Integer id) throws Exception {
+	public Employee findById(Integer id,String headerAuth) throws Exception {
 		try {
 			Optional<Employee> optionalEmployee = employeeDao.findById(id);		
 			return optionalEmployee.get();

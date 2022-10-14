@@ -15,26 +15,25 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.johnsunday.app.entity.Employee;
 import com.johnsunday.app.entity.Expense;
-import com.johnsunday.app.security.service.UserServiceImpl;
 import com.johnsunday.app.service.ExpenseServiceImpl;
 
 @CrossOrigin(origins="*")
-@RequestMapping("api/v1/expense")
+@RequestMapping("/api/v1/expense")
 @RestController
-public class ExpenseControllerImpl implements IExpenseController<Expense> {
+public class ExpenseControllerImpl implements IExpenseController {
 
 	@Autowired private ExpenseServiceImpl expenseService;
-	@Autowired UserServiceImpl userService;
 	
 	@Override
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@GetMapping("/")
 	public ResponseEntity<?>getAllExpense() {
-		try {
+		try {			
 			return ResponseEntity.status(HttpStatus.OK).body(expenseService.findAll());
 		}catch(Exception e) {
 			e.printStackTrace();
@@ -42,12 +41,13 @@ public class ExpenseControllerImpl implements IExpenseController<Expense> {
 		}
 	}
 	@Override
-	@PreAuthorize("hasAnyRole('ADMIN_ROLE','USER_ROLE')")
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
 	@GetMapping("/employee/{employeeId}")
-	//@ResponseBody
-	public ResponseEntity<?> getAllExpenseByEmployeeId(@PathVariable("employeeId")Integer employeeId) {
+	@ResponseBody
+	public ResponseEntity<?> getAllExpenseByEmployeeId(@PathVariable("employeeId")Integer employeeId,
+													   @RequestHeader("Authorization")String headerAuth) {
 		try {
-			return ResponseEntity.status(HttpStatus.OK).body(expenseService.findAllExpenseByEmployeeId(employeeId));			
+			return ResponseEntity.status(HttpStatus.OK).body(expenseService.findAllByEmployeeId(employeeId,headerAuth));			
 		} catch (Exception e) {
 			e.printStackTrace();
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"error\":\"Error. Please, Try it later. NOT possible to SHOW the employee's expenses.\"}");
@@ -57,9 +57,10 @@ public class ExpenseControllerImpl implements IExpenseController<Expense> {
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
 	@GetMapping("/{expenseId}")
 	//@ResponseBody
-	public ResponseEntity<?>getExpenseById(@PathVariable("expenseId")Integer expenseId) {
+	public ResponseEntity<?>getExpenseById(@PathVariable("expenseId")Integer expenseId,
+										   @RequestHeader("Authorization")String headerAuth) {
 		try {
-			return ResponseEntity.status(HttpStatus.OK).body(expenseService.findById(expenseId));
+			return ResponseEntity.status(HttpStatus.OK).body(expenseService.findById(expenseId,headerAuth));
 		}catch(Exception e) {
 			e.printStackTrace();
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"error\":\"Error. Please, Try it later. NOT possible to SHOW the expense which you find.\"}");
@@ -84,10 +85,11 @@ public class ExpenseControllerImpl implements IExpenseController<Expense> {
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@DeleteMapping("/{expenseId}")
 	//@ResponseBody
-	public ResponseEntity<?>deleteExpense(@PathVariable("expenseId")Integer expenseId) {
+	public ResponseEntity<?>deleteExpense(@PathVariable("expenseId")Integer expenseId,
+										  @RequestHeader("Authorization")String headerAuth) {
 		ResponseEntity<Boolean> responseEntity;
 		try {
-			Expense expense = expenseService.findById(expenseId);
+			Expense expense = expenseService.findById(expenseId,headerAuth);
 			Employee employee = expense.getEmployee();			
 			employee.removeExpense(expense);//******** Check if it's allow.......***********
 			responseEntity = ResponseEntity.status(HttpStatus.OK).body(expenseService.delete(expenseId));			
@@ -98,12 +100,14 @@ public class ExpenseControllerImpl implements IExpenseController<Expense> {
 		return responseEntity;
 	}
 	@Override
-	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@PutMapping("/{expenseId}")	
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
+	@PutMapping("/")	
 	public ResponseEntity<?>updateExpense(@RequestBody @Valid Expense expense,
-										  @PathVariable("expenseId")Integer expenseId) {
+										  /* @PathVariable("expenseId")Integer expenseId, */
+										  @RequestHeader("Authorization")String headerAuth) {
 		try {
-			return ResponseEntity.status(HttpStatus.OK).body(expenseService.update(expenseId,expense));
+			return ResponseEntity.status(HttpStatus.OK)
+					.body(expenseService.update(/* expenseId, */expense,headerAuth));
 		}catch(Exception e) {
 			e.printStackTrace();
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. Please, Try it later. NOT possible UPDATE the expense which you are looking for.\"}");

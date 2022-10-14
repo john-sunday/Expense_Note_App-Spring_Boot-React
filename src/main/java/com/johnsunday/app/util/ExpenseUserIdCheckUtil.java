@@ -12,9 +12,9 @@ public class ExpenseUserIdCheckUtil {
 	public static Boolean compareExpenseUserId(String token,Expense expense,Integer requestUserId) throws Exception {
 		boolean isSameUser = false;
 		// 1º - We check if the EXPENSE exists in DB.
-		if (!ExpenseUtil.existsExpenseInDb(expense)) {
+		if (ExpenseUtil.existsExpenseInDb(expense)==null) {
 			// 2º - We check if the EMPLOYEE exists in DB.
-			if (EmployeeUtil.existsEmployeeInDb(expense.getEmployee())) {
+			if (EmployeeUtil.existsInDb(expense.getEmployee())) {
 				// Form B to extract the Id user from token(JwtAuthenticationUtil.getSubject(token))
 				// 4º -  We extract the ID USER from token.
 				String subject = jwtAuthUtil.getSubject(token);
