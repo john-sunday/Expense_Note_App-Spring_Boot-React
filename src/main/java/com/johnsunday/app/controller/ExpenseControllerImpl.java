@@ -150,4 +150,9 @@ public class ExpenseControllerImpl implements IExpenseController {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. Please, Try it later. NOT possible UPDATE the expense which you are looking for.\"}");
 		}
 	}
+	@Override
+	public ResponseEntity<?> saveExpense(@Valid Expense expense, String token) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("Unimplemented method 'saveExpense'");
+	}
 }
