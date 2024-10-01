@@ -68,13 +68,50 @@ public class ExpenseControllerImpl implements IExpenseController {
 	}
 	@Override
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
-	@PostMapping("/")
-	//@ResponseBody
-	public ResponseEntity<?>saveExpense(@RequestBody @Valid Expense expense,
-										@RequestHeader("Authorization")String headerAuth) {		
-		ResponseEntity<?>responseEntity = null;
+	@PostMapping("/save")
+	@ResponseBody
+	public ResponseEntity<?> saveExpense(@RequestBody @Valid ExpenseDto dtoExpense,
+										 @RequestParam("requestUserId") Integer requestUserId,
+										 @RequestHeader(name="Authorization") String token) {
+		//System.out.println("TOKEN TEST ---> " + token);
+		
+		ResponseEntity<Expense> responseEntity = null;
 		try {
-			responseEntity = ResponseEntity.status(HttpStatus.OK).body(expenseService.save(expense,headerAuth));						
+			// Form A to extract the Id user from token(UserDetails-->Email-->user Data Base)
+			UserDetails userTokenDetails = null;
+			userTokenDetails = jwtAuthFilter.getUserDetails(token);
+
+			String userEmail = userTokenDetails.getUsername();
+			Optional<User>dbOptionalUser = userService.findByEmail(userEmail);
+			User dbUser = dbOptionalUser.get();						
+			System.out.println("DATA BASE User Id: " + dbUser.getId());
+			
+			// Form B to extract the Id user from token(JwtAuthenticationUtil.getSubject(token))
+			String subject = jwtAuthUtil.getSubject(token);
+			String[]arrSubject = subject.split(",");
+			int tokenUserId = Integer.parseInt(arrSubject[0]);
+			System.out.println("TOKEN User Id: " + tokenUserId);
+			
+			
+			EmployeeDto dtoEmployee = dtoExpense.getDtoEmployee();
+			System.out.println("DTO Employee Name: " + dtoEmployee.getName());
+			Expense enteredExpense = ExpenseMapper.dtoToExpense(dtoExpense);
+			// Check the if the expense exists.
+			if (expenseService.findByAmountAndExpenseDateAndConceptAndEmployeeIdFk(enteredExpense.getAmount(), 
+																				   enteredExpense.getDate(), 
+																				   enteredExpense.getConcept(), 
+																				   enteredExpense.getEmployee().getId())) {
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. The expense you are trying to introduce alredy exists.\"}");
+			}
+			Employee enteredEmployee = EmployeeMapper.dtoToEmployeeWithId(dtoEmployee);
+			Employee searchedEmployee = employeeService.findById(enteredEmployee.getId());
+//			Employee searchedEmployee = employeeService.findByNameAndSurnameAllIgnoreCase(newEmployee.getName(), newEmployee.getSurname());
+			if (searchedEmployee!=null) {
+				responseEntity = ResponseEntity.status(HttpStatus.OK).body(expenseService.save(enteredExpense));			
+				searchedEmployee.addExpense(enteredExpense);
+			} else {
+				return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"error\":\"Error. The requested resource does NOT exist, and the server does not know if it ever existed.\"}");
+			}
 		}catch(Exception e) {
 			e.printStackTrace();
 			responseEntity = ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. Please, Try it later. NOT possible to SAVE the expense.\"}");

@@ -18,7 +18,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-
+import com.johnsunday.app.dto.EmployeeTypeDto;
+import com.johnsunday.app.dto.EmployeeTypeMapper;
 import com.johnsunday.app.entity.EmployeeType;
 import com.johnsunday.app.service.EmployeeTypeServiceImpl;
 

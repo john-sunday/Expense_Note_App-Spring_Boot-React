@@ -40,10 +40,11 @@ public class EmployeeControllerImpl implements IEmployeeController {
 	}
 	@Override
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
-	@GetMapping("/{employeeId}")
-	//@ResponseBody
-	public ResponseEntity<?> getEmployeeById(@PathVariable("employeeId")Integer employeeId,
-											 @RequestHeader("Authorization")String headerAuth){
+	@GetMapping("/one/{employeeId}")
+	@ResponseBody
+	public ResponseEntity<?> getOneEmployee(@PathVariable("employeeId")Integer employeeId,
+										    @RequestParam("requestUserId")Integer requestUserId){
+		//System.out.println("Request User ID: " + requestUserId);
 		try {
 			return ResponseEntity.status(HttpStatus.OK).body(employeeService.findById(employeeId,headerAuth));
 		}catch(Exception e) {
