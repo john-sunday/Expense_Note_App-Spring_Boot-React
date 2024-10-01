@@ -1,5 +1,6 @@
 package com.johnsunday.app.dto;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,6 +29,7 @@ public class EmployeeMapper {
 				dtoListToPayrollList(dtoEmployee.getDtoPayrolls())
 				);
 	}
+
 		// B - Employee to DTO.
 	public static EmployeeDto employeeToDtoWithId(Employee employee) {
 		if (isNullList(employee.getExpenses())) {			
@@ -61,10 +63,14 @@ public class EmployeeMapper {
 				dtoEmployee.getSurname(),
 				dtoEmployee.getBirthDate(),
 				employeeType,
+				dtoEmployee.getEmail(), 
 				dtoListToExpenseList(dtoEmployee.getDtoExpenses()),
 				dtoListToPayrollList(dtoEmployee.getDtoPayrolls())
 				);
 	}
+	/* 		public Employee(String name,String surname,LocalDateTime birthDate,
+					EmployeeType employeeType,String email,
+					List<Expense>expenses,List<Payroll>payrolls) { */
 		// B - Employee to DTO.
 	public static EmployeeDto employeeToDto(Employee employee) {
 		return new EmployeeDto(

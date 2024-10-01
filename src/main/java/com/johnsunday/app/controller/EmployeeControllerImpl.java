@@ -15,8 +15,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.johnsunday.app.entity.Employee;
@@ -42,11 +40,10 @@ public class EmployeeControllerImpl implements IEmployeeController {
 	}
 	@Override
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
-	@GetMapping("/one/{employeeId}")
-	@ResponseBody
-	public ResponseEntity<?> getOneEmployee(@PathVariable("employeeId")Integer employeeId,
-										    @RequestParam("requestUserId")Integer requestUserId){
-		//System.out.println("Request User ID: " + requestUserId);
+	@GetMapping("/{employeeId}")
+	//@ResponseBody
+	public ResponseEntity<?> getEmployeeById(@PathVariable("employeeId")Integer employeeId,
+											 @RequestHeader("Authorization")String headerAuth){
 		try {
 			return ResponseEntity.status(HttpStatus.OK).body(employeeService.findById(employeeId,headerAuth));
 		}catch(Exception e) {
@@ -102,11 +99,6 @@ public class EmployeeControllerImpl implements IEmployeeController {
 			e.printStackTrace();
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. Please, Try it later. It is NOT possible to FIND the employee who you are looking for.\"}");
 		}
-	}
-	@Override
-	public ResponseEntity<?> getEmployeeById(Integer employeeId, String headerAuth) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Unimplemented method 'getEmployeeById'");
 	}
 	
 }

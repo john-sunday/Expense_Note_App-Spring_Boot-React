@@ -6,7 +6,7 @@ public class ExpenseMapper {
 	// Without ID.
 	public static Expense dtoToExpense(ExpenseDto dtoExpense) {
 		return new Expense(
-				dtoExpense.getConcept(),
+				null, dtoExpense.getConcept(),
 				dtoExpense.getNote(),
 				dtoExpense.getDate(),
 				dtoExpense.getAmount(),				
