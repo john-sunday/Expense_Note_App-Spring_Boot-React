@@ -19,12 +19,16 @@ public class EmployeeMapper {
 		if (isNullList(dtoEmployee.getDtoPayrolls())) {			
 			dtoEmployee.setDtoPayrolls(initializeDtoPayrollList(dtoEmployee.getDtoPayrolls()));
 		}
+					/* 		public Employee(String name,String surname,LocalDateTime birthDate,
+					EmployeeType employeeType,String email,
+					List<Expense>expenses,List<Payroll>payrolls) { */
 		return new Employee(
 				dtoEmployee.getId(),
 				dtoEmployee.getName(),
 				dtoEmployee.getSurname(),
-				dtoEmployee.getBirthDate(),
+				dtoEmployee.getBirthDate(),				
 				EmployeeTypeMapper.dtoToEmployeeType(dtoEmployee.getDtoEmployeeType()),
+				dtoEmployee.getEmail(),
 				dtoListToExpenseList(dtoEmployee.getDtoExpenses()),
 				dtoListToPayrollList(dtoEmployee.getDtoPayrolls())
 				);
@@ -68,9 +72,6 @@ public class EmployeeMapper {
 				dtoListToPayrollList(dtoEmployee.getDtoPayrolls())
 				);
 	}
-	/* 		public Employee(String name,String surname,LocalDateTime birthDate,
-					EmployeeType employeeType,String email,
-					List<Expense>expenses,List<Payroll>payrolls) { */
 		// B - Employee to DTO.
 	public static EmployeeDto employeeToDto(Employee employee) {
 		return new EmployeeDto(
