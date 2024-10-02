@@ -120,6 +120,10 @@ public class User implements Serializable,UserDetails   {
 	public String getName() {
 		return this.name;
 	}
+    public static Object withDefaultPasswordEncoder() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'withDefaultPasswordEncoder'");
+    }
 }
 
 

@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.7.2</version>
+		<version>2.7.18</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.johnsunday</groupId>
@@ -14,9 +14,11 @@
 	<name>Expense_Note_App</name>
 	<description>Project Spring Boot for company expense note of employees</description>
 	<properties>
-		<springframework-version>5.7.3</springframework-version>
-		<springsecurity.version>5.7.3</springsecurity.version>
-		<java.version>11</java.version>
+    	<springframework-version>6.0.12</springframework-version>  <!-- Última versión estable -->
+    	<springsecurity.version>6.1.6</springsecurity.version>  <!-- Última versión estable -->
+		<maven.compiler.source>17</maven.compiler.source>
+    	<maven.compiler.target>17</maven.compiler.target>
+		<!--<java.version>11</java.version>-->
 	</properties>
 	<dependencies>
 
@@ -57,15 +59,6 @@
 			<artifactId>postgresql</artifactId>
 			<version>42.7.3</version>
 		</dependency>
-
-
-<!-- 		<dependency>
-    		<groupId>org.postgresql</groupId>
-			<artifactId>postgresql</artifactId>
-			<version>42.5.0</version>
-		</dependency>
- -->
-
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
@@ -88,7 +81,7 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
-			<version>3.3.4</version>
+			<version>2.7.18</version>
 		</dependency>
 
 <!-- 		<dependency>
@@ -121,36 +114,46 @@
 		</dependency>
 		<!-- Security dependencies -->
 		<dependency>
-		  <groupId>org.springframework.security</groupId>
-		  <artifactId>spring-security-web</artifactId>
+		  	<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-web</artifactId>
 <!-- 		  <version>${springsecurity.version}</version> -->
-<!-- 		  <version>5.7.3</version>		   -->
+ 			<version>6.3.3</version>		   
 		</dependency>
 		<dependency>
   			<groupId>org.springframework.security</groupId>
   			<artifactId>spring-security-config</artifactId>
-   			<version>5.6.12</version>
-			<!-- <version>5.7.3</version> -->
+			<version>6.3.3</version>
 		</dependency>
 		<dependency>
 		  <groupId>org.springframework.security</groupId>
 		  <artifactId>spring-security-crypto</artifactId>
-		  <version>5.7.3</version>
 		</dependency>
 		<dependency>
 		  <groupId>org.springframework.boot</groupId>
 		  <artifactId>spring-boot-starter-security</artifactId>
-<!-- 		  <version>2.7.3</version> -->
+		  <version>2.7.18</version>
 		</dependency>
 		<!-- For Test Login Security 
 		https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-thymeleaf -->
 		<dependency>
 		    <groupId>org.springframework.boot</groupId>
 		    <artifactId>spring-boot-starter-thymeleaf</artifactId>
-<!-- 		    <version>2.7.2</version> -->
+ 		    <version>3.3.4</version>
 		</dependency>
-		
-	</dependencies>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>4.0.1</version>
+			<scope>provided</scope>
+		</dependency>
+
+	
+   <dependency>
+     <groupId>org.apache.tomcat</groupId>
+     <artifactId>tomcat-servlet-api</artifactId>
+     <version>10.1.30</version>
+   </dependency>
+ </dependencies>
 	
 	<build>
 		<plugins>
