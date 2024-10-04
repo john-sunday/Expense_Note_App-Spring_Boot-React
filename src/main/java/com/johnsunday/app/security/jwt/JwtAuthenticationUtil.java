@@ -3,11 +3,10 @@ package com.johnsunday.app.security.jwt;
 import java.util.Date;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
-import com.johnsunday.app.security.dao.IUserDao;
 import com.johnsunday.app.security.entity.User;
 
 import io.jsonwebtoken.Claims;
@@ -24,16 +23,20 @@ import io.jsonwebtoken.security.Keys;
 import java.security.Key;
 
 @Component
+@PropertySource("classpath:application-sample.properties")
 public class JwtAuthenticationUtil {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(JwtAuthenticationUtil.class);
 	// private static final Logger LOGGER =
 	// LoggerFactory.getLogger(JwtTokenUtil.class);
 	private static final long EXPIRE_DURATION = 24 * 60 * 60 * 1000;// 24h
-	@Autowired
-	private IUserDao userDao;
+	/*
+	 * @Autowired
+	 * private IUserDao userDao;
+	 */
 
 	@Value("${app.jwt.secret}")
+
 	private String secretKey;
 
 	public String generateAccessToken(User user) {

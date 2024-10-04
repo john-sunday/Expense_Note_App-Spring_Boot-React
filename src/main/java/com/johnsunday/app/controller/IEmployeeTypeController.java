@@ -5,15 +5,17 @@ import javax.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-
 
 public interface IEmployeeTypeController<EmployeeType> {
 
-	public ResponseEntity<?> getAllEmployeeType();	
+	public ResponseEntity<?> getAllEmployeeType();
+
 	public ResponseEntity<?> getEmployeeTypeById(@PathVariable Integer employeeTypeId);
+
 	public ResponseEntity<?> saveEmployeeType(@RequestBody @Valid EmployeeType employeeType);
+
 	public ResponseEntity<?> updateEmployeeType(@RequestBody @Valid EmployeeType employeeType,
-												@PathVariable Integer employeeTypeId);
-	public ResponseEntity<?> deleteEmployeeType(@PathVariable Integer employeeTypeId);	
+			@PathVariable Integer employeeTypeId);
+
+	public ResponseEntity<?> deleteEmployeeType(@PathVariable Integer employeeTypeId);
 }

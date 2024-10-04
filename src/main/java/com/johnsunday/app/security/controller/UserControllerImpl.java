@@ -15,73 +15,82 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.johnsunday.app.security.entity.User;
 import com.johnsunday.app.security.service.UserServiceImpl;
 
 @RestController
-@CrossOrigin(origins="*")
+@CrossOrigin(origins = "*")
 @RequestMapping("api/v1/user")
 public class UserControllerImpl implements IUserController {
 	@Lazy
-	@Autowired private UserServiceImpl userService;
-	
+	@Autowired
+	private UserServiceImpl userService;
+
 	@Override
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@GetMapping("/")	
+	@GetMapping("/")
 	public ResponseEntity<?> getAllUser() {
 		try {
 			return ResponseEntity.status(HttpStatus.OK).body(userService.findAll());
-		}catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"error\":\"Error. Please, Try it later. It is NOT possible to SHOW all the users\"}");
+			return ResponseEntity.status(HttpStatus.NOT_FOUND)
+					.body("{\"error\":\"Error. Please, Try it later. It is NOT possible to SHOW all the users\"}");
 		}
 	}
+
 	@Override
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
 	@GetMapping("/{userId}")
-	public ResponseEntity<?> getUserById(@PathVariable("userId")Integer userId) {
+	public ResponseEntity<?> getUserById(@PathVariable("userId") Integer userId) {
 		try {
 			return ResponseEntity.status(HttpStatus.OK).body(userService.findById(userId));
-		}catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"error\":\"Error. Please, Try it later. NOT possible to SHOW the user who you find.\"}");
+			return ResponseEntity.status(HttpStatus.NOT_FOUND)
+					.body("{\"error\":\"Error. Please, Try it later. NOT possible to SHOW the user who you find.\"}");
 		}
 	}
+
 	@Override
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@PostMapping("/")	
+	@PostMapping("/")
 	public ResponseEntity<?> saveUser(@RequestBody @Valid User user) {
 		try {
 			return ResponseEntity.status(HttpStatus.OK).body(userService.save(user));
-		}catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. Please, Try it later. NOT possible to SAVE the user.\"}");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+					.body("{\"error\":\"Error. Please, Try it later. NOT possible to SAVE the user.\"}");
 		}
 	}
+
 	@Override
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@PutMapping("/{userId}")	
+	@PutMapping("/{userId}")
 	public ResponseEntity<?> updateUser(@RequestBody @Valid User user,
-										@PathVariable("userId")Integer userId) {
+			@PathVariable("userId") Integer userId) {
 		try {
-			return ResponseEntity.status(HttpStatus.OK).body(userService.update(userId,user));
-		}catch(Exception e) {
+			return ResponseEntity.status(HttpStatus.OK).body(userService.update(userId, user));
+		} catch (Exception e) {
 			e.printStackTrace();
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. Please, Try it later. it is NOT possible UPDATE the user who you looking for.\"}");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+					"{\"error\":\"Error. Please, Try it later. it is NOT possible UPDATE the user who you looking for.\"}");
 		}
 	}
+
 	@Override
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@DeleteMapping("/{userId}")	
-	public ResponseEntity<?> deleteUser(@PathVariable("userId")Integer userId) {
+	@DeleteMapping("/{userId}")
+	public ResponseEntity<?> deleteUser(@PathVariable("userId") Integer userId) {
 		try {
 			return ResponseEntity.status(HttpStatus.OK).body(userService.delete(userId));
-		}catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. Please, Try it later. It is NOT possible DELETE the user who you looking for.\"}");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+					"{\"error\":\"Error. Please, Try it later. It is NOT possible DELETE the user who you looking for.\"}");
 		}
 	}
 }

@@ -14,81 +14,85 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.johnsunday.app.dto.EmployeeTypeDto;
-import com.johnsunday.app.dto.EmployeeTypeMapper;
 import com.johnsunday.app.entity.EmployeeType;
 import com.johnsunday.app.service.EmployeeTypeServiceImpl;
 
-@CrossOrigin(origins="*")
+@CrossOrigin(origins = "*")
 @RequestMapping("api/v1/employee_type")
 @RestController
 public class EmployeeTypeControllerImpl implements IEmployeeTypeController<EmployeeType> {
 
-	
 	@Autowired
 	private EmployeeTypeServiceImpl employeeTypeService;
-	
+
 	@Override
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@GetMapping("/")	
+	@GetMapping("/")
 	public ResponseEntity<?> getAllEmployeeType() {
 		try {
 			return ResponseEntity.status(HttpStatus.OK).body(employeeTypeService.findAll());
-		}catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"error\":\"Error. Please, Try it later. It is NOT possible to SHOW all employee types\"}");
+			return ResponseEntity.status(HttpStatus.NOT_FOUND)
+					.body("{\"error\":\"Error. Please, Try it later. It is NOT possible to SHOW all employee types\"}");
 		}
 	}
+
 	@Override
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@GetMapping("/{employeeTypeId}")
-	//@ResponseBody
-	public ResponseEntity<?> getEmployeeTypeById(@PathVariable("employeeTypeId")Integer employeeTypeId){
+	// @ResponseBody
+	public ResponseEntity<?> getEmployeeTypeById(@PathVariable("employeeTypeId") Integer employeeTypeId) {
 		try {
 			return ResponseEntity.status(HttpStatus.OK).body(employeeTypeService.findById(employeeTypeId));
-		}catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"error\":\"Error. Please, Try it later. NOT possible to SHOW the employee type which you find.\"}");
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+					"{\"error\":\"Error. Please, Try it later. NOT possible to SHOW the employee type which you find.\"}");
 		}
 	}
+
 	@Override
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PostMapping("/")
-	//@ResponseBody
+	// @ResponseBody
 	public ResponseEntity<?> saveEmployeeType(@RequestBody @Valid EmployeeType employeeType) {
 		try {
 			return ResponseEntity.status(HttpStatus.OK).body(employeeTypeService.save(employeeType));
-		}catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. Please, Try it later. It is NOT possible to SAVE the employee type.\"}");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+					.body("{\"error\":\"Error. Please, Try it later. It is NOT possible to SAVE the employee type.\"}");
 		}
 	}
+
 	@Override
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@DeleteMapping("/{employeeTypeId}")
-	//@ResponseBody
-	public ResponseEntity<?> deleteEmployeeType(@PathVariable("employeeTypeId")Integer employeeTypeId) {
-		try {						
-			return ResponseEntity.status(HttpStatus.OK).body(employeeTypeService.delete(employeeTypeId));			
-		}catch(Exception e) {
+	// @ResponseBody
+	public ResponseEntity<?> deleteEmployeeType(@PathVariable("employeeTypeId") Integer employeeTypeId) {
+		try {
+			return ResponseEntity.status(HttpStatus.OK).body(employeeTypeService.delete(employeeTypeId));
+		} catch (Exception e) {
 			e.printStackTrace();
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. Please, Try it later. It is NOT possible to DELETE the employee type.\"}");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+					"{\"error\":\"Error. Please, Try it later. It is NOT possible to DELETE the employee type.\"}");
 		}
 	}
+
 	@Override
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@PutMapping("/{employeeTypeId}")	
+	@PutMapping("/{employeeTypeId}")
 	public ResponseEntity<?> updateEmployeeType(@RequestBody @Valid EmployeeType employeeType,
-											    @PathVariable("employeeTypeId")Integer employeeTypeId) {
+			@PathVariable("employeeTypeId") Integer employeeTypeId) {
 		try {
-			return ResponseEntity.status(HttpStatus.OK).body(employeeTypeService.update(employeeTypeId,employeeType));
-		}catch(Exception e) {
+			return ResponseEntity.status(HttpStatus.OK).body(employeeTypeService.update(employeeTypeId, employeeType));
+		} catch (Exception e) {
 			e.printStackTrace();
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. Please, Try it later. It is NOT possible UPDATE the employee type which you are looking for.\"}");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+					"{\"error\":\"Error. Please, Try it later. It is NOT possible UPDATE the employee type which you are looking for.\"}");
 		}
 	}
 }
