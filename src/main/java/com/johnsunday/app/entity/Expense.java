@@ -24,43 +24,43 @@ import lombok.Setter;
 import lombok.ToString;
 
 @Entity
-@Table(name="expense")
+@Table(name = "expense")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-//@Audited
+// @Audited
 @RequiredArgsConstructor
 @ToString
 public class Expense implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	@Column(name="concept",nullable=false)
-	@Length(min=3,max=128)
+	@Column(name = "concept", nullable = false)
+	@Length(min = 3, max = 128)
 	@NonNull
 	private String concept;
-	@Column(name="note",nullable=false)
-	@Length(min=3,max=255)
-	//@NonNull
+	@Column(name = "note", nullable = false)
+	@Length(min = 3, max = 255)
+	// @NonNull
 	private String note;
-	@Column(name="date",nullable=false)
-	//@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "date", nullable = false)
+	// @Temporal(TemporalType.TIMESTAMP)
 	@NonNull
 	private LocalDateTime date;
-	@Column(name="amount",nullable=false)
+	@Column(name = "amount", nullable = false)
 	@NonNull
 	private Double amount;
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="employee_id")
-	//@JsonIgnore
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "employee_id")
+	// @JsonIgnore
 	@NonNull
 	private Employee employee;
-	
+
 	// Constructor without note.
-	public Expense(Integer id,String concept,LocalDateTime date,Double amount,Employee employee) {
+	public Expense(Integer id, String concept, LocalDateTime date, Double amount, Employee employee) {
 		this.id = id;
 		this.concept = concept;
 		this.date = date;

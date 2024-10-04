@@ -20,49 +20,51 @@ import com.johnsunday.app.security.entity.User;
 import com.johnsunday.app.security.entity.Role;
 
 @DataJpaTest
-@AutoConfigureTestDatabase(replace=Replace.NONE)
+@AutoConfigureTestDatabase(replace = Replace.NONE)
 @Rollback(false)
 public class UserTest {
 
-	@Autowired IUserDao userDao;
-	@Autowired IRoleDao roleDao;
-	
+	@Autowired
+	IUserDao userDao;
+	@Autowired
+	IRoleDao roleDao;
+
 	@Test
 	public void testUserSaving() {
 		PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-		
+
 		String rawPassword = "george1234";
 		String encodedPassword = passwordEncoder.encode(rawPassword);
-		
+
 		User newUser = new User(
 				"George",
 				"Harrison",
-				"georgeharrison@gmail.com",
+				"georgeharrison@mail.com",
 				encodedPassword,
-				//Arrays.asList(new UserRole("ROLE_ADMIN"))
-				Arrays.asList(roleDao.findByName("ROLE_USER").get())
-				);
-//		User newAdminUser = new User(
-//				"Otis",
-//				"Ray Redding",
-//				"otisredding@gmail.com",
-//				encodedPassword,
-//				//Arrays.asList(new UserRole("ROLE_ADMIN"))
-//				Arrays.asList(roleDao.findByName("ROLE_ADMIN").get())
-//				);
+				// Arrays.asList(new UserRole("ROLE_ADMIN"))
+				Arrays.asList(roleDao.findByName("ROLE_USER").get()));
+		// User newAdminUser = new User(
+		// "Otis",
+		// "Ray Redding",
+		// "otisredding@gmail.com",
+		// encodedPassword,
+		// //Arrays.asList(new UserRole("ROLE_ADMIN"))
+		// Arrays.asList(roleDao.findByName("ROLE_ADMIN").get())
+		// );
 		User savedUser = userDao.save(newUser);
-		
+
 		assertThat(savedUser).isNotNull();
 		assertThat(savedUser.getId()).isGreaterThan(0);
 	}
+
 	@Test
 	public void testAssignRoleToUser() {
-		Optional<User>optUser = userDao.findByEmail("neilyoung@gmail.com");
-		Optional<Role>optRole = roleDao.findByName("ADMIN_ROLE");
+		Optional<User> optUser = userDao.findByEmail("rihannafenty@mail.com");
+		Optional<Role> optRole = roleDao.findByName("ADMIN_ROLE");
 		User user = optUser.get();
 		user.addRole(optRole.get());
 		User updatedUser = userDao.save(user);
-		
-		assertThat(updatedUser.getRoles().size()==2);		
+
+		assertThat(updatedUser.getRoles().size() == 2);
 	}
 }

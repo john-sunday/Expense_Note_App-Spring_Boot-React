@@ -39,7 +39,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @RequiredArgsConstructor
-public class User implements Serializable,UserDetails   {
+public class User implements UserDetails   {
 
 	private static final long serialVersionUID = 1L;
 	@Id

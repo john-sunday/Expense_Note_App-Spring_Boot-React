@@ -60,7 +60,7 @@ public class Employee implements Serializable {
 	@NonNull
 	private LocalDateTime birthDate;
 	@OneToOne
-	@JoinColumn(name="employee_type_id_fk")
+	@JoinColumn(name="employee_type_id") //<-employee_type_id_fk 
 	@NonNull
 	private EmployeeType employeeType;
 	@Column(name="email",nullable=false)
