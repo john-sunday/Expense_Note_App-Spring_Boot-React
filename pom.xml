@@ -32,7 +32,6 @@
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 			<version>2.7.18</version>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
@@ -55,7 +54,6 @@
 			<artifactId>postgresql</artifactId>
 			<scope>runtime</scope>
 		</dependency> -->
-	<!-- https://mvnrepository.com/artifact/org.postgresql/postgresql -->
 		<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
@@ -94,20 +92,17 @@
 		  <artifactId>spring-boot-starter-validation</artifactId>
 		  <version>2.7.18</version>
 		</dependency>
-<!-- 		<dependency>
-		  <groupId>io.jsonwebtoken</groupId>
-		  <artifactId>jjwt</artifactId>
-		  <version>0.9.1</version>
-		</dependency> -->
-		<!-- https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt-api -->
 		<dependency>
 			<groupId>io.jsonwebtoken</groupId>
 			<artifactId>jjwt-api</artifactId>
 			<version>0.12.6</version>
 		</dependency>
-		
-		<!--  
-		https://mvnrepository.com/artifact/org.hibernate.orm/hibernate-envers -->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-core</artifactId>
+			<version>6.6.1.Final</version>
+			<type>pom</type>
+		</dependency>
 <!-- 		<dependency> -->
 <!-- 		    <groupId>org.hibernate.orm</groupId> -->
 <!-- 		    <artifactId>hibernate-envers</artifactId> -->
@@ -118,30 +113,31 @@
 			<artifactId>spring-boot-starter-jdbc</artifactId>
 			<version>2.7.18</version>
 		</dependency>
-		<!-- Security dependencies -->
+
+		<!-- ** SECURITY DEPENDENCIES ** -->
 		<dependency>
 		  	<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-web</artifactId>
 <!-- 		  <version>${springsecurity.version}</version> -->
- 			<version>6.3.3</version>		   
+ 			<version>5.8.14</version>		   
 		</dependency>
 		<dependency>
   			<groupId>org.springframework.security</groupId>
   			<artifactId>spring-security-config</artifactId>
-			<version>5.7.11</version>
+			<version>5.8.14</version>
 		</dependency>
 		<dependency>
 		  <groupId>org.springframework.security</groupId>
 		  <artifactId>spring-security-crypto</artifactId>
-		  <version>5.7.11</version>
+		  <version>5.8.14</version>
 		</dependency>
 		<dependency>
 		  <groupId>org.springframework.boot</groupId>
 		  <artifactId>spring-boot-starter-security</artifactId>
 		  <version>2.7.18</version>
 		</dependency>
-		<!-- For Test Login Security 
-		https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-thymeleaf -->
+
+		<!-- For Test Login Security -->
 		<dependency>
 		    <groupId>org.springframework.boot</groupId>
 		    <artifactId>spring-boot-starter-thymeleaf</artifactId>
@@ -152,13 +148,7 @@
 			<artifactId>javax.servlet-api</artifactId>
 			<version>4.0.1</version>
 			<scope>provided</scope>
-		</dependency>	
-<!-- 		<dependency>
-			<groupId>org.apache.tomcat</groupId>
-			<artifactId>tomcat-servlet-api</artifactId>
-			<version>10.1.30</version>
-		</dependency> -->
-		<!-- https://mvnrepository.com/artifact/org.apache.tomcat/tomcat-servlet-api -->
+		</dependency>		
 		<dependency>
 			<groupId>org.apache.tomcat</groupId>
 			<artifactId>tomcat-servlet-api</artifactId>

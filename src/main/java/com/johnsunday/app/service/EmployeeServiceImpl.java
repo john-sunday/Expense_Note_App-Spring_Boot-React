@@ -15,93 +15,101 @@ import com.johnsunday.app.entity.Employee;
 import com.johnsunday.app.util.DateUtil;
 
 @Service
-public class EmployeeServiceImpl implements IEmployeeService{
-	
-	@Autowired IEmployeeDao employeeDao;
-	@Autowired IEmployeeTypeDao employeeTypeDao;
-	
-	@Override 
-	public Employee findByNameAndSurnameAllIgnoreCase(String name,String surname,String HeaderAuth) throws Exception {
-		Optional<Employee>optionalEmployee  = employeeDao.findByNameAndSurnameAllIgnoreCase(name,surname);
+public class EmployeeServiceImpl implements IEmployeeService {
+
+	@Autowired
+	IEmployeeDao employeeDao;
+	@Autowired
+	IEmployeeTypeDao employeeTypeDao;
+
+	@Override
+	public Employee findByNameAndSurnameAllIgnoreCase(String name, String surname, String HeaderAuth) throws Exception {
+		Optional<Employee> optionalEmployee = employeeDao.findByNameAndSurnameAllIgnoreCase(name, surname);
 		Employee searchedEmployee = null;
 		if (!optionalEmployee.isEmpty()) {
 			searchedEmployee = optionalEmployee.get();
 		}
-		return searchedEmployee;		
+		return searchedEmployee;
 	}
+
 	@Override
 	public List<Employee> findAll() throws Exception {
 		try {
-			return  employeeDao.findAll();										
-		}catch(Exception e) {
+			return employeeDao.findAll();
+		} catch (Exception e) {
 			e.printStackTrace();
 			throw new Exception(e.getMessage());
 		}
 	}
+
 	@Override
-	public Employee findById(Integer id,String headerAuth) throws Exception {
+	public Employee findById(Integer id, String headerAuth) throws Exception {
 		try {
-			Optional<Employee> optionalEmployee = employeeDao.findById(id);		
+			Optional<Employee> optionalEmployee = employeeDao.findById(id);
 			return optionalEmployee.get();
-		}catch(Exception e) {			
+		} catch (Exception e) {
 			e.printStackTrace();
 			throw new Exception(e.getMessage());
 		}
 	}
+
 	@Override
 	@Transactional
 	public Employee save(Employee employee) throws Exception {
 		try {
 			LocalDateTime parsedDate = DateUtil.formattingDate(employee.getBirthDate());
-			employee.setBirthDate(parsedDate);			
-			return employeeDao.save(employee);			
-		}catch(Exception e) {
+			employee.setBirthDate(parsedDate);
+			return employeeDao.save(employee);
+		} catch (Exception e) {
 			e.printStackTrace();
 			throw new Exception(e.getMessage());
 		}
 	}
+
 	@Override
 	@Transactional
-	public Employee update(Integer id,Employee employee) throws Exception {
+	public Employee update(Integer id, Employee employee) throws Exception {
 		Employee updatedEmployee = null;
 		try {
-			Optional<Employee> optionalEmployee = employeeDao.findById(id);					
-			if(optionalEmployee!=null) {
+			Optional<Employee> optionalEmployee = employeeDao.findById(id);
+			if (optionalEmployee != null) {
 				LocalDateTime parsedDate = DateUtil.formattingDate(employee.getBirthDate());
 				employee.setBirthDate(parsedDate);
-				updatedEmployee = employeeDao.save(employee);	
-			}					
-		}catch(Exception e) {
+				updatedEmployee = employeeDao.save(employee);
+			}
+		} catch (Exception e) {
 			e.printStackTrace();
 			throw new Exception(e.getMessage());
 		}
-		return updatedEmployee;	
+		return updatedEmployee;
 	}
+
 	@Override
 	@Transactional
 	public Boolean delete(Integer id) throws Exception {
 		boolean isDeleted = false;
 		try {
-			if(employeeDao.existsById(id)) {
+			if (employeeDao.existsById(id)) {
 				employeeDao.deleteById(id);
 				isDeleted = true;
 			} else {
 				throw new Exception();
 			}
-		}catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			throw new Exception(e.getMessage());
 		}
 		return isDeleted;
 	}
+
 	@Override
 	public Employee findByEmail(String email) throws Exception {
 		try {
-			Optional<Employee>optEmployee = employeeDao.findByEmail(email);
+			Optional<Employee> optEmployee = employeeDao.findByEmail(email);
 			return optEmployee.get();
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new Exception(e.getMessage());
-		}				
+		}
 	}
 }
