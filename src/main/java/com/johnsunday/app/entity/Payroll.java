@@ -21,29 +21,29 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name="payroll")
+@Table(name = "payroll")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @RequiredArgsConstructor
-//@Audited
+// @Audited
 public class Payroll implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	@Column(name="amount",nullable=false)
+	@Column(name = "amount", nullable = false)
 	@NonNull
 	private Double amount;
-	@Column(name="date",nullable=false)
-	//@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "date", nullable = false)
+	// @Temporal(TemporalType.TIMESTAMP)
 	@NonNull
 	private LocalDateTime date;
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="employee_id")//<- employee_id_fk
-	//@JsonIgnore
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "id") // <- employee_id/employee_id_fk
+	// @JsonIgnore
 	@NonNull
 	private Employee employee;
 }

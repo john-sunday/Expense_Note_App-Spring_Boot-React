@@ -19,26 +19,26 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name="employee_type")
+@Table(name = "position")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @RequiredArgsConstructor
-//@Audited
-public class EmployeeType implements Serializable {
+// @Audited
+public class Position implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	@Column(name="name",nullable=false)
-	@Length(min=3,max=128)
+	@Column(name = "name", nullable = false)
+	@Length(min = 3, max = 128)
 	@NonNull
 	private String name;
-	
+
 	// Constructor withOUT id.
-//	public EmployeeType(String name) {
-//		this.name = name;
-//	}
+	// public Position(String name) {
+	// this.name = name;
+	// }
 }

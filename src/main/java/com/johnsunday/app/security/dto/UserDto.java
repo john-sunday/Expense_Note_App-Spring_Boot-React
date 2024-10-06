@@ -14,22 +14,23 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class DtoUser extends User{
-	
+public class UserDto extends User {
+
 	private static final long serialVersionUID = 1L;
-	
+
 	private Integer id;
 	private String name;
 	private String surname;
 	private String email;
 	private String password;
-	private Collection<DtoRole>dtoRoles = new HashSet<>();
+	private Collection<RoleDto> roleDtos = new HashSet<>();
+
 	// Constructor WITHOUT id.
-	public DtoUser(String name,String surname,String email,String password,Collection<DtoRole>dtoRoles) {
+	public UserDto(String name, String surname, String email, String password, Collection<RoleDto> roleDtos) {
 		this.name = name;
 		this.surname = surname;
 		this.email = email;
 		this.password = password;
-		this.dtoRoles = dtoRoles;
+		this.roleDtos = roleDtos;
 	}
 }

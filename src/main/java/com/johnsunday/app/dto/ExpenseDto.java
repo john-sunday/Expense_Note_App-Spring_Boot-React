@@ -16,8 +16,8 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @RequiredArgsConstructor
-public class ExpenseDto extends Expense{
-	
+public class ExpenseDto extends Expense {
+
 	private static final long serialVersionUID = 1L;
 	private Integer id;
 	@NonNull
@@ -29,5 +29,5 @@ public class ExpenseDto extends Expense{
 	@NonNull
 	private Double amount;
 	@NonNull
-	private EmployeeDto dtoEmployee;
+	private EmployeeDto employeeDto;
 }

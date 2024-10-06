@@ -19,7 +19,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @RequiredArgsConstructor
 @ToString
-public class EmployeeDto extends Employee{
+public class EmployeeDto extends Employee {
 
 	private static final long serialVersionUID = 1L;
 	private Integer id;
@@ -30,17 +30,18 @@ public class EmployeeDto extends Employee{
 	@NonNull
 	private LocalDateTime birthDate;
 	@NonNull
-	private EmployeeTypeDto dtoEmployeeType;
-	private List<ExpenseDto>dtoExpenses;
-	private List<PayrollDto>dtoPayrolls;
-	
+	private PositionDto positionDto;
+	private List<ExpenseDto> expenseDtos;
+	private List<PayrollDto> payrollDtos;
+
 	// Constructor without id.
-	public EmployeeDto(String name,String surname,LocalDateTime birthDate,EmployeeTypeDto dtoEmployeeType,List<ExpenseDto>dtoExpenses,List<PayrollDto>dtoPayrolls) {
+	public EmployeeDto(String name, String surname, LocalDateTime birthDate, PositionDto positionDto,
+			List<ExpenseDto> expenseDtos, List<PayrollDto> payrollDtos) {
 		this.name = name;
 		this.surname = surname;
 		this.birthDate = birthDate;
-		this.dtoEmployeeType = dtoEmployeeType;
-		this.dtoExpenses = dtoExpenses;
-		this.dtoPayrolls = dtoPayrolls;
+		this.positionDto = positionDto;
+		this.expenseDtos = expenseDtos;
+		this.payrollDtos = payrollDtos;
 	}
 }

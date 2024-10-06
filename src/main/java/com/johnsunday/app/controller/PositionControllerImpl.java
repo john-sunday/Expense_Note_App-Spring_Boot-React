@@ -16,23 +16,23 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.johnsunday.app.entity.EmployeeType;
-import com.johnsunday.app.service.EmployeeTypeServiceImpl;
+import com.johnsunday.app.entity.Position;
+import com.johnsunday.app.service.PositionServiceImpl;
 
 @CrossOrigin(origins = "*")
-@RequestMapping("api/v1/employee_type")
+@RequestMapping("api/v1/position")
 @RestController
-public class EmployeeTypeControllerImpl implements IEmployeeTypeController<EmployeeType> {
+public class PositionControllerImpl implements IPositionController<Position> {
 
 	@Autowired
-	private EmployeeTypeServiceImpl employeeTypeService;
+	private PositionServiceImpl positionService;
 
 	@Override
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@GetMapping("/")
-	public ResponseEntity<?> getAllEmployeeType() {
+	public ResponseEntity<?> getAllPosition() {
 		try {
-			return ResponseEntity.status(HttpStatus.OK).body(employeeTypeService.findAll());
+			return ResponseEntity.status(HttpStatus.OK).body(positionService.findAll());
 		} catch (Exception e) {
 			e.printStackTrace();
 			return ResponseEntity.status(HttpStatus.NOT_FOUND)
@@ -42,11 +42,11 @@ public class EmployeeTypeControllerImpl implements IEmployeeTypeController<Emplo
 
 	@Override
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@GetMapping("/{employeeTypeId}")
+	@GetMapping("/{positionId}")
 	// @ResponseBody
-	public ResponseEntity<?> getEmployeeTypeById(@PathVariable("employeeTypeId") Integer employeeTypeId) {
+	public ResponseEntity<?> getPositionById(@PathVariable("positionId") Integer positionId) {
 		try {
-			return ResponseEntity.status(HttpStatus.OK).body(employeeTypeService.findById(employeeTypeId));
+			return ResponseEntity.status(HttpStatus.OK).body(positionService.findById(positionId));
 		} catch (Exception e) {
 			e.printStackTrace();
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
@@ -58,9 +58,9 @@ public class EmployeeTypeControllerImpl implements IEmployeeTypeController<Emplo
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PostMapping("/")
 	// @ResponseBody
-	public ResponseEntity<?> saveEmployeeType(@RequestBody @Valid EmployeeType employeeType) {
+	public ResponseEntity<?> savePosition(@RequestBody @Valid Position position) {
 		try {
-			return ResponseEntity.status(HttpStatus.OK).body(employeeTypeService.save(employeeType));
+			return ResponseEntity.status(HttpStatus.OK).body(positionService.save(position));
 		} catch (Exception e) {
 			e.printStackTrace();
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
@@ -70,11 +70,11 @@ public class EmployeeTypeControllerImpl implements IEmployeeTypeController<Emplo
 
 	@Override
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@DeleteMapping("/{employeeTypeId}")
+	@DeleteMapping("/{positionId}")
 	// @ResponseBody
-	public ResponseEntity<?> deleteEmployeeType(@PathVariable("employeeTypeId") Integer employeeTypeId) {
+	public ResponseEntity<?> deletePosition(@PathVariable("positionId") Integer positionId) {
 		try {
-			return ResponseEntity.status(HttpStatus.OK).body(employeeTypeService.delete(employeeTypeId));
+			return ResponseEntity.status(HttpStatus.OK).body(positionService.delete(positionId));
 		} catch (Exception e) {
 			e.printStackTrace();
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
@@ -84,11 +84,11 @@ public class EmployeeTypeControllerImpl implements IEmployeeTypeController<Emplo
 
 	@Override
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@PutMapping("/{employeeTypeId}")
-	public ResponseEntity<?> updateEmployeeType(@RequestBody @Valid EmployeeType employeeType,
-			@PathVariable("employeeTypeId") Integer employeeTypeId) {
+	@PutMapping("/{positionId}")
+	public ResponseEntity<?> updatePosition(@RequestBody @Valid Position position,
+			@PathVariable("employeeTypeId") Integer positionId) {
 		try {
-			return ResponseEntity.status(HttpStatus.OK).body(employeeTypeService.update(employeeTypeId, employeeType));
+			return ResponseEntity.status(HttpStatus.OK).body(positionService.update(positionId, position));
 		} catch (Exception e) {
 			e.printStackTrace();
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(

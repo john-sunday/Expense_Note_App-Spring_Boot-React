@@ -16,7 +16,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @RequiredArgsConstructor
-public class PayrollDto extends Payroll{
+public class PayrollDto extends Payroll {
 
 	private static final long serialVersionUID = 1L;
 	private Integer id;
@@ -25,5 +25,5 @@ public class PayrollDto extends Payroll{
 	@NonNull
 	private LocalDateTime date;
 	@NonNull
-	private EmployeeDto dtoEmployee;
+	private EmployeeDto employeeDto;
 }

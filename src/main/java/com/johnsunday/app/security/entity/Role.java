@@ -21,25 +21,26 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name="role")
-//@ToString(includeFieldNames = false)
-public class Role implements Serializable{
+@Table(name = "role")
+// @ToString(includeFieldNames = false)
+public class Role implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	@Column(name="name",nullable=false,unique=true)
-	@Length(min=6,max=25)
+	@Column(name = "name", nullable = false, unique = true)
+	@Length(min = 6, max = 25)
 	private String name;
-	
+
 	// Constructor without id.
 	public Role(String name) {
 		this.name = name;
 	}
+
 	@Override
 	public String toString() {
 		return this.name;
 	}
-	
+
 }

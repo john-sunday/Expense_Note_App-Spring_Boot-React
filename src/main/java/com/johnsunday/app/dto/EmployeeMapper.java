@@ -4,72 +4,67 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.johnsunday.app.entity.Employee;
-import com.johnsunday.app.entity.EmployeeType;
+import com.johnsunday.app.entity.Position;
 import com.johnsunday.app.entity.Expense;
 import com.johnsunday.app.entity.Payroll;
 
 public class EmployeeMapper {
 	// 1 - With ID.
 	// A - DTO to Employee.
-	public static Employee dtoToEmployeeWithId(EmployeeDto dtoEmployee) {
-		if (isNullList(dtoEmployee.getDtoExpenses())) {
-			dtoEmployee.setDtoExpenses(initializeDtoExpenseList(dtoEmployee.getDtoExpenses()));
+	public static Employee dtoToEmployeeWithId(EmployeeDto employeeDto) {
+		if (isNullList(employeeDto.getExpenseDtos())) {
+			employeeDto.setExpenseDtos(initializeExpenseDtos(employeeDto.getExpenseDtos()));
 		}
-		if (isNullList(dtoEmployee.getDtoPayrolls())) {
-			dtoEmployee.setDtoPayrolls(initializeDtoPayrollList(dtoEmployee.getDtoPayrolls()));
+		if (isNullList(employeeDto.getPayrollDtos())) {
+			employeeDto.setPayrollDtos(initializePayrollDtos(employeeDto.getPayrollDtos()));
 		}
-		/*
-		 * public Employee(String name,String surname,LocalDateTime birthDate,
-		 * EmployeeType employeeType,String email,
-		 * List<Expense>expenses,List<Payroll>payrolls) {
-		 */
 		return new Employee(
-				dtoEmployee.getId(),
-				dtoEmployee.getName(),
-				dtoEmployee.getSurname(),
-				dtoEmployee.getBirthDate(),
-				EmployeeTypeMapper.dtoToEmployeeType(dtoEmployee.getDtoEmployeeType()),
-				dtoEmployee.getEmail(),
-				dtoListToExpenseList(dtoEmployee.getDtoExpenses()),
-				dtoListToPayrollList(dtoEmployee.getDtoPayrolls()));
+				employeeDto.getId(),
+				employeeDto.getName(),
+				employeeDto.getSurname(),
+				employeeDto.getBirthDate(),
+				PositionMapper.dtoToPosition(employeeDto.getPositionDto()),
+				employeeDto.getEmail(),
+				dtosToExpenses(employeeDto.getExpenseDtos()),
+				dtosToPayrolls(employeeDto.getPayrollDtos()));
 	}
 
 	// B - Employee to DTO.
 	public static EmployeeDto employeeToDtoWithId(Employee employee) {
 		if (isNullList(employee.getExpenses())) {
-			employee.setExpenses(initializeExpenseList(employee.getExpenses()));
+			employee.setExpenses(initializeExpenses(employee.getExpenses()));
 		}
 		if (isNullList(employee.getPayrolls())) {
-			employee.setPayrolls(initializePayrollList(employee.getPayrolls()));
+			employee.setPayrolls(initializePayrolls(employee.getPayrolls()));
 		}
 		return new EmployeeDto(
 				employee.getId(),
 				employee.getName(),
 				employee.getSurname(),
 				employee.getBirthDate(),
-				EmployeeTypeMapper.employeeTypeToDtoWithId(employee.getEmployeeType()),
-				expenseListToDtoList(employee.getExpenses()),
-				payrollListToDtoList(employee.getPayrolls()));
+				PositionMapper.positionToDtoWithId(employee.getPosition()),
+				expensesToDtos(employee.getExpenses()),
+				payrollsToDtos(employee.getPayrolls()));
 	}
 
 	// 2 - Without ID.
 	// A - DTO to Employee.
-	public static Employee dtoToEmployee(EmployeeDto dtoEmployee) {
-		if (isNullList(dtoEmployee.getDtoExpenses())) {
-			dtoEmployee.setDtoExpenses(initializeDtoExpenseList(dtoEmployee.getDtoExpenses()));
+	public static Employee dtoToEmployee(EmployeeDto employeeDto) {
+		if (isNullList(employeeDto.getExpenseDtos())) {
+			employeeDto.setExpenseDtos(initializeExpenseDtos(employeeDto.getExpenseDtos()));
 		}
-		if (isNullList(dtoEmployee.getDtoPayrolls())) {
-			dtoEmployee.setDtoPayrolls(initializeDtoPayrollList(dtoEmployee.getDtoPayrolls()));
+		if (isNullList(employeeDto.getPayrollDtos())) {
+			employeeDto.setPayrollDtos(initializePayrollDtos(employeeDto.getPayrollDtos()));
 		}
-		EmployeeType employeeType = EmployeeTypeMapper.dtoToEmployeeTypeWithId(dtoEmployee.getDtoEmployeeType());
+		Position employeeType = PositionMapper.dtoToPositionWithId(employeeDto.getPositionDto());
 		return new Employee(
-				dtoEmployee.getName(),
-				dtoEmployee.getSurname(),
-				dtoEmployee.getBirthDate(),
+				employeeDto.getName(),
+				employeeDto.getSurname(),
+				employeeDto.getBirthDate(),
 				employeeType,
-				dtoEmployee.getEmail(),
-				dtoListToExpenseList(dtoEmployee.getDtoExpenses()),
-				dtoListToPayrollList(dtoEmployee.getDtoPayrolls()));
+				employeeDto.getEmail(),
+				dtosToExpenses(employeeDto.getExpenseDtos()),
+				dtosToPayrolls(employeeDto.getPayrollDtos()));
 	}
 
 	// B - Employee to DTO.
@@ -78,7 +73,7 @@ public class EmployeeMapper {
 				employee.getName(),
 				employee.getSurname(),
 				employee.getBirthDate(),
-				EmployeeTypeMapper.employeeTypeToDto(employee.getEmployeeType()));
+				PositionMapper.PositionToDto(employee.getPosition()));
 	}
 
 	private static Boolean isNullList(List<?> list) {
@@ -97,53 +92,53 @@ public class EmployeeMapper {
 	 * }
 	 */
 
-	private static List<ExpenseDto> initializeDtoExpenseList(List<ExpenseDto> list) {
-		return list = new ArrayList<>();
+	private static List<ExpenseDto> initializeExpenseDtos(List<ExpenseDto> expenseDtos) {
+		return expenseDtos = new ArrayList<>();
 	}
 
-	private static List<Expense> initializeExpenseList(List<Expense> list) {
-		return list = new ArrayList<>();
+	private static List<Expense> initializeExpenses(List<Expense> expenses) {
+		return expenses = new ArrayList<>();
 	}
 
-	private static List<PayrollDto> initializeDtoPayrollList(List<PayrollDto> list) {
-		return list = new ArrayList<>();
+	private static List<PayrollDto> initializePayrollDtos(List<PayrollDto> payrollDtos) {
+		return payrollDtos = new ArrayList<>();
 	}
 
-	private static List<Payroll> initializePayrollList(List<Payroll> list) {
-		return list = new ArrayList<>();
+	private static List<Payroll> initializePayrolls(List<Payroll> payrolls) {
+		return payrolls = new ArrayList<>();
 	}
 
 	// A - Expense/DTO lists.
-	private static List<Expense> dtoListToExpenseList(List<ExpenseDto> dtoExpenseList) {
+	private static List<Expense> dtosToExpenses(List<ExpenseDto> expenseDtos) {
 		List<Expense> expenses = new ArrayList<>();
-		for (ExpenseDto dtoExpense : dtoExpenseList) {
-			expenses.add(ExpenseMapper.dtoToExpense(dtoExpense));
+		for (ExpenseDto expenseDto : expenseDtos) {
+			expenses.add(ExpenseMapper.dtoToExpense(expenseDto));
 		}
 		return expenses;
 	}
 
-	private static List<ExpenseDto> expenseListToDtoList(List<Expense> expenseList) {
-		List<ExpenseDto> dtoExpenses = new ArrayList<>();
-		for (Expense expense : expenseList) {
-			dtoExpenses.add(ExpenseMapper.expenseToDto(expense));
+	private static List<ExpenseDto> expensesToDtos(List<Expense> expenses) {
+		List<ExpenseDto> expenseDtos = new ArrayList<>();
+		for (Expense expense : expenses) {
+			expenseDtos.add(ExpenseMapper.expenseToDto(expense));
 		}
-		return dtoExpenses;
+		return expenseDtos;
 	}
 
 	// B - Payroll/DTO lists.
-	private static List<Payroll> dtoListToPayrollList(List<PayrollDto> dtoPayrollList) {
+	private static List<Payroll> dtosToPayrolls(List<PayrollDto> payrollDtos) {
 		List<Payroll> payrolls = new ArrayList<>();
-		for (PayrollDto dtoPayroll : dtoPayrollList) {
-			payrolls.add(PayrollMapper.dtoToPayroll(dtoPayroll));
+		for (PayrollDto payrollDto : payrollDtos) {
+			payrolls.add(PayrollMapper.dtoToPayroll(payrollDto));
 		}
 		return payrolls;
 	}
 
-	private static List<PayrollDto> payrollListToDtoList(List<Payroll> payrollList) {
-		List<PayrollDto> dtoPayrolls = new ArrayList<>();
-		for (Payroll payroll : payrollList) {
-			dtoPayrolls.add(PayrollMapper.payrollToDto(payroll));
+	private static List<PayrollDto> payrollsToDtos(List<Payroll> payrolls) {
+		List<PayrollDto> payrollDtos = new ArrayList<>();
+		for (Payroll payroll : payrolls) {
+			payrollDtos.add(PayrollMapper.payrollToDto(payroll));
 		}
-		return dtoPayrolls;
+		return payrollDtos;
 	}
 }

@@ -12,27 +12,33 @@ import com.johnsunday.app.security.jwt.JwtAuthenticationUtil;
 
 public class EmployeeUtil {
 
-	@Autowired private static IEmployeeDao employeeDao;
-	@Autowired private static JwtAuthenticationUtil jwtAuthUtil;
-	@Autowired private static IUserDao userDao;
-	
+	@Autowired
+	private static IEmployeeDao employeeDao;
+	@Autowired
+	private static JwtAuthenticationUtil jwtAuthUtil;
+	@Autowired
+	private static IUserDao userDao;
+
 	public static Boolean existsInDb(Employee employee) {
 		boolean exists = false;
 		try {
-			if ((employeeDao.findById(employee.getId()))!=null) {				
+			if ((employeeDao.findById(employee.getId())) != null) {
 				exists = true;
 			}
-		} catch (Exception e) {			
+		} catch (Exception e) {
 			e.printStackTrace();
-		}		
+		}
 		return exists;
 	}
-	public Boolean matchEmployeeUserEmail(Employee employee,String token) throws Exception {
+
+	public Boolean matchEmployeeUserEmail(Employee employee, String token) throws Exception {
 		boolean isMatch = false;
 		int tokenUserId = jwtAuthUtil.extractTokenUserId(token);
-		Optional<User>optTokenUser = userDao.findById(tokenUserId);		
-		if(optTokenUser.get().getEmail().equalsIgnoreCase(employee.getEmail())) isMatch = true;
-		else throw new Exception("ERROR -> The token user email DOESN'T MATCH with the employee email.");
+		Optional<User> optTokenUser = userDao.findById(tokenUserId);
+		if (optTokenUser.get().getEmail().equalsIgnoreCase(employee.getEmail()))
+			isMatch = true;
+		else
+			throw new Exception("ERROR -> The token user email DOESN'T MATCH with the employee email.");
 		return isMatch;
 	}
 }

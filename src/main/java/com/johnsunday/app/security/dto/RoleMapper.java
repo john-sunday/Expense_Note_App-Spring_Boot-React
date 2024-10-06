@@ -4,23 +4,24 @@ import com.johnsunday.app.security.entity.Role;
 
 public class RoleMapper {
 	// Without ID.
-	public static Role dtoToRole(DtoRole dtoRole) {
-		return new Role(dtoRole.getName());
-	}	
-	public static DtoRole roleToDto(Role role) {
-		return new DtoRole(role.getName());
+	public static Role dtoToRole(RoleDto roleDto) {
+		return new Role(roleDto.getName());
 	}
+
+	public static RoleDto roleToDto(Role role) {
+		return new RoleDto(role.getName());
+	}
+
 	// With ID.
-	public static Role dtoToRoleWithId(DtoRole dtoRole) {
+	public static Role dtoToRoleWithId(RoleDto roleDto) {
 		return new Role(
-				dtoRole.getId(),
-				dtoRole.getName()
-				);
-	}	
-	public static DtoRole roleToDtoWithId(Role role) {
-		return new DtoRole(
+				roleDto.getId(),
+				roleDto.getName());
+	}
+
+	public static RoleDto roleToDtoWithId(Role role) {
+		return new RoleDto(
 				role.getId(),
-				role.getName()
-				);
+				role.getName());
 	}
 }

@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.johnsunday.app.dao.IEmployeeDao;
-import com.johnsunday.app.dao.IEmployeeTypeDao;
+import com.johnsunday.app.dao.IPositionDao;
 import com.johnsunday.app.entity.Employee;
 import com.johnsunday.app.util.DateUtil;
 
@@ -20,7 +20,7 @@ public class EmployeeServiceImpl implements IEmployeeService {
 	@Autowired
 	IEmployeeDao employeeDao;
 	@Autowired
-	IEmployeeTypeDao employeeTypeDao;
+	IPositionDao positionDao;
 
 	@Override
 	public Employee findByNameAndSurnameAllIgnoreCase(String name, String surname, String HeaderAuth) throws Exception {

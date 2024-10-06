@@ -9,59 +9,59 @@ import com.johnsunday.app.security.entity.User;
 
 public class UserMapper {
 	// With ID.
-	public static User dtoToUserWithId(DtoUser dtoUser) {
+	public static User dtoToUserWithId(UserDto userDto) {
 		return new User(
-				dtoUser.getId(),
-				dtoUser.getName(),
-				dtoUser.getSurname(),
-				dtoUser.getEmail(),
-				dtoUser.getPassword(),
-				dtoSetToRoleSet(dtoUser.getDtoRoles())
-				);
-	}	
-	public static DtoUser userToDtoWithId(User user) {
-		return new DtoUser(
+				userDto.getId(),
+				userDto.getName(),
+				userDto.getSurname(),
+				userDto.getEmail(),
+				userDto.getPassword(),
+				dtosToRoles(userDto.getRoleDtos()));
+	}
+
+	public static UserDto userToDtoWithId(User user) {
+		return new UserDto(
 				user.getId(),
 				user.getName(),
 				user.getSurname(),
 				user.getEmail(),
 				user.getPassword(),
-				roleSetToDtoSet(user.getRoles())							 					
-				);
+				rolesToDtos(user.getRoles()));
 	}
+
 	// Without ID.
-	public static User dtoToUser(DtoUser dtoUser) {
+	public static User dtoToUser(UserDto userDto) {
 		return new User(
-				dtoUser.getName(),
-				dtoUser.getSurname(),
-				dtoUser.getEmail(),
-				dtoUser.getPassword(),
-				dtoSetToRoleSet(dtoUser.getDtoRoles())
-				);
-	}	
-	public static DtoUser userToDto(User user) {
-		return new DtoUser(
+				userDto.getName(),
+				userDto.getSurname(),
+				userDto.getEmail(),
+				userDto.getPassword(),
+				dtosToRoles(userDto.getRoleDtos()));
+	}
+
+	public static UserDto userToDto(User user) {
+		return new UserDto(
 				user.getName(),
 				user.getSurname(),
 				user.getEmail(),
 				user.getPassword(),
-				roleSetToDtoSet(user.getRoles())							 					
-				);
+				rolesToDtos(user.getRoles()));
 	}
-	
+
 	// Role/DTO Set.
-	private static Set<Role> dtoSetToRoleSet(Collection<DtoRole> dtoRoleSet) {
-		Set<Role>roles = new HashSet<Role>();
-		for (DtoRole dtoRole:dtoRoleSet) {
-			roles.add(RoleMapper.dtoToRole(dtoRole));
+	private static Set<Role> dtosToRoles(Collection<RoleDto> roleDtos) {
+		Set<Role> roles = new HashSet<Role>();
+		for (RoleDto roleDto : roleDtos) {
+			roles.add(RoleMapper.dtoToRole(roleDto));
 		}
 		return roles;
 	}
-	private static Set<DtoRole> roleSetToDtoSet(Collection<Role> roleSet) {
-		Set<DtoRole>dtoRoleSet = new HashSet<DtoRole>();
-		for (Role role:roleSet) {
-			dtoRoleSet.add(RoleMapper.roleToDto(role));
+
+	private static Set<RoleDto> rolesToDtos(Collection<Role> roles) {
+		Set<RoleDto> roleDtos = new HashSet<RoleDto>();
+		for (Role role : roles) {
+			roleDtos.add(RoleMapper.roleToDto(role));
 		}
-		return dtoRoleSet;
+		return roleDtos;
 	}
 }

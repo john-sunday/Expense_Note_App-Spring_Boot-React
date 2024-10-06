@@ -4,43 +4,42 @@ import com.johnsunday.app.entity.Expense;
 
 public class ExpenseMapper {
 	// Without ID.
-	public static Expense dtoToExpense(ExpenseDto dtoExpense) {
+	public static Expense dtoToExpense(ExpenseDto expenseDto) {
 		return new Expense(
-				null, dtoExpense.getConcept(),
-				dtoExpense.getNote(),
-				dtoExpense.getDate(),
-				dtoExpense.getAmount(),				
-				EmployeeMapper.dtoToEmployeeWithId(dtoExpense.getDtoEmployee())
-				);
+				null, expenseDto.getConcept(),
+				expenseDto.getNote(),
+				expenseDto.getDate(),
+				expenseDto.getAmount(),
+				EmployeeMapper.dtoToEmployeeWithId(expenseDto.getEmployeeDto()));
 	}
+
 	public static ExpenseDto expenseToDto(Expense expense) {
 		return new ExpenseDto(
 				expense.getConcept(),
 				expense.getNote(),
 				expense.getDate(),
-				expense.getAmount(),				
-				EmployeeMapper.employeeToDtoWithId(expense.getEmployee())
-				);
+				expense.getAmount(),
+				EmployeeMapper.employeeToDtoWithId(expense.getEmployee()));
 	}
+
 	// With ID.
-	public static Expense dtoToExpenseWithId(ExpenseDto dtoExpense) {
+	public static Expense dtoToExpenseWithId(ExpenseDto expenseDto) {
 		return new Expense(
-				dtoExpense.getId(),
-				dtoExpense.getConcept(),
-				dtoExpense.getNote(),
-				dtoExpense.getDate(),
-				dtoExpense.getAmount(),				
-				EmployeeMapper.dtoToEmployeeWithId(dtoExpense.getDtoEmployee())
-				);
-	}	
+				expenseDto.getId(),
+				expenseDto.getConcept(),
+				expenseDto.getNote(),
+				expenseDto.getDate(),
+				expenseDto.getAmount(),
+				EmployeeMapper.dtoToEmployeeWithId(expenseDto.getEmployeeDto()));
+	}
+
 	public static ExpenseDto expenseToDtoWithId(Expense expense) {
 		return new ExpenseDto(
 				expense.getId(),
 				expense.getConcept(),
 				expense.getNote(),
 				expense.getDate(),
-				expense.getAmount(),				
-				EmployeeMapper.employeeToDtoWithId(expense.getEmployee())
-				);
+				expense.getAmount(),
+				EmployeeMapper.employeeToDtoWithId(expense.getEmployee()));
 	}
 }
