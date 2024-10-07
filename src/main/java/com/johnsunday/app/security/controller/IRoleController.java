@@ -11,12 +11,12 @@ public interface IRoleController {
 
 	public ResponseEntity<?> getAllRole();
 
-	public ResponseEntity<?> getRoleById(@PathVariable Integer roleId);
+	public ResponseEntity<?> getRoleById(@PathVariable Long roleId);
 
 	public ResponseEntity<?> saveRole(@RequestBody @Valid Role role);
 
 	public ResponseEntity<?> updateRole(@RequestBody @Valid Role role,
-			@PathVariable Integer roleId);
+			@PathVariable Long roleId);
 
-	public ResponseEntity<?> deleteRole(@PathVariable Integer roleId);
+	public ResponseEntity<?> deleteRole(@PathVariable Long roleId);
 }

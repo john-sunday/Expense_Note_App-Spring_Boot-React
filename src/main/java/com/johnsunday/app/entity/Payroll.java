@@ -33,7 +33,7 @@ public class Payroll implements Serializable {
 	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+	private Long id;
 	@Column(name = "amount", nullable = false)
 	@NonNull
 	private Double amount;

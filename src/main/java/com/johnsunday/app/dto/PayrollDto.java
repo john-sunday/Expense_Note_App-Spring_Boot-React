@@ -19,7 +19,7 @@ import lombok.Setter;
 public class PayrollDto extends Payroll {
 
 	private static final long serialVersionUID = 1L;
-	private Integer id;
+	private Long id;
 	@NonNull
 	private Double amount;
 	@NonNull

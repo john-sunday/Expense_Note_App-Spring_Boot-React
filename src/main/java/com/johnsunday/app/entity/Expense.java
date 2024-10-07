@@ -37,7 +37,7 @@ public class Expense implements Serializable {
 	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+	private Long id;
 	@Column(name = "concept", nullable = false)
 	@Length(min = 3, max = 128)
 	@NonNull
@@ -60,7 +60,7 @@ public class Expense implements Serializable {
 	private Employee employee;
 
 	// Constructor without note.
-	public Expense(Integer id, String concept, LocalDateTime date, Double amount, Employee employee) {
+	public Expense(Long id, String concept, LocalDateTime date, Double amount, Employee employee) {
 		this.id = id;
 		this.concept = concept;
 		this.date = date;

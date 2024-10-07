@@ -8,8 +8,12 @@ import com.johnsunday.app.security.entity.Role;
 public interface IRoleService {
 
 	public List<Role> findAll() throws Exception;
-	public Optional<Role> findById(Integer id) throws Exception;
+
+	public Optional<Role> findById(Long id) throws Exception;
+
 	public Role save(Role role) throws Exception;
-	public Role update(Integer roleId,Role role) throws Exception;
-	public Boolean delete(Integer id) throws Exception;
+
+	public Role update(Long id, Role role) throws Exception;
+
+	public Boolean delete(Long id) throws Exception;
 }

@@ -21,80 +21,86 @@ public class PayrollServiceImpl implements IPayrollService {
 	private IPayrollDao payrollDao;
 
 	@Override
-	public List<Payroll> findAllPayrollByEmployeeId(Integer id) throws Exception {
+	public List<Payroll> findAllPayrollByEmployeeId(Long id) throws Exception {
 		try {
-			//return payrollDao.findAllPayrollByEmployeeId(employeeId);
+			// return payrollDao.findAllPayrollByEmployeeId(employeeId);
 			return payrollDao.findAllByEmployeeId(id);
-		}catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			throw new Exception(e.getMessage());
 		}
 	}
+
 	@Override
-	public Boolean findByDateAndEmployeeAllIgnoreCase(LocalDateTime date,Employee employee) throws Exception{
-		return payrollDao.findByDateAndEmployeeAllIgnoreCase(date,employee);
+	public Boolean findByDateAndEmployeeAllIgnoreCase(LocalDateTime date, Employee employee) throws Exception {
+		return payrollDao.findByDateAndEmployeeAllIgnoreCase(date, employee);
 	}
+
 	@Override
 	public List<Payroll> findAll() throws Exception {
 		try {
 			return payrollDao.findAll();
-		}catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			throw new Exception(e.getMessage());
 		}
 	}
+
 	@Override
-	public Payroll findById(Integer id) throws Exception {
+	public Payroll findById(Long id) throws Exception {
 		try {
 			Optional<Payroll> optionalPayroll = payrollDao.findById(id);
 			return optionalPayroll.get();
-		}catch(Exception e) {			
+		} catch (Exception e) {
 			e.printStackTrace();
 			throw new Exception(e.getMessage());
 		}
 	}
+
 	@Override
 	@Transactional
 	public Payroll save(Payroll payroll) throws Exception {
-		try {			
+		try {
 			LocalDateTime parsedDate = DateUtil.formattingDate(payroll.getDate());
 			payroll.setDate(parsedDate);
-			return payrollDao.save(payroll);			 
-		}catch(Exception e) {
+			return payrollDao.save(payroll);
+		} catch (Exception e) {
 			e.printStackTrace();
 			throw new Exception(e.getMessage());
 		}
 	}
+
 	@Override
 	@Transactional
-	public Payroll update(Integer id,Payroll payroll) throws Exception {
+	public Payroll update(Long id, Payroll payroll) throws Exception {
 		Payroll payrollUpdated = null;
 		try {
 			Optional<Payroll> optionalPayroll = payrollDao.findById(id);
-			Payroll oldPayroll = optionalPayroll.get();			
-			if(oldPayroll!=null) {
+			Payroll oldPayroll = optionalPayroll.get();
+			if (oldPayroll != null) {
 				LocalDateTime parsedDate = DateUtil.formattingDate(payroll.getDate());
 				payroll.setDate(parsedDate);
-				payrollUpdated = payrollDao.save(payroll);				
-			}					
-		}catch(Exception e) {
+				payrollUpdated = payrollDao.save(payroll);
+			}
+		} catch (Exception e) {
 			e.printStackTrace();
 			throw new Exception(e.getMessage());
 		}
-		return payrollUpdated;	
+		return payrollUpdated;
 	}
+
 	@Override
 	@Transactional
-	public Boolean delete(Integer id) throws Exception {
+	public Boolean delete(Long id) throws Exception {
 		boolean isDeleted = false;
 		try {
-			if(payrollDao.existsById(id)) {
+			if (payrollDao.existsById(id)) {
 				payrollDao.deleteById(id);
 				isDeleted = true;
 			} else {
 				throw new Exception();
 			}
-		}catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			throw new Exception(e.getMessage());
 		}

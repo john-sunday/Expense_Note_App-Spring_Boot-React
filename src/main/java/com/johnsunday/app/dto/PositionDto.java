@@ -17,7 +17,7 @@ import lombok.Setter;
 public class PositionDto extends Position {
 
 	private static final long serialVersionUID = 1L;
-	private Integer id;
+	private Long id;
 	@NonNull
 	private String name;
 }

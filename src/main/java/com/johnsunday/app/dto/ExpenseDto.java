@@ -19,7 +19,7 @@ import lombok.Setter;
 public class ExpenseDto extends Expense {
 
 	private static final long serialVersionUID = 1L;
-	private Integer id;
+	private Long id;
 	@NonNull
 	private String concept;
 	@NonNull

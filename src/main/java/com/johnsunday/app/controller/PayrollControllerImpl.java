@@ -20,86 +20,97 @@ import com.johnsunday.app.entity.Employee;
 import com.johnsunday.app.entity.Payroll;
 import com.johnsunday.app.service.PayrollServiceImpl;
 
-@CrossOrigin(origins="*")
+@CrossOrigin(origins = "*")
 @RequestMapping("api/v1/payroll")
 @RestController
 public class PayrollControllerImpl implements IPayrollController<Payroll> {
 	@Autowired
 	private PayrollServiceImpl payrollService;
-	
+
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@GetMapping("/")	
+	@GetMapping("/")
 	public ResponseEntity<?> getAllPayroll() {
 		try {
 			return ResponseEntity.status(HttpStatus.OK).body(payrollService.findAll());
-		}catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"error\":\"Error. Please, Try it later. It is NOT possible to SHOW all payrolls\"}");
+			return ResponseEntity.status(HttpStatus.NOT_FOUND)
+					.body("{\"error\":\"Error. Please, Try it later. It is NOT possible to SHOW all payrolls\"}");
 		}
 	}
+
 	@Override
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
 	@GetMapping("/employee/{employeeId}")
-	//@ResponseBody
-	public ResponseEntity<?> getAllPayrollByEmployeeId(@PathVariable("employeeId")Integer employeeId) {
+	// @ResponseBody
+	public ResponseEntity<?> getAllPayrollByEmployeeId(@PathVariable("employeeId") Long employeeId) {
 		try {
-			return ResponseEntity.status(HttpStatus.OK).body(payrollService.findAllPayrollByEmployeeId(employeeId));			
+			return ResponseEntity.status(HttpStatus.OK).body(payrollService.findAllPayrollByEmployeeId(employeeId));
 		} catch (Exception e) {
 			e.printStackTrace();
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"error\":\"Error. Please, Try it later. It is NOT possible to SHOW the employee's payrolls.\"}");
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+					"{\"error\":\"Error. Please, Try it later. It is NOT possible to SHOW the employee's payrolls.\"}");
 		}
 	}
+
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
 	@GetMapping("/{payrollId}")
-	//@ResponseBody
-	public ResponseEntity<?> getPayrollById(@PathVariable("payrollId")Integer payrollId){
+	// @ResponseBody
+	public ResponseEntity<?> getPayrollById(@PathVariable("payrollId") Long payrollId) {
 		try {
 			return ResponseEntity.status(HttpStatus.OK).body(payrollService.findById(payrollId));
-		}catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"error\":\"Error. Please, Try it later. It is NOT possible to SHOW the payroll which you find.\"}");
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+					"{\"error\":\"Error. Please, Try it later. It is NOT possible to SHOW the payroll which you find.\"}");
 		}
 	}
+
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
 	@PostMapping("/")
-	//@ResponseBody
+	// @ResponseBody
 	public ResponseEntity<?> savePayroll(@RequestBody @Valid Payroll payroll) {
 		ResponseEntity<Payroll> responseEntity;
-		try {			
+		try {
 			Employee employee = payroll.getEmployee();
 			responseEntity = ResponseEntity.status(HttpStatus.OK).body(payrollService.save(payroll));
 			employee.addPayroll(payroll);
-		}catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. Please, Try it later. It is NOT possible to SAVE the entity.\"}");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+					.body("{\"error\":\"Error. Please, Try it later. It is NOT possible to SAVE the entity.\"}");
 		}
 		return responseEntity;
 	}
+
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@DeleteMapping("/{payrollId}")
-	//@ResponseBody
-	public ResponseEntity<?> deletePayroll(@PathVariable("payrollId")Integer payrollId) {
+	// @ResponseBody
+	public ResponseEntity<?> deletePayroll(@PathVariable("payrollId") Long payrollId) {
 		ResponseEntity<Boolean> responseEntity;
 		try {
 			Payroll payroll = payrollService.findById(payrollId);
-			Employee employee = payroll.getEmployee();			
-			employee.removePayroll(payroll);//******** Check if it's allow.......***********
-			responseEntity = ResponseEntity.status(HttpStatus.OK).body(payrollService.delete(payrollId));			
-		}catch(Exception e) {
+			Employee employee = payroll.getEmployee();
+			employee.removePayroll(payroll);// ******** Check if it's allow.......***********
+			responseEntity = ResponseEntity.status(HttpStatus.OK).body(payrollService.delete(payrollId));
+		} catch (Exception e) {
 			e.printStackTrace();
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. Please, Try it later. It is NOT possible to SAVE the payroll.\"}");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+					.body("{\"error\":\"Error. Please, Try it later. It is NOT possible to SAVE the payroll.\"}");
 		}
 		return responseEntity;
 	}
+
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
-	@PutMapping("/{payrollId}")	
+	@PutMapping("/{payrollId}")
 	public ResponseEntity<?> updatePayroll(@RequestBody @Valid Payroll payroll,
-										   @PathVariable("payrollId")Integer payrollId) {
+			@PathVariable("payrollId") Long payrollId) {
 		try {
-			return ResponseEntity.status(HttpStatus.OK).body(payrollService.update(payrollId,payroll));
-		}catch(Exception e) {
+			return ResponseEntity.status(HttpStatus.OK).body(payrollService.update(payrollId, payroll));
+		} catch (Exception e) {
 			e.printStackTrace();
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. Please, Try it later. It is NOT possible UPDATE the payroll which you are looking for.\"}");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+					"{\"error\":\"Error. Please, Try it later. It is NOT possible UPDATE the payroll which you are looking for.\"}");
 		}
 	}
 }

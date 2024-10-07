@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import com.johnsunday.app.entity.Position;
 
 @Repository
-public interface IPositionDao extends JpaRepository<Position, Integer> {
+public interface IPositionDao extends JpaRepository<Position, Long> {
 
 	Optional<Position> findByNameIgnoreCase(String positionName);
 }

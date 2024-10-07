@@ -10,15 +10,15 @@ public interface IPayrollService {
 
 	public List<Payroll> findAll() throws Exception;
 
-	public Payroll findById(Integer id) throws Exception;
+	public Payroll findById(Long id) throws Exception;
 
 	public Payroll save(Payroll payroll) throws Exception;
 
-	public Payroll update(Integer id, Payroll payroll) throws Exception;
+	public Payroll update(Long id, Payroll payroll) throws Exception;
 
-	public Boolean delete(Integer id) throws Exception;
+	public Boolean delete(Long id) throws Exception;
 
-	public List<Payroll> findAllPayrollByEmployeeId(Integer employeeId) throws Exception;
+	public List<Payroll> findAllPayrollByEmployeeId(Long employeeId) throws Exception;
 
 	public Boolean findByDateAndEmployeeAllIgnoreCase(LocalDateTime PayrollDate, Employee employee) throws Exception;
 }

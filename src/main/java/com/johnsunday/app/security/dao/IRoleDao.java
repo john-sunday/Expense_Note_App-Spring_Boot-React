@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import com.johnsunday.app.security.entity.Role;
 
 @Repository
-public interface IRoleDao extends JpaRepository<Role,Integer> {
+public interface IRoleDao extends JpaRepository<Role, Long> {
 
 	public Optional<Role> findByName(String roleName);
 }

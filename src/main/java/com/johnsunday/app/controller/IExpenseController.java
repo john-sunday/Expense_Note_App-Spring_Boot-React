@@ -9,19 +9,23 @@ import org.springframework.web.bind.annotation.RequestHeader;
 
 import com.johnsunday.app.entity.Expense;
 
-
 public interface IExpenseController {
 
-	public ResponseEntity<?> getAllExpenseByEmployeeId(@PathVariable Integer employeeId,
-													   @RequestHeader String token);
-	public ResponseEntity<?> getAllExpense();	
-	public ResponseEntity<?> getExpenseById(@PathVariable Integer expenseId,
-											@RequestHeader String token);
+	public ResponseEntity<?> getAllExpenseByEmployeeId(@PathVariable Long employeeId,
+			@RequestHeader String token);
+
+	public ResponseEntity<?> getAllExpense();
+
+	public ResponseEntity<?> getExpenseById(@PathVariable Long expenseId,
+			@RequestHeader String token);
+
 	public ResponseEntity<?> saveExpense(@RequestBody @Valid Expense expense,
-										 @RequestHeader String token);
+			@RequestHeader String token);
+
 	public ResponseEntity<?> updateExpense(@RequestBody @Valid Expense expense,
-										   /* @PathVariable Integer expenseId, */
-										   @RequestHeader String token);
-	public ResponseEntity<?> deleteExpense(@PathVariable Integer expenseId,
-										   @RequestHeader String token);
+			/* @PathVariable Integer expenseId, */
+			@RequestHeader String token);
+
+	public ResponseEntity<?> deleteExpense(@PathVariable Long expenseId,
+			@RequestHeader String token);
 }

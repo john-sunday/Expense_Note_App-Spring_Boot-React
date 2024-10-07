@@ -44,7 +44,7 @@ public class UserControllerImpl implements IUserController {
 	@Override
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
 	@GetMapping("/{userId}")
-	public ResponseEntity<?> getUserById(@PathVariable("userId") Integer userId) {
+	public ResponseEntity<?> getUserById(@PathVariable("userId") Long userId) {
 		try {
 			return ResponseEntity.status(HttpStatus.OK).body(userService.findById(userId));
 		} catch (Exception e) {
@@ -71,7 +71,7 @@ public class UserControllerImpl implements IUserController {
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PutMapping("/{userId}")
 	public ResponseEntity<?> updateUser(@RequestBody @Valid ExpenseUser user,
-			@PathVariable("userId") Integer userId) {
+			@PathVariable("userId") Long userId) {
 		try {
 			return ResponseEntity.status(HttpStatus.OK).body(userService.update(userId, user));
 		} catch (Exception e) {
@@ -84,7 +84,7 @@ public class UserControllerImpl implements IUserController {
 	@Override
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@DeleteMapping("/{userId}")
-	public ResponseEntity<?> deleteUser(@PathVariable("userId") Integer userId) {
+	public ResponseEntity<?> deleteUser(@PathVariable("userId") Long userId) {
 		try {
 			return ResponseEntity.status(HttpStatus.OK).body(userService.delete(userId));
 		} catch (Exception e) {

@@ -20,85 +20,98 @@ import org.springframework.web.bind.annotation.RestController;
 import com.johnsunday.app.entity.Employee;
 import com.johnsunday.app.service.EmployeeServiceImpl;
 
-@CrossOrigin(origins="*")
+@CrossOrigin(origins = "*")
 @RequestMapping("api/v1/employee")
 @RestController
 public class EmployeeControllerImpl implements IEmployeeController {
-	
-	@Autowired EmployeeServiceImpl employeeService;
-	
+
+	@Autowired
+	EmployeeServiceImpl employeeService;
+
 	@Override
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@GetMapping("/")	
+	@GetMapping("/")
 	public ResponseEntity<?> getAllEmployee() {
 		try {
 			return ResponseEntity.status(HttpStatus.OK).body(employeeService.findAll());
-		}catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"error\":\"Error. Please, Try it later. It is NOT possible to SHOW all employees\"}");
+			return ResponseEntity.status(HttpStatus.NOT_FOUND)
+					.body("{\"error\":\"Error. Please, Try it later. It is NOT possible to SHOW all employees\"}");
 		}
 	}
+
 	@Override
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
 	@GetMapping("/{employeeId}")
-	//@ResponseBody
-	public ResponseEntity<?> getEmployeeById(@PathVariable("employeeId")Integer employeeId,
-											 @RequestHeader("Authorization")String headerAuth){
+	// @ResponseBody
+	public ResponseEntity<?> getEmployeeById(@PathVariable("employeeId") Long employeeId,
+			@RequestHeader("Authorization") String headerAuth) {
 		try {
-			return ResponseEntity.status(HttpStatus.OK).body(employeeService.findById(employeeId,headerAuth));
-		}catch(Exception e) {
+			return ResponseEntity.status(HttpStatus.OK).body(employeeService.findById(employeeId, headerAuth));
+		} catch (Exception e) {
 			e.printStackTrace();
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"error\":\"Error. Please, Try it later. NOT possible to SHOW the payroll which you find.\"}");
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+					"{\"error\":\"Error. Please, Try it later. NOT possible to SHOW the payroll which you find.\"}");
 		}
 	}
+
 	@Override
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PostMapping("/")
-	//@ResponseBody
+	// @ResponseBody
 	public ResponseEntity<?> saveEmployee(@RequestBody @Valid Employee employee) {
-		try {		
+		try {
 			return ResponseEntity.status(HttpStatus.OK).body(employeeService.save(employee));
-		}catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. Please, Try it later. It is NOT possible to SAVE the employee.\"}");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+					.body("{\"error\":\"Error. Please, Try it later. It is NOT possible to SAVE the employee.\"}");
 		}
 	}
+
 	@Override
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@DeleteMapping("/{employeeId}")
-	//@ResponseBody
-	public ResponseEntity<?> deleteEmployee(@PathVariable("employeeId")Integer employeeId) {		
-		try {			
-			return ResponseEntity.status(HttpStatus.OK).body(employeeService.delete(employeeId));			
-		}catch(Exception e) {
+	// @ResponseBody
+	public ResponseEntity<?> deleteEmployee(@PathVariable("employeeId") Long employeeId) {
+		try {
+			return ResponseEntity.status(HttpStatus.OK).body(employeeService.delete(employeeId));
+		} catch (Exception e) {
 			e.printStackTrace();
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. Please, Try it later. It is NOT possible to DELETE the employee.\"}");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+					.body("{\"error\":\"Error. Please, Try it later. It is NOT possible to DELETE the employee.\"}");
 		}
 	}
+
 	@Override
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PutMapping("/{employeeId}")
 	public ResponseEntity<?> updateEmployee(@RequestBody @Valid Employee employee,
-											@PathVariable("employeeId")Integer employeeId) {
+			@PathVariable("employeeId") Long employeeId) {
 		try {
-			return ResponseEntity.status(HttpStatus.OK).body(employeeService.update(employeeId,employee));
-		}catch(Exception e) {
+			return ResponseEntity.status(HttpStatus.OK).body(employeeService.update(employeeId, employee));
+		} catch (Exception e) {
 			e.printStackTrace();
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. Please, Try it later. It is NOT possible UPDATE the employee who you are looking for.\"}");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+					"{\"error\":\"Error. Please, Try it later. It is NOT possible UPDATE the employee who you are looking for.\"}");
 		}
 	}
+
 	@Override
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
 	@GetMapping("/{name}/{surname}")
-	public ResponseEntity<?> getEmployeeByNameAndSurname(@PathVariable("name")String name,
-													     @PathVariable("surname")String surname,
-													     @RequestHeader("Authorization")String headerAuth) {
+	public ResponseEntity<?> getEmployeeByNameAndSurname(@PathVariable("name") String name,
+			@PathVariable("surname") String surname,
+			@RequestHeader("Authorization") String headerAuth) {
 		try {
-			return ResponseEntity.status(HttpStatus.OK).body(employeeService.findByNameAndSurnameAllIgnoreCase(name,surname,headerAuth));
-		}catch(Exception e) {
+			return ResponseEntity.status(HttpStatus.OK)
+					.body(employeeService.findByNameAndSurnameAllIgnoreCase(name, surname, headerAuth));
+		} catch (Exception e) {
 			e.printStackTrace();
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. Please, Try it later. It is NOT possible to FIND the employee who you are looking for.\"}");
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+					"{\"error\":\"Error. Please, Try it later. It is NOT possible to FIND the employee who you are looking for.\"}");
 		}
 	}
-	
+
 }

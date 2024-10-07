@@ -44,7 +44,7 @@ public class PositionControllerImpl implements IPositionController<Position> {
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@GetMapping("/{positionId}")
 	// @ResponseBody
-	public ResponseEntity<?> getPositionById(@PathVariable("positionId") Integer positionId) {
+	public ResponseEntity<?> getPositionById(@PathVariable("positionId") Long positionId) {
 		try {
 			return ResponseEntity.status(HttpStatus.OK).body(positionService.findById(positionId));
 		} catch (Exception e) {
@@ -72,7 +72,7 @@ public class PositionControllerImpl implements IPositionController<Position> {
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@DeleteMapping("/{positionId}")
 	// @ResponseBody
-	public ResponseEntity<?> deletePosition(@PathVariable("positionId") Integer positionId) {
+	public ResponseEntity<?> deletePosition(@PathVariable("positionId") Long positionId) {
 		try {
 			return ResponseEntity.status(HttpStatus.OK).body(positionService.delete(positionId));
 		} catch (Exception e) {
@@ -86,7 +86,7 @@ public class PositionControllerImpl implements IPositionController<Position> {
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PutMapping("/{positionId}")
 	public ResponseEntity<?> updatePosition(@RequestBody @Valid Position position,
-			@PathVariable("employeeTypeId") Integer positionId) {
+			@PathVariable("employeeTypeId") Long positionId) {
 		try {
 			return ResponseEntity.status(HttpStatus.OK).body(positionService.update(positionId, position));
 		} catch (Exception e) {

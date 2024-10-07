@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import com.johnsunday.app.security.entity.ExpenseUser;
 
 @Repository
-public interface IUserDao extends JpaRepository<ExpenseUser, Integer> {
+public interface IUserDao extends JpaRepository<ExpenseUser, Long> {
 
 	public Optional<ExpenseUser> findByEmail(String userEmail);
 }

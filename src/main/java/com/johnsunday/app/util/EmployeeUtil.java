@@ -33,7 +33,7 @@ public class EmployeeUtil {
 
 	public Boolean matchEmployeeUserEmail(Employee employee, String token) throws Exception {
 		boolean isMatch = false;
-		int tokenUserId = jwtAuthUtil.extractTokenUserId(token);
+		long tokenUserId = jwtAuthUtil.extractTokenUserId(token);
 		Optional<ExpenseUser> optTokenUser = userDao.findById(tokenUserId);
 		if (optTokenUser.get().getEmail().equalsIgnoreCase(employee.getEmail()))
 			isMatch = true;

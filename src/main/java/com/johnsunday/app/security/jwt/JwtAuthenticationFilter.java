@@ -177,7 +177,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 		}
 		String subject = (String) claims.get(Claims.SUBJECT);
 		String[] subjectArray = subject.split(",");
-		tokenUserDetails.setId(Integer.parseInt(subjectArray[0]));
+		tokenUserDetails.setId(Long.parseLong(subjectArray[0]));
 		tokenUserDetails.setEmail(subjectArray[1]);
 
 		return tokenUserDetails;

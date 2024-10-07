@@ -55,7 +55,7 @@ public class ExpenseTest {
 				46.1,
 				DateUtil.formattingDate(LocalDateTime.of(2022, 03, 12, 10, 24, 00)),
 				"Taxi",
-				58);
+				58L);
 
 		// Test.
 		System.out.println("TEST: Old Expense --> " + optOldExpense.get().toString());
@@ -65,12 +65,12 @@ public class ExpenseTest {
 			// Expense expense = new
 			// Integer id,String concept,LocalDateTime date,Double amount,Employee employee
 			Expense expenseToUp = new Expense(
-					13,
+					13L,
 					"Taxiiiiiiiii",
 					DateUtil.formattingDate(LocalDateTime.of(2022, 03, 12, 10, 24, 00)),
 					46.1,
 					new Employee(
-							58,
+							58L,
 							"Sylvester",
 							"Stewart",
 							DateUtil.formattingDate(LocalDateTime.of(1984, 06, 15, 11, 24, 00)),

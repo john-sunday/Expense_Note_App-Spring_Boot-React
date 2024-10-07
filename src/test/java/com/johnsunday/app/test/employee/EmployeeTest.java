@@ -59,7 +59,7 @@ public class EmployeeTest {
 		Employee updatedEmployee = null;
 		if (oldEmployee != null) {
 			Employee employeeToUp = new Employee(
-					56,
+					56L,
 					"Marvin",
 					"Pentz Gay Jr",
 					DateUtil.formattingDate(LocalDateTime.of(1978, 07, 22, 22, 35, 18)),

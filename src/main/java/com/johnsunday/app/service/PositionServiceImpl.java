@@ -28,7 +28,7 @@ public class PositionServiceImpl implements IPositionService {
 	}
 
 	@Override
-	public Position findById(Integer id) throws Exception {
+	public Position findById(Long id) throws Exception {
 		try {
 			Optional<Position> optionalPosition = positionDao.findById(id);
 			return optionalPosition.get();
@@ -52,7 +52,7 @@ public class PositionServiceImpl implements IPositionService {
 
 	@Override
 	@Transactional
-	public Position update(Integer id, Position position) throws Exception {
+	public Position update(Long id, Position position) throws Exception {
 		Position updatedPosition = null;
 		try {
 			Optional<Position> optionalPosition = positionDao.findById(id);
@@ -69,7 +69,7 @@ public class PositionServiceImpl implements IPositionService {
 
 	@Override
 	@Transactional
-	public Boolean delete(Integer id) throws Exception {
+	public Boolean delete(Long id) throws Exception {
 		boolean isDeleted = false;
 		try {
 			if (positionDao.existsById(id)) {

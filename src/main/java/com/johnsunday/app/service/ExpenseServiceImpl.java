@@ -19,101 +19,115 @@ import com.johnsunday.app.util.EmployeeUtil;
 @Service
 public class ExpenseServiceImpl implements IExpenseService {
 
-	@Autowired private IEmployeeDao employeeDao;
-	@Autowired private IExpenseDao expenseDao;
-	@Autowired private JwtAuthenticationUtil jwtAuthUtil;
-	@Autowired private static EmployeeUtil employeeUtil;
-		
-	@Override	
-	public List<Expense> findAllByEmployeeId(Integer employeeId,String headerAuth) throws Exception {
-		List<Expense>expenses = null;
+	@Autowired
+	private IEmployeeDao employeeDao;
+	@Autowired
+	private IExpenseDao expenseDao;
+	@Autowired
+	private JwtAuthenticationUtil jwtAuthUtil;
+	@Autowired
+	private static EmployeeUtil employeeUtil;
+
+	@Override
+	public List<Expense> findAllByEmployeeId(Long employeeId, String headerAuth) throws Exception {
+		List<Expense> expenses = null;
 		try {
 			String token = headerAuth.split(" ")[1].trim();
-			if (jwtAuthUtil.isAdminTokenUser(token)||employeeUtil.matchEmployeeUserEmail(employeeDao.findById(employeeId).get(),token)) 
+			if (jwtAuthUtil.isAdminTokenUser(token)
+					|| employeeUtil.matchEmployeeUserEmail(employeeDao.findById(employeeId).get(), token))
 				expenses = expenseDao.findAllByEmployeeId(employeeId);
-		}catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			throw new Exception(e.getMessage());
 		}
 		return expenses;
 	}
+
 	@Override
-	public Expense findByAmountAndDateAndConceptAndEmployeeId(Double amount, 
-															  LocalDateTime date,
-															  String concept, 
-															  Integer employeeId,
-															  String headerAuth) throws Exception {		
+	public Expense findByAmountAndDateAndConceptAndEmployeeId(Double amount,
+			LocalDateTime date,
+			String concept,
+			Long employeeId,
+			String headerAuth) throws Exception {
 		Optional<Expense> optSearchedExpense = null;
-		String token = headerAuth.split(" ")[1].trim();		
-		if (jwtAuthUtil.isAdminTokenUser(token)||employeeUtil.matchEmployeeUserEmail(employeeDao.findById(employeeId).get(),token)) { 
-			optSearchedExpense = expenseDao.findByAmountAndDateAndConceptAndEmployeeId(amount, 
-																					   date, 
-					   																   concept,
-					   																   employeeId);
+		String token = headerAuth.split(" ")[1].trim();
+		if (jwtAuthUtil.isAdminTokenUser(token)
+				|| employeeUtil.matchEmployeeUserEmail(employeeDao.findById(employeeId).get(), token)) {
+			optSearchedExpense = expenseDao.findByAmountAndDateAndConceptAndEmployeeId(amount,
+					date,
+					concept,
+					employeeId);
 			// Test
 			System.out.println("Searched Expense from ExpenseServiceImpl class\n"
-					+ "expenseDao.findByAmountAndExpenseDateAndConceptAndEmployeeIdAllIgnoreCase():\n" 
+					+ "expenseDao.findByAmountAndExpenseDateAndConceptAndEmployeeIdAllIgnoreCase():\n"
 					+ "Concept: " + optSearchedExpense.get().getConcept());
 		}
 		return optSearchedExpense.get();
 	}
+
 	@Override
 	@Transactional
-	public Expense save(Expense expense,String headerAuth) throws Exception {
+	public Expense save(Expense expense, String headerAuth) throws Exception {
 		Expense savedExpense = new Expense();
 		LocalDateTime parsedDate = DateUtil.formattingDate(expense.getDate());
 		expense.setDate(parsedDate);
-		String token = headerAuth.split(" ")[1].trim();				
-		if (jwtAuthUtil.isAdminTokenUser(token)||employeeUtil.matchEmployeeUserEmail(expense.getEmployee(),token)) 
+		String token = headerAuth.split(" ")[1].trim();
+		if (jwtAuthUtil.isAdminTokenUser(token) || employeeUtil.matchEmployeeUserEmail(expense.getEmployee(), token))
 			savedExpense = expenseDao.save(expense);
 		return savedExpense;
 	}
+
 	@Override
 	public List<Expense> findAll() throws Exception {
 		try {
 			return expenseDao.findAll();
-		}catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			throw new Exception(e.getMessage());
 		}
 	}
+
 	@Override
-	public Expense findById(Integer id,String headerAuth) throws Exception {
+	public Expense findById(Long id, String headerAuth) throws Exception {
 		String token = headerAuth.split(" ")[1].trim();
-		Optional<Expense>optExpense = expenseDao.findById(id); 
+		Optional<Expense> optExpense = expenseDao.findById(id);
 		if (optExpense.isPresent()) {
-			if (jwtAuthUtil.isAdminTokenUser(token)||employeeUtil.matchEmployeeUserEmail(employeeDao.findById(optExpense.get().getEmployee().getId()).get(),token))
+			if (jwtAuthUtil.isAdminTokenUser(token) || employeeUtil
+					.matchEmployeeUserEmail(employeeDao.findById(optExpense.get().getEmployee().getId()).get(), token))
 				return optExpense.get();
 		}
 		return optExpense.get();
 	}
+
 	@Override
 	@Transactional
-	public Expense update(Expense expense,String headerAuth) throws Exception {
+	public Expense update(Expense expense, String headerAuth) throws Exception {
 		Expense expenseUpdated = null;
 		String token = headerAuth.split(" ")[1].trim();
-		Optional<Expense>optExpense = expenseDao.findById(expense.getId()); 
+		Optional<Expense> optExpense = expenseDao.findById(expense.getId());
 		if (optExpense.isPresent()) {
-			if (jwtAuthUtil.isAdminTokenUser(token)||employeeUtil.matchEmployeeUserEmail(employeeDao.findById(optExpense.get().getEmployee().getId()).get(),token)) {
+			if (jwtAuthUtil.isAdminTokenUser(token) || employeeUtil.matchEmployeeUserEmail(
+					employeeDao.findById(optExpense.get().getEmployee().getId()).get(), token)) {
 				LocalDateTime parsedDate = DateUtil.formattingDate(expense.getDate());
 				expense.setDate(parsedDate);
 				expenseUpdated = expenseDao.save(expense);
 			}
 		}
-		return expenseUpdated;	
+		return expenseUpdated;
 	}
+
 	@Override
 	@Transactional
-	public Boolean delete(Integer id) throws Exception {
+	public Boolean delete(Long id) throws Exception {
 		boolean isDeleted = false;
 		try {
-			if(expenseDao.existsById(id)) {
+			if (expenseDao.existsById(id)) {
 				expenseDao.deleteById(id);
 				isDeleted = true;
 			} else {
 				throw new Exception();
 			}
-		}catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			throw new Exception(e.getMessage());
 		}

@@ -9,13 +9,13 @@ public interface IUserService {
 
 	public List<ExpenseUser> findAll() throws Exception;
 
-	public Optional<ExpenseUser> findById(Integer id) throws Exception;
+	public Optional<ExpenseUser> findById(Long id) throws Exception;
 
-	public Boolean delete(Integer id) throws Exception;
+	public Boolean delete(Long id) throws Exception;
 
 	public ExpenseUser save(ExpenseUser user) throws Exception;
 
-	public ExpenseUser update(Integer userId, ExpenseUser user) throws Exception;
+	public ExpenseUser update(Long userId, ExpenseUser user) throws Exception;
 
 	public Optional<ExpenseUser> findByEmail(String userEmail) throws Exception;
 }

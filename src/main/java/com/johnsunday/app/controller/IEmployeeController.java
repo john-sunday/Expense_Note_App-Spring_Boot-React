@@ -12,15 +12,15 @@ public interface IEmployeeController {
 
 	public ResponseEntity<?> getAllEmployee();
 
-	public ResponseEntity<?> getEmployeeById(@PathVariable Integer employeeId,
+	public ResponseEntity<?> getEmployeeById(@PathVariable Long employeeId,
 			@RequestHeader String headerAuth);
 
 	public ResponseEntity<?> saveEmployee(@RequestBody @Valid Employee employee);
 
 	public ResponseEntity<?> updateEmployee(@RequestBody @Valid Employee employee,
-			@PathVariable Integer employeeId);
+			@PathVariable Long employeeId);
 
-	public ResponseEntity<?> deleteEmployee(@PathVariable Integer employeeId);
+	public ResponseEntity<?> deleteEmployee(@PathVariable Long employeeId);
 
 	public ResponseEntity<?> getEmployeeByNameAndSurname(@PathVariable String name,
 			@PathVariable String surname,

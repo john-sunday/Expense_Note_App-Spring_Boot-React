@@ -31,7 +31,7 @@ public class Position implements Serializable {
 	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+	private Long id;
 	@Column(name = "name", nullable = false)
 	@Length(min = 3, max = 128)
 	@NonNull

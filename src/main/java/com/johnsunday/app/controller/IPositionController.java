@@ -12,12 +12,12 @@ public interface IPositionController<Position> {
 
 	public ResponseEntity<?> getAllPosition();
 
-	public ResponseEntity<?> getPositionById(@PathVariable Integer positionId);
+	public ResponseEntity<?> getPositionById(@PathVariable Long positionId);
 
 	public ResponseEntity<?> savePosition(@RequestBody @Valid Position position);
 
 	public ResponseEntity<?> updatePosition(@RequestBody @Valid Position position,
-			@PathVariable Integer positionId);
+			@PathVariable Long positionId);
 
-	public ResponseEntity<?> deletePosition(@PathVariable Integer positionId);
+	public ResponseEntity<?> deletePosition(@PathVariable Long positionId);
 }

@@ -11,10 +11,10 @@ import org.springframework.stereotype.Repository;
 import com.johnsunday.app.entity.Expense;
 
 @Repository
-public interface IExpenseDao extends JpaRepository<Expense, Integer> {
+public interface IExpenseDao extends JpaRepository<Expense, Long> {
 
 	@Query(value = "SELECT * FROM expense WHERE expense.employee_id=?1", nativeQuery = true)
-	List<Expense> findAllByEmployeeId(Integer employeeId);
+	List<Expense> findAllByEmployeeId(Long employeeId);
 
 	@Query(value = "SELECT * FROM expense WHERE expense.amount=?1 "
 			+ "and expense.date=?2 "
@@ -23,5 +23,5 @@ public interface IExpenseDao extends JpaRepository<Expense, Integer> {
 	Optional<Expense> findByAmountAndDateAndConceptAndEmployeeId(Double amount,
 			LocalDateTime expenseDate,
 			String concept,
-			Integer employeeId);
+			Long employeeId);
 }

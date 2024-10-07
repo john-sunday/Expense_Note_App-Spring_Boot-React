@@ -47,7 +47,7 @@ public class ExpenseControllerImpl implements IExpenseController {
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
 	@GetMapping("/employee/{employeeId}")
 	@ResponseBody
-	public ResponseEntity<?> getAllExpenseByEmployeeId(@PathVariable("employeeId") Integer employeeId,
+	public ResponseEntity<?> getAllExpenseByEmployeeId(@PathVariable("employeeId") Long employeeId,
 			@RequestHeader("Authorization") String headerAuth) {
 		try {
 			return ResponseEntity.status(HttpStatus.OK)
@@ -63,7 +63,7 @@ public class ExpenseControllerImpl implements IExpenseController {
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_USER')")
 	@GetMapping("/{expenseId}")
 	// @ResponseBody
-	public ResponseEntity<?> getExpenseById(@PathVariable("expenseId") Integer expenseId,
+	public ResponseEntity<?> getExpenseById(@PathVariable("expenseId") Long expenseId,
 			@RequestHeader("Authorization") String headerAuth) {
 		try {
 			return ResponseEntity.status(HttpStatus.OK).body(expenseService.findById(expenseId, headerAuth));
@@ -95,7 +95,7 @@ public class ExpenseControllerImpl implements IExpenseController {
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@DeleteMapping("/{expenseId}")
 	// @ResponseBody
-	public ResponseEntity<?> deleteExpense(@PathVariable("expenseId") Integer expenseId,
+	public ResponseEntity<?> deleteExpense(@PathVariable("expenseId") Long expenseId,
 			@RequestHeader("Authorization") String headerAuth) {
 		ResponseEntity<Boolean> responseEntity;
 		try {

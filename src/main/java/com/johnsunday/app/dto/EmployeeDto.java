@@ -22,7 +22,7 @@ import lombok.ToString;
 public class EmployeeDto extends Employee {
 
 	private static final long serialVersionUID = 1L;
-	private Integer id;
+	private Long id;
 	@NonNull
 	private String name;
 	@NonNull

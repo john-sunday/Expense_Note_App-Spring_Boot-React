@@ -84,7 +84,7 @@ public class UserServiceImpl implements IUserService, UserDetailsService {
 
 	@Override
 	@Transactional
-	public ExpenseUser update(Integer id, ExpenseUser user) throws Exception {
+	public ExpenseUser update(Long id, ExpenseUser user) throws Exception {
 		ExpenseUser updatedUser = new ExpenseUser();
 		try {
 			Optional<ExpenseUser> optionalUser = userDao.findById(id);
@@ -141,14 +141,14 @@ public class UserServiceImpl implements IUserService, UserDetailsService {
 	}
 
 	@Override
-	public Optional<ExpenseUser> findById(Integer id) throws Exception {
+	public Optional<ExpenseUser> findById(Long id) throws Exception {
 		Optional<ExpenseUser> optUser = userDao.findById(id);
 		return optUser;
 	}
 
 	@Override
 	@Transactional
-	public Boolean delete(Integer id) throws Exception {
+	public Boolean delete(Long id) throws Exception {
 		boolean isDeleted = false;
 		Optional<ExpenseUser> optUser = userDao.findById(id);
 		if (optUser != null) {

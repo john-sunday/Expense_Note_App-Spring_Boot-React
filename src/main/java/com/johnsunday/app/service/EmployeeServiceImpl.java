@@ -43,7 +43,7 @@ public class EmployeeServiceImpl implements IEmployeeService {
 	}
 
 	@Override
-	public Employee findById(Integer id, String headerAuth) throws Exception {
+	public Employee findById(Long id, String headerAuth) throws Exception {
 		try {
 			Optional<Employee> optionalEmployee = employeeDao.findById(id);
 			return optionalEmployee.get();
@@ -68,7 +68,7 @@ public class EmployeeServiceImpl implements IEmployeeService {
 
 	@Override
 	@Transactional
-	public Employee update(Integer id, Employee employee) throws Exception {
+	public Employee update(Long id, Employee employee) throws Exception {
 		Employee updatedEmployee = null;
 		try {
 			Optional<Employee> optionalEmployee = employeeDao.findById(id);
@@ -86,7 +86,7 @@ public class EmployeeServiceImpl implements IEmployeeService {
 
 	@Override
 	@Transactional
-	public Boolean delete(Integer id) throws Exception {
+	public Boolean delete(Long id) throws Exception {
 		boolean isDeleted = false;
 		try {
 			if (employeeDao.existsById(id)) {

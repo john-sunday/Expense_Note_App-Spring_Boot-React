@@ -42,7 +42,7 @@ public class ExpenseUser implements UserDetails {
 	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+	private Long id;
 	@Column(name = "name", nullable = false)
 	@Length(min = 2, max = 50)
 	@Getter(AccessLevel.NONE)

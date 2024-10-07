@@ -18,7 +18,7 @@ public class UserDto extends ExpenseUser {
 
 	private static final long serialVersionUID = 1L;
 
-	private Integer id;
+	private Long id;
 	private String name;
 	private String surname;
 	private String email;
