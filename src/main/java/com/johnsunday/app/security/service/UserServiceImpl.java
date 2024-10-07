@@ -22,7 +22,7 @@ import com.johnsunday.app.entity.Employee;
 import com.johnsunday.app.security.dao.IRoleDao;
 import com.johnsunday.app.security.dao.IUserDao;
 import com.johnsunday.app.security.entity.Role;
-import com.johnsunday.app.security.entity.User;
+import com.johnsunday.app.security.entity.ExpenseUser;
 import com.johnsunday.app.service.EmployeeServiceImpl;
 
 @Service
@@ -43,9 +43,9 @@ public class UserServiceImpl implements IUserService, UserDetailsService {
 
 	@Override
 	@Transactional
-	public User save(User user) throws Exception {
-		User savedUser = new User();
-		User settedUser = new User();
+	public ExpenseUser save(ExpenseUser user) throws Exception {
+		ExpenseUser savedUser = new ExpenseUser();
+		ExpenseUser settedUser = new ExpenseUser();
 		try {
 			Employee employee = employeeService.findByEmail(user.getEmail());
 			if (employee != null) {
@@ -62,8 +62,8 @@ public class UserServiceImpl implements IUserService, UserDetailsService {
 		return savedUser;
 	}
 
-	private User setUser(User user) throws Exception {
-		User settedUser = new User();
+	private ExpenseUser setUser(ExpenseUser user) throws Exception {
+		ExpenseUser settedUser = new ExpenseUser();
 		if (user.getId() != null)
 			settedUser.setId(user.getId());
 		settedUser.setEmail(user.getEmail());
@@ -84,10 +84,10 @@ public class UserServiceImpl implements IUserService, UserDetailsService {
 
 	@Override
 	@Transactional
-	public User update(Integer id, User user) throws Exception {
-		User updatedUser = new User();
+	public ExpenseUser update(Integer id, ExpenseUser user) throws Exception {
+		ExpenseUser updatedUser = new ExpenseUser();
 		try {
-			Optional<User> optionalUser = userDao.findById(id);
+			Optional<ExpenseUser> optionalUser = userDao.findById(id);
 			if (!optionalUser.isEmpty()) {
 				// User settedUser = setUser(optionalUser.get());
 				// updatedUser = userDao.save(settedUser);
@@ -104,7 +104,7 @@ public class UserServiceImpl implements IUserService, UserDetailsService {
 	// Load User by 'email', NOT by name.
 	@Override
 	public UserDetails loadUserByUsername(String userEmail) throws UsernameNotFoundException {
-		Optional<User> optionalUser = userDao.findByEmail(userEmail);
+		Optional<ExpenseUser> optionalUser = userDao.findByEmail(userEmail);
 		if (optionalUser == null)
 			throw new UsernameNotFoundException("User or Password INVALIDS");
 		/*
@@ -126,9 +126,9 @@ public class UserServiceImpl implements IUserService, UserDetailsService {
 	}
 
 	@Override
-	public Optional<User> findByEmail(String email) throws Exception {
-		User searchedUser = null;
-		Optional<User> optionalUser = userDao.findByEmail(email);
+	public Optional<ExpenseUser> findByEmail(String email) throws Exception {
+		ExpenseUser searchedUser = null;
+		Optional<ExpenseUser> optionalUser = userDao.findByEmail(email);
 		if (!optionalUser.isEmpty()) {
 			searchedUser = optionalUser.get();
 		}
@@ -136,13 +136,13 @@ public class UserServiceImpl implements IUserService, UserDetailsService {
 	}
 
 	@Override
-	public List<User> findAll() throws Exception {
+	public List<ExpenseUser> findAll() throws Exception {
 		return userDao.findAll();
 	}
 
 	@Override
-	public Optional<User> findById(Integer id) throws Exception {
-		Optional<User> optUser = userDao.findById(id);
+	public Optional<ExpenseUser> findById(Integer id) throws Exception {
+		Optional<ExpenseUser> optUser = userDao.findById(id);
 		return optUser;
 	}
 
@@ -150,7 +150,7 @@ public class UserServiceImpl implements IUserService, UserDetailsService {
 	@Transactional
 	public Boolean delete(Integer id) throws Exception {
 		boolean isDeleted = false;
-		Optional<User> optUser = userDao.findById(id);
+		Optional<ExpenseUser> optUser = userDao.findById(id);
 		if (optUser != null) {
 			optUser.get().getRoles().clear();
 			userDao.delete(optUser.get());

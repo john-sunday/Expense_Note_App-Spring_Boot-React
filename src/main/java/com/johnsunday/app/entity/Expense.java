@@ -54,7 +54,7 @@ public class Expense implements Serializable {
 	@NonNull
 	private Double amount;
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "id") // ->employee_id
+	@JoinColumn(name = "id") // ->old employee_id
 	// @JsonIgnore
 	@NonNull
 	private Employee employee;

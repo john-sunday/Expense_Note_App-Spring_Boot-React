@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.johnsunday.app.security.entity.User;
+import com.johnsunday.app.security.entity.ExpenseUser;
 import com.johnsunday.app.security.service.UserServiceImpl;
 
 @RestController
@@ -57,7 +57,7 @@ public class UserControllerImpl implements IUserController {
 	@Override
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PostMapping("/")
-	public ResponseEntity<?> saveUser(@RequestBody @Valid User user) {
+	public ResponseEntity<?> saveUser(@RequestBody @Valid ExpenseUser user) {
 		try {
 			return ResponseEntity.status(HttpStatus.OK).body(userService.save(user));
 		} catch (Exception e) {
@@ -70,7 +70,7 @@ public class UserControllerImpl implements IUserController {
 	@Override
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PutMapping("/{userId}")
-	public ResponseEntity<?> updateUser(@RequestBody @Valid User user,
+	public ResponseEntity<?> updateUser(@RequestBody @Valid ExpenseUser user,
 			@PathVariable("userId") Integer userId) {
 		try {
 			return ResponseEntity.status(HttpStatus.OK).body(userService.update(userId, user));

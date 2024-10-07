@@ -31,13 +31,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "employee_user", uniqueConstraints = @UniqueConstraint(columnNames = "email"))
+@Table(name = "expense_user", uniqueConstraints = @UniqueConstraint(columnNames = "email"))
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @RequiredArgsConstructor
-public class User implements UserDetails {
+public class ExpenseUser implements UserDetails {
 
 	private static final long serialVersionUID = 1L;
 	@Id
@@ -62,7 +62,7 @@ public class User implements UserDetails {
 	private String password;
 
 	// Constructor without ID.
-	public User(String name, String surname, String email, String password, Collection<Role> roles) {
+	public ExpenseUser(String name, String surname, String email, String password, Collection<Role> roles) {
 		this.name = name;
 		this.surname = surname;
 		this.email = email;
@@ -71,7 +71,7 @@ public class User implements UserDetails {
 	}
 
 	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
+	@JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
 	private Collection<Role> roles = new ArrayList<>();
 
 	public void addRole(Role role) {

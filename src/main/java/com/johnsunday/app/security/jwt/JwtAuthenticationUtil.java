@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
-import com.johnsunday.app.security.entity.User;
+import com.johnsunday.app.security.entity.ExpenseUser;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -39,7 +39,7 @@ public class JwtAuthenticationUtil {
 
 	private String secretKey;
 
-	public String generateAccessToken(User user) {
+	public String generateAccessToken(ExpenseUser user) {
 		Key key = Keys.hmacShaKeyFor(secretKey.getBytes());
 
 		return Jwts.builder()

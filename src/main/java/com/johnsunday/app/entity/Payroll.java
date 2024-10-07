@@ -42,7 +42,7 @@ public class Payroll implements Serializable {
 	@NonNull
 	private LocalDateTime date;
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "id") // <- employee_id/employee_id_fk
+	@JoinColumn(name = "id") // <- old employee_id
 	// @JsonIgnore
 	@NonNull
 	private Employee employee;

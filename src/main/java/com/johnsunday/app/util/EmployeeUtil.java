@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.johnsunday.app.dao.IEmployeeDao;
 import com.johnsunday.app.entity.Employee;
 import com.johnsunday.app.security.dao.IUserDao;
-import com.johnsunday.app.security.entity.User;
+import com.johnsunday.app.security.entity.ExpenseUser;
 import com.johnsunday.app.security.jwt.JwtAuthenticationUtil;
 
 public class EmployeeUtil {
@@ -34,7 +34,7 @@ public class EmployeeUtil {
 	public Boolean matchEmployeeUserEmail(Employee employee, String token) throws Exception {
 		boolean isMatch = false;
 		int tokenUserId = jwtAuthUtil.extractTokenUserId(token);
-		Optional<User> optTokenUser = userDao.findById(tokenUserId);
+		Optional<ExpenseUser> optTokenUser = userDao.findById(tokenUserId);
 		if (optTokenUser.get().getEmail().equalsIgnoreCase(employee.getEmail()))
 			isMatch = true;
 		else

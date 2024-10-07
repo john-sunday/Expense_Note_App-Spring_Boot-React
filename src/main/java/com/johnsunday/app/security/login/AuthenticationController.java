@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.johnsunday.app.security.entity.User;
+import com.johnsunday.app.security.entity.ExpenseUser;
 import com.johnsunday.app.security.jwt.*;
 
 /***
@@ -53,7 +53,7 @@ public class AuthenticationController {
 			Authentication authentication = authManager.authenticate(
 					new UsernamePasswordAuthenticationToken(
 							authRequest.getEmail(), authRequest.getPassword()));
-			User user = (User) authentication.getPrincipal();
+			ExpenseUser user = (ExpenseUser) authentication.getPrincipal();
 			String accessToken = jwtAuthUtil.generateAccessToken(user);
 			AuthenticationResponse authzResponse = new AuthenticationResponse(user.getEmail(), accessToken);
 			return ResponseEntity.ok(authzResponse);

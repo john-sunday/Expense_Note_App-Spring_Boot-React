@@ -16,7 +16,7 @@ import org.springframework.test.annotation.Rollback;
 
 import com.johnsunday.app.security.dao.IRoleDao;
 import com.johnsunday.app.security.dao.IUserDao;
-import com.johnsunday.app.security.entity.User;
+import com.johnsunday.app.security.entity.ExpenseUser;
 import com.johnsunday.app.security.entity.Role;
 
 @DataJpaTest
@@ -36,7 +36,7 @@ public class UserTest {
 		String rawPassword = "george1234";
 		String encodedPassword = passwordEncoder.encode(rawPassword);
 
-		User newUser = new User(
+		ExpenseUser newUser = new ExpenseUser(
 				"George",
 				"Harrison",
 				"georgeharrison@mail.com",
@@ -51,7 +51,7 @@ public class UserTest {
 		// //Arrays.asList(new UserRole("ROLE_ADMIN"))
 		// Arrays.asList(roleDao.findByName("ROLE_ADMIN").get())
 		// );
-		User savedUser = userDao.save(newUser);
+		ExpenseUser savedUser = userDao.save(newUser);
 
 		assertThat(savedUser).isNotNull();
 		assertThat(savedUser.getId()).isGreaterThan(0);
@@ -59,11 +59,11 @@ public class UserTest {
 
 	@Test
 	public void testAssignRoleToUser() {
-		Optional<User> optUser = userDao.findByEmail("rihannafenty@mail.com");
+		Optional<ExpenseUser> optUser = userDao.findByEmail("rihannafenty@mail.com");
 		Optional<Role> optRole = roleDao.findByName("ADMIN_ROLE");
-		User user = optUser.get();
+		ExpenseUser user = optUser.get();
 		user.addRole(optRole.get());
-		User updatedUser = userDao.save(user);
+		ExpenseUser updatedUser = userDao.save(user);
 
 		assertThat(updatedUser.getRoles().size() == 2);
 	}

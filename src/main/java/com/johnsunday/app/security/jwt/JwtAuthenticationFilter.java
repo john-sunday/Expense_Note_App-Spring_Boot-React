@@ -18,7 +18,7 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.johnsunday.app.security.entity.Role;
-import com.johnsunday.app.security.entity.User;
+import com.johnsunday.app.security.entity.ExpenseUser;
 import io.jsonwebtoken.Claims;
 
 @Component
@@ -27,7 +27,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 	@Autowired
 	private JwtAuthenticationUtil jwtAuthUtil;
 	// @Autowired private IUserDao userDao;
-	private User tokenUserDetails = new User();
+	private ExpenseUser tokenUserDetails = new ExpenseUser();
 
 	@Override
 	protected void doFilterInternal(HttpServletRequest request,

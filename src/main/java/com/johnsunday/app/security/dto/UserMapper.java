@@ -5,12 +5,12 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.johnsunday.app.security.entity.Role;
-import com.johnsunday.app.security.entity.User;
+import com.johnsunday.app.security.entity.ExpenseUser;
 
 public class UserMapper {
 	// With ID.
-	public static User dtoToUserWithId(UserDto userDto) {
-		return new User(
+	public static ExpenseUser dtoToUserWithId(UserDto userDto) {
+		return new ExpenseUser(
 				userDto.getId(),
 				userDto.getName(),
 				userDto.getSurname(),
@@ -19,7 +19,7 @@ public class UserMapper {
 				dtosToRoles(userDto.getRoleDtos()));
 	}
 
-	public static UserDto userToDtoWithId(User user) {
+	public static UserDto userToDtoWithId(ExpenseUser user) {
 		return new UserDto(
 				user.getId(),
 				user.getName(),
@@ -30,8 +30,8 @@ public class UserMapper {
 	}
 
 	// Without ID.
-	public static User dtoToUser(UserDto userDto) {
-		return new User(
+	public static ExpenseUser dtoToUser(UserDto userDto) {
+		return new ExpenseUser(
 				userDto.getName(),
 				userDto.getSurname(),
 				userDto.getEmail(),
@@ -39,7 +39,7 @@ public class UserMapper {
 				dtosToRoles(userDto.getRoleDtos()));
 	}
 
-	public static UserDto userToDto(User user) {
+	public static UserDto userToDto(ExpenseUser user) {
 		return new UserDto(
 				user.getName(),
 				user.getSurname(),

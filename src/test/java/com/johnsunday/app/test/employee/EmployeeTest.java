@@ -39,7 +39,7 @@ public class EmployeeTest {
 
 		Employee newEmployee = new Employee(
 				"Marvin",
-				"Pentz Gay",
+				"Gay",
 				DateUtil.formattingDate(LocalDateTime.of(1978, 07, 22, 22, 35, 18)),
 				employeeTypeDao.findByNameIgnoreCase("devops").get(),
 				"marvingay@gmail.com");
