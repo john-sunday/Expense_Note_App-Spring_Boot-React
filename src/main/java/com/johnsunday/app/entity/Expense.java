@@ -46,7 +46,7 @@ public class Expense implements Serializable {
 	@Length(min = 3, max = 255)
 	// @NonNull
 	private String note;
-	@Column(name = "date", nullable = false)
+	@Column(name = "expense_date", nullable = false)
 	// @Temporal(TemporalType.TIMESTAMP)
 	@NonNull
 	private LocalDateTime date;
@@ -54,7 +54,7 @@ public class Expense implements Serializable {
 	@NonNull
 	private Double amount;
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "id") // ->old employee_id
+	@JoinColumn(name = "employee_id") // "id"->ERROR
 	// @JsonIgnore
 	@NonNull
 	private Employee employee;
