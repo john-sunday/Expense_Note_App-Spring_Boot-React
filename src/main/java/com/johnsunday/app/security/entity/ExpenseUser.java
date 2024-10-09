@@ -24,6 +24,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
@@ -37,6 +38,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @RequiredArgsConstructor
+@Data
 public class ExpenseUser implements UserDetails {
 
 	private static final long serialVersionUID = 1L;
@@ -62,11 +64,11 @@ public class ExpenseUser implements UserDetails {
 	private String password;
 
 	// Constructor without ID.
-	public ExpenseUser(String name, String surname, String email, String password, Collection<Role> roles) {
-		this.name = name;
-		this.surname = surname;
+	public ExpenseUser(String email, String name, String password, String surname, Collection<Role> roles) {
 		this.email = email;
+		this.name = name;
 		this.password = password;
+		this.surname = surname;
 		this.roles = roles;
 	}
 

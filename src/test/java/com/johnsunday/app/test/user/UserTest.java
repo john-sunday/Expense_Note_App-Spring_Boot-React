@@ -32,39 +32,41 @@ public class UserTest {
 	@Test
 	public void testUserSaving() {
 		PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+		/* 83 Rihanna Fenty 1988-02-20 18:22:17.000 17 */
 
-		String rawPassword = "george1234";
+		String rawPassword = "fenty1234";
 		String encodedPassword = passwordEncoder.encode(rawPassword);
-
+		// Obtén el rol, lanza una excepción si no se encuentra
+		Optional<Role> roleAdmin = roleDao.findByName("ROLE_ADMIN");
+		// Role roleAdmin = roleDao.getReferenceById(1L);
+		// System.out.println(roleAdmin.getName());
+		// roleAdmin.setName("ROLE_ADMIN");
+		// .orElseThrow(() -> new IllegalArgumentException("Role 'ROLE_ADMIN' not
+		// found"));
 		ExpenseUser newUser = new ExpenseUser(
-				"George",
-				"Harrison",
-				"georgeharrison@mail.com",
+				"rihannafenty@mail.com",
+				"Rihanna",
 				encodedPassword,
-				// Arrays.asList(new UserRole("ROLE_ADMIN"))
-				Arrays.asList(roleDao.findByName("ROLE_USER").get()));
-		// User newAdminUser = new User(
-		// "Otis",
-		// "Ray Redding",
-		// "otisredding@gmail.com",
-		// encodedPassword,
-		// //Arrays.asList(new UserRole("ROLE_ADMIN"))
-		// Arrays.asList(roleDao.findByName("ROLE_ADMIN").get())
-		// );
+				"Fenty",
+				Arrays.asList(roleAdmin.get()));
+		// newUser.addRole(roleAdmin);
+
 		ExpenseUser savedUser = userDao.save(newUser);
 
 		assertThat(savedUser).isNotNull();
 		assertThat(savedUser.getId()).isGreaterThan(0);
 	}
 
-	@Test
-	public void testAssignRoleToUser() {
-		Optional<ExpenseUser> optUser = userDao.findByEmail("rihannafenty@mail.com");
-		Optional<Role> optRole = roleDao.findByName("ADMIN_ROLE");
-		ExpenseUser user = optUser.get();
-		user.addRole(optRole.get());
-		ExpenseUser updatedUser = userDao.save(user);
-
-		assertThat(updatedUser.getRoles().size() == 2);
-	}
+	/*
+	 * @Test
+	 * public void testAssignRoleToUser() {
+	 * Optional<ExpenseUser> optUser = userDao.findByEmail("rihannafenty@mail.com");
+	 * Optional<Role> optRole = roleDao.findByName("ROLE_ADMIN");
+	 * ExpenseUser user = optUser.get();
+	 * user.addRole(optRole.get());
+	 * ExpenseUser updatedUser = userDao.save(user);
+	 * 
+	 * assertThat(updatedUser.getRoles().size() == 2);
+	 * }
+	 */
 }

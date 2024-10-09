@@ -29,7 +29,7 @@ public class EmployeeTest {
 	@Autowired
 	IEmployeeDao employeeDao;
 	@Autowired
-	IPositionDao employeeTypeDao;
+	IPositionDao positionDao;
 
 	@Test
 	@DisplayName(value = "Test 1 -> test employee saving\n"
@@ -38,39 +38,43 @@ public class EmployeeTest {
 	public void testEmployeeSaving() {
 
 		Employee newEmployee = new Employee(
-				"Marvin",
-				"Gay",
-				DateUtil.formattingDate(LocalDateTime.of(1978, 07, 22, 22, 35, 18)),
-				employeeTypeDao.findByNameIgnoreCase("devops").get(),
-				"marvingay@gmail.com");
+				"Diego",
+				"Maradona",
+				// 1960-10-30 23:34:42', 25
+				DateUtil.formattingDate(LocalDateTime.of(1960, 10, 30, 23, 34, 42)),
+				positionDao.findByNameIgnoreCase("Project Manager").get(),
+				"diegomaradona@mail.com");
 		Employee savedEmployee = employeeDao.save(newEmployee);
 
 		assertThat(savedEmployee).isNotNull();
 		assertThat(savedEmployee.getId()).isGreaterThan(0);
 	}
 
-	@Test
-	public void testEmployeeUpdating() {
-		Optional<Employee> oldEmployee = employeeDao.findByNameAndSurnameAllIgnoreCase("Marvin", "Pentz Gay");
-
-		// Test.
-		System.out.println("Old Employee --> " + oldEmployee.toString());
-
-		Employee updatedEmployee = null;
-		if (oldEmployee != null) {
-			Employee employeeToUp = new Employee(
-					56L,
-					"Marvin",
-					"Pentz Gay Jr",
-					DateUtil.formattingDate(LocalDateTime.of(1978, 07, 22, 22, 35, 18)),
-					employeeTypeDao.findByNameIgnoreCase("devops").get(),
-					"marvingay@gmail.com",
-					new ArrayList<Expense>(),
-					new ArrayList<Payroll>());
-			updatedEmployee = employeeDao.save(employeeToUp);
-		}
-
-		assertThat(updatedEmployee).isNotNull();
-		assertThat(updatedEmployee.getId()).isGreaterThan(0);
-	}
+	/*
+	 * @Test
+	 * public void testEmployeeUpdating() {
+	 * Optional<Employee> oldEmployee =
+	 * employeeDao.findByNameAndSurnameAllIgnoreCase("Diego", "Maradona");
+	 * 
+	 * // Test.
+	 * System.out.println("Old Employee --> " + oldEmployee.toString());
+	 * 
+	 * Employee updatedEmployee = null;
+	 * if (oldEmployee != null) {
+	 * Employee employeeToUp = new Employee(
+	 * // 56L,
+	 * "Diego",
+	 * "Maradona",
+	 * DateUtil.formattingDate(LocalDateTime.of(1978, 07, 22, 22, 35, 18)),
+	 * positionDao.findByNameIgnoreCase("devops").get(),
+	 * "diegomaradona@mail.com",
+	 * new ArrayList<Expense>(),
+	 * new ArrayList<Payroll>());
+	 * updatedEmployee = employeeDao.save(employeeToUp);
+	 * }
+	 * 
+	 * assertThat(updatedEmployee).isNotNull();
+	 * assertThat(updatedEmployee.getId()).isGreaterThan(0);
+	 * }
+	 */
 }

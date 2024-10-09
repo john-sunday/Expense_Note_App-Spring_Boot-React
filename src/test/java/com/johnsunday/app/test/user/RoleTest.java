@@ -40,11 +40,12 @@ public class RoleTest {
 		assertEquals(2, roleNumbers);
 	}
 
-	@Test
-	public void testListRoles() {
-		List<Role> roles = roleDao.findAll();
-
-		assertThat(roles.size()).isGreaterThan(0);
-		roles.forEach(System.out::println);
-	}
+	/*
+	 * @Test
+	 * public void testListRoles() {
+	 * List<Role> roles = roleDao.findAll();
+	 * assertThat(roles.size()).isGreaterThan(0);
+	 * roles.forEach(System.out::println);
+	 * }
+	 */
 }

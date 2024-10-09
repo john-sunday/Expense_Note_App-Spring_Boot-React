@@ -19,6 +19,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.johnsunday.app.entity.Employee;
+import com.johnsunday.app.exception.RoleNotFoundException;
 import com.johnsunday.app.security.dao.IRoleDao;
 import com.johnsunday.app.security.dao.IUserDao;
 import com.johnsunday.app.security.entity.Role;
@@ -54,6 +55,7 @@ public class UserServiceImpl implements IUserService, UserDetailsService {
 				}
 				settedUser = setUser(user);
 				savedUser = userDao.save(settedUser);
+				entityManager.persist(settedUser);
 			}
 		} catch (Exception e) {
 			// System.out.println("e.getCause(): " + e.getCause());
@@ -62,7 +64,7 @@ public class UserServiceImpl implements IUserService, UserDetailsService {
 		return savedUser;
 	}
 
-	private ExpenseUser setUser(ExpenseUser user) throws Exception {
+	private ExpenseUser setUser(ExpenseUser user) {
 		ExpenseUser settedUser = new ExpenseUser();
 		if (user.getId() != null)
 			settedUser.setId(user.getId());
@@ -72,10 +74,13 @@ public class UserServiceImpl implements IUserService, UserDetailsService {
 		settedUser.setPassword(passwordEncoder.encode(user.getPassword()));
 
 		for (Role role : user.getRoles()) {
-			if ((roleDao.findById(role.getId()) != null)) {
-				settedUser.getRoles().add(entityManager.merge(role));
-			} else {
-				throw new Exception(
+			try {
+				if ((roleDao.findById(role.getId()) != null)) {
+					settedUser.getRoles().add(entityManager.merge(role));
+				}
+			} catch (RoleNotFoundException e) {
+				System.out.println(e.getMessage());
+				throw new RoleNotFoundException(
 						"The Role name: " + role.getName() + " with id: " + role.getId() + " IS NOT in Data Base");
 			}
 		}

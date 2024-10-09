@@ -11,4 +11,5 @@ import com.johnsunday.app.security.entity.ExpenseUser;
 public interface IUserDao extends JpaRepository<ExpenseUser, Long> {
 
 	public Optional<ExpenseUser> findByEmail(String userEmail);
+
 }
