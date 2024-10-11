@@ -7,10 +7,12 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 import org.hibernate.validator.constraints.Length;
 
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -37,6 +39,15 @@ public class Role implements Serializable {
 	public Role(String name) {
 		this.name = name;
 	}
+
+	// Constructor with id.
+	public Role(Long id, String name) {
+		this.id = id;
+		this.name = name;
+	}
+
+	@ManyToMany(mappedBy = "roles")
+	private List<ExpenseUser> users;
 
 	@Override
 	public String toString() {

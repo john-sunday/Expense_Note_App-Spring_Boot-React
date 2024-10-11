@@ -13,6 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
+// @EnableTransactionManagement
 @EnableMethodSecurity(prePostEnabled = true)
 public class AppSecurityConfig {
     /*

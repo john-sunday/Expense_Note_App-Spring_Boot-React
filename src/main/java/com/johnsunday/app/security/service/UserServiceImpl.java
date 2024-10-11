@@ -55,7 +55,7 @@ public class UserServiceImpl implements IUserService, UserDetailsService {
 				}
 				settedUser = setUser(user);
 				savedUser = userDao.save(settedUser);
-				entityManager.persist(settedUser);
+				// entityManager.persist(settedUser);
 			}
 		} catch (Exception e) {
 			// System.out.println("e.getCause(): " + e.getCause());

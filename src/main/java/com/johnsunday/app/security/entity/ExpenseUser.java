@@ -14,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
@@ -21,6 +22,8 @@ import org.hibernate.validator.constraints.Length;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+
+import com.johnsunday.app.entity.Employee;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -38,7 +41,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @RequiredArgsConstructor
-@Data
+
 public class ExpenseUser implements UserDetails {
 
 	private static final long serialVersionUID = 1L;
@@ -62,9 +65,17 @@ public class ExpenseUser implements UserDetails {
 	@Length(min = 4, max = 64)
 	@NonNull
 	private String password;
+	@OneToOne
+	@JoinColumn(name = "id", nullable = true) // <-employee_id
+	private Employee employee;
 
 	// Constructor without ID.
-	public ExpenseUser(String email, String name, String password, String surname, Collection<Role> roles) {
+	public ExpenseUser(
+			String email,
+			String name,
+			String password,
+			String surname,
+			Collection<Role> roles) {
 		this.email = email;
 		this.name = name;
 		this.password = password;
@@ -72,7 +83,23 @@ public class ExpenseUser implements UserDetails {
 		this.roles = roles;
 	}
 
-	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	// Constructor with ID.
+	public ExpenseUser(
+			Long id,
+			String email,
+			String name,
+			String password,
+			String surname,
+			Collection<Role> roles) {
+		this.id = id;
+		this.email = email;
+		this.name = name;
+		this.password = password;
+		this.surname = surname;
+		this.roles = roles;
+	}
+
+	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
 	@JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
 	private Collection<Role> roles = new ArrayList<>();
 
@@ -86,7 +113,7 @@ public class ExpenseUser implements UserDetails {
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		List<SimpleGrantedAuthority> authorities = new ArrayList<>();
+		Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
 		for (Role role : this.roles) {
 			authorities.add(new SimpleGrantedAuthority(role.getName()));
 		}
